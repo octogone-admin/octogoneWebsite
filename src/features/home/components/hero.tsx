@@ -170,7 +170,7 @@ const Hero = () => {
             {/* Contenu textuel - En bas sur mobile */}
             <div className="flex flex-col gap-2 xs:gap-3 lg:gap-4 lg:gap-6 text-center lg:text-left pt-0 order-last lg:order-first">
               {/* Titre principal - maintenant le slogan */}
-              <h1 className="text-3xl xs:text-4xl lg:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-wide mb-2 xs:mb-3 lg:mb-4">
+              <h1 className="text-2xl xs:text-3xl lg:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide mb-2 xs:mb-3 lg:mb-4">
                 {locale === "fr" ? (
                   <>Opérer, analyser, prédire</>
                 ) : (
@@ -182,9 +182,9 @@ const Hero = () => {
               <div className="text-center lg:text-left">
                 <p className="text-lg xs:text-xl lg:text-2xl xl:text-3xl font-semibold text-marine-600 tracking-wide">
                   {locale === "fr" ? (
-                    <>La plateforme qui révolutionne la <span className="text-gold-500">gestion</span> de votre restaurant</>
+                    <>La plateforme qui automatise la <span className="text-gold-500">gestion</span> de votre restaurant</>
                   ) : (
-                    <>The platform that revolutionizes your <span className="text-gold-500">restaurant</span> management</>
+                    <>The platform that automates your <span className="text-gold-500">restaurant</span> management</>
                   )}
                 </p>
               </div>

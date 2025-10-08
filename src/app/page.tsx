@@ -1,4 +1,5 @@
 import Hero from "@/features/home/components/hero";
+import TargetSectors from "@/features/home/components/target-sectors";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col">
       <Hero />
+      <TargetSectors />
       {/* Autres sections à ajouter ici */}
     </main>
   );

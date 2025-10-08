@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Hero from "@/features/home/components/hero";
+import TargetSectors from "@/features/home/components/target-sectors";
 import FeaturesSection from "@/features/home/components/features-section";
 import { DashboardSection } from "@/features/home/components/dashboard-section";
 import ModulesSection from "@/features/home/components/modules-section-flip-fixed";
@@ -70,6 +71,9 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
 
       {/* Conteneur pour les autres sections qui viendront après le hero */}
       <div ref={sectionRef}>
+        {/* Section Target Sectors - Qui fait confiance à Octogone */}
+        <TargetSectors />
+        
         {/* Section 1 - Fonctionnalités principales */}
         <FeaturesSection />
 
