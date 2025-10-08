@@ -6,7 +6,11 @@ import { usePathname } from "next/navigation";
 import Navigation from "@/features/navigation";
 import { Footer } from "@/components/ui/footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 function getRoutes(locale: string) {
   return [

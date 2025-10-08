@@ -14,8 +14,22 @@ body {
   padding-top: var(--banner-height);
 }
 
-/* Appliquer la couleur de texte principale à tous les éléments de texte */
-p, h1, h2, h3, h4, h5, h6, span, a, button, input, textarea, select, label, li {
+/* Appliquer la couleur de texte principale seulement aux éléments sans classes Tailwind */
+p:not([class*="text-"]), 
+h1:not([class*="text-"]), 
+h2:not([class*="text-"]), 
+h3:not([class*="text-"]), 
+h4:not([class*="text-"]), 
+h5:not([class*="text-"]), 
+h6:not([class*="text-"]),
+span:not([class*="text-"]):not([style*="color"]),
+a:not([class*="text-"]), 
+button:not([class*="text-"]), 
+input:not([class*="text-"]), 
+textarea:not([class*="text-"]), 
+select:not([class*="text-"]), 
+label:not([class*="text-"]), 
+li:not([class*="text-"]) {
   color: var(--text-primary);
 }
 
