@@ -143,7 +143,7 @@ const Hero = () => {
       pastelColor: "#B8E0D2", // Vert menthe pastel
       position: "top-left",
       image: "/operate.jpg",
-      link: "/features/operate"
+      link: "/fonctionnalites/operer"
     },
     {
       id: 1,
@@ -156,7 +156,7 @@ const Hero = () => {
       pastelColor: "#B4D4FF", // Bleu ciel pastel
       position: "top-right",
       image: "/resto.jpg",
-      link: "/features/automate"
+      link: "/fonctionnalites/automatiser"
     },
     {
       id: 2,
@@ -169,7 +169,7 @@ const Hero = () => {
       pastelColor: "#FFE5B4", // Jaune pastel
       position: "bottom-right",
       image: "/resto.jpg",
-      link: "/features/analyze"
+      link: "/fonctionnalites/analyser"
     },
     {
       id: 3,
@@ -182,7 +182,7 @@ const Hero = () => {
       pastelColor: "#C8B6FF", // Mauve du dégradé Cortex
       position: "bottom-left",
       image: "/predict.jpg",
-      link: "/features/predict"
+      link: "/fonctionnalites/predire"
     }
   ];
 
