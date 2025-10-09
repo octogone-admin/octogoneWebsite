@@ -87,8 +87,43 @@ const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const octogoneRef = useRef<HTMLDivElement>(null);
 
+  // Calculer la hauteur du header dynamiquement
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const calculateHeaderHeight = () => {
+      const header = document.querySelector('header') as HTMLElement;
+      const banner = document.querySelector('.announcement-banner') as HTMLElement;
+      let totalHeight = 0;
+      
+      if (header) {
+        totalHeight += header.offsetHeight;
+      }
+      if (banner && window.getComputedStyle(banner).display !== 'none') {
+        totalHeight += banner.offsetHeight;
+      }
+      
+      setHeaderHeight(totalHeight);
+    };
+
+    calculateHeaderHeight();
+    window.addEventListener('resize', calculateHeaderHeight);
+    
+    // Observer pour détecter les changements de la bannière
+    const observer = new MutationObserver(calculateHeaderHeight);
+    const banner = document.querySelector('.announcement-banner');
+    if (banner) {
+      observer.observe(banner, { attributes: true, attributeFilter: ['style', 'class'] });
+    }
+
+    return () => {
+      window.removeEventListener('resize', calculateHeaderHeight);
+      observer.disconnect();
+    };
+  }, []);
+
   // État pour l'animation séquentielle et le hover
-  const [activeOctogone, setActiveOctogone] = useState<number | null>(null);
+  const [activeOctogone, setActiveOctogone] = useState<number | null>(0); // Démarre avec Opérer (id: 0)
   const [hoveredOctogone, setHoveredOctogone] = useState<number | null>(null);
   const [rotationDegrees, setRotationDegrees] = useState<number>(0);
 
@@ -115,10 +150,10 @@ const Hero = () => {
     let currentIndex = 0;
 
     const interval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % sequence.length;
       setActiveOctogone(sequence[currentIndex]);
       setRotationDegrees(prev => prev + 45); // Ajoute 45° à chaque fois
-      currentIndex = (currentIndex + 1) % sequence.length;
-    }, 4000); // Change tous les 4 secondes
+    }, 5000); // Change tous les 5 secondes
 
     return () => clearInterval(interval);
   }, []);
@@ -142,8 +177,9 @@ const Hero = () => {
       color: "text-marine-500",
       pastelColor: "#B8E0D2", // Vert menthe pastel
       position: "top-left",
-      image: "/operate.jpg",
-      link: "/fonctionnalites/operer"
+      media: "https://video-previews.elements.envatousercontent.com/files/4d84a701-5c1b-47d2-bcee-fe25efab5926/video_preview_h264.mp4",
+      mediaType: "video",
+      link: "/features/operate"
     },
     {
       id: 1,
@@ -155,8 +191,9 @@ const Hero = () => {
       color: "text-gold-500",
       pastelColor: "#B4D4FF", // Bleu ciel pastel
       position: "top-right",
-      image: "/resto.jpg",
-      link: "/fonctionnalites/automatiser"
+      media: "https://video-previews.elements.envatousercontent.com/files/a7d69e9a-192d-41bb-ae64-ebf5b295cfeb/video_preview_h264.mp4",
+      mediaType: "video",
+      link: "/features/automate"
     },
     {
       id: 2,
@@ -168,8 +205,9 @@ const Hero = () => {
       color: "text-marine-500",
       pastelColor: "#FFE5B4", // Jaune pastel
       position: "bottom-right",
-      image: "/resto.jpg",
-      link: "/fonctionnalites/analyser"
+      media: "https://video-previews.elements.envatousercontent.com/7e71a914-f289-4e20-9519-bc1721bece49/watermarked_preview/watermarked_preview.mp4",
+      mediaType: "video",
+      link: "/features/analyze"
     },
     {
       id: 3,
@@ -181,27 +219,26 @@ const Hero = () => {
       color: "text-gold-500",
       pastelColor: "#C8B6FF", // Mauve du dégradé Cortex
       position: "bottom-left",
-      image: "/predict.jpg",
-      link: "/fonctionnalites/predire"
+      media: "https://video-previews.elements.envatousercontent.com/e341f344-626e-40a6-ab21-24c2140998d1/watermarked_preview/watermarked_preview.mp4",
+      mediaType: "video",
+      link: "/features/predict"
     }
   ];
 
   return (
-    <ResponsiveSection
-      as="section"
-      bgColor="bg-white"
-      spacing="lg"
-      className="relative overflow-hidden lg:min-h-screen lg:flex lg:items-center"
+    <section 
+      className="relative bg-white overflow-hidden flex items-center"
       aria-labelledby="hero-title"
+      style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
     >
-      <div className="relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full">
         {/* Fond décoratif */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-marine-50 rounded-bl-[100px] opacity-70" />
           <div className="absolute bottom-0 left-0 w-1/4 h-1/4 bg-gold-100 rounded-tr-[70px] opacity-60" />
         </div>
 
-        <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+        <div className="relative z-10 w-full flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
             {/* Octogones interconnectés - Masqué sur mobile */}
             <div className="hidden lg:flex justify-center items-center h-full mt-0 pt-0 mb-2 xs:mb-4 lg:mb-8 order-first lg:order-last">
               <div className="relative w-full max-w-[220px] xs:max-w-[280px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[580px] h-[220px] xs:h-[280px] sm:h-[340px] md:h-[400px] lg:h-[480px] xl:h-[580px] flex justify-center items-center overflow-visible">
@@ -264,18 +301,44 @@ const Hero = () => {
                     transform: `rotate(-${rotationDegrees}deg)`,
                     transition: 'transform 0.5s ease-out'
                   }}>
-                    <Image
-                      key={activeOctogone !== null ? activeOctogone : 0}
-                      src={activeOctogone !== null ? octogones[activeOctogone].image : octogones[0].image}
-                      alt="Restaurant"
-                      fill
-                      className="object-cover"
-                      style={{
-                        animation: 'fadeIn 0.5s ease-out'
-                      }}
-                      priority
-                      sizes="(max-width: 768px) 220px, (max-width: 1024px) 320px, 380px"
-                    />
+                    {activeOctogone !== null && octogones[activeOctogone].mediaType === 'video' ? (
+                      <>
+                        <video
+                          key={activeOctogone}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-cover"
+                          style={{
+                            animation: 'fadeIn 0.5s ease-out'
+                          }}
+                          poster={activeOctogone === 0 ? '/operate.jpg' : activeOctogone === 3 ? '/predict.jpg' : '/resto.jpg'}
+                        >
+                          <source src={octogones[activeOctogone].media} type="video/mp4" />
+                          {/* Fallback image si la vidéo ne charge pas */}
+                          <Image
+                            src={activeOctogone === 0 ? '/operate.jpg' : activeOctogone === 3 ? '/predict.jpg' : '/resto.jpg'}
+                            alt="Restaurant"
+                            fill
+                            className="object-cover"
+                          />
+                        </video>
+                      </>
+                    ) : (
+                      <Image
+                        key={activeOctogone !== null ? activeOctogone : 0}
+                        src={activeOctogone !== null ? octogones[activeOctogone].media : octogones[0].media}
+                        alt="Restaurant"
+                        fill
+                        className="object-cover"
+                        style={{
+                          animation: 'fadeIn 0.5s ease-out'
+                        }}
+                        priority
+                        sizes="(max-width: 768px) 220px, (max-width: 1024px) 320px, 380px"
+                      />
+                    )}
                   </div>
                   <style jsx>{`
                     @keyframes fadeIn {
@@ -347,9 +410,9 @@ const Hero = () => {
                   style={{ fontSize: 'clamp(1.125rem, 3vw, 1.875rem)', lineHeight: '1.3' }}
                 >
                   {locale === "fr" ? (
-                    <>La plateforme qui automatise la <span className="text-gold-500">gestion</span> de votre restaurant</>
+                    <>La plateforme qui optimise <span className="text-gold-500">vraiment</span> la gestion de vos restaurants</>
                   ) : (
-                    <>The platform that automates your <span className="text-gold-500">restaurant</span> management</>
+                    <>The platform that <span className="text-gold-500">truly</span> optimizes your restaurants management</>
                   )}
                 </p>
               </div>
@@ -361,8 +424,8 @@ const Hero = () => {
               >
                 {t('hero.description', { 
                   defaultValue: locale === 'fr' 
-                    ? "Maîtrisez vos inventaires et food cost, transformez vos données en insights stratégiques et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale." 
-                    : "Master your inventory and food cost, transform your data into strategic insights, and let Cortex, our AI agent, guide you to optimal profitability."
+                    ? "Gérez tous vos établissements depuis une seule plateforme. Maîtrisez vos inventaires et food cost, et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale." 
+                    : "Manage all your locations from one platform. Master your inventory and food cost, and let Cortex, our AI agent, guide you to optimal profitability."
                 })}
               </p>
 
@@ -382,19 +445,8 @@ const Hero = () => {
               </div>
           </div>
         </div>
-
-        {/* Carrousel de logos clients en bas du Hero */}
-        <div className="mt-4 sm:mt-8 lg:mt-32">
-          <div className="w-full" role="region" aria-label={locale === 'fr' ? 'Nos clients partenaires' : 'Our partner clients'}>
-            <LogoMarquee
-              logos={clientLogos}
-              title={t('hero.clients.title', { defaultValue: locale === "fr" ? "Partenaire de leur succès" : "Partner in their success" })}
-              titleClassName="text-sm lg:text-lg"
-            />
-          </div>
-        </div>
       </div>
-    </ResponsiveSection>
+    </section>
   );
 };
 

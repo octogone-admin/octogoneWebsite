@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Hero from "@/features/home/components/hero";
+import PartnersSection from "@/features/home/components/partners-section";
 import TargetSectors from "@/features/secteurs/components/target-sectors";
 import FeaturesSection from "@/features/home/components/features-section";
 import { DashboardSection } from "@/features/home/components/dashboard-section";
@@ -63,6 +64,9 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
       <div className="w-full">
         <Hero />
       </div>
+
+      {/* Section Partenaires */}
+      <PartnersSection />
 
       {/* Conteneur pour les autres sections qui viendront après le hero */}
       <div ref={sectionRef}>

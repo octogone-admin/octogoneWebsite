@@ -41,7 +41,7 @@ export function LogoMarquee({
     <div className="w-full py-6">
       {title && (
         <div className="text-center mb-4">
-          <h3 className={`${titleClassName} font-medium text-gray-500`}>
+          <h3 className={`${titleClassName} font-medium text-black`}>
             {title}
           </h3>
         </div>

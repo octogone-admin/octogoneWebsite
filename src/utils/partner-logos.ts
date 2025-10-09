@@ -47,12 +47,6 @@ export const staticPartnerLogos: PartnerLogo[] = [
     alt: "Logo Biceps BBQ",
   },
   {
-    id: 7,
-    name: "Blaxton",
-    logo: "/images/partners/blaxton.png",
-    alt: "Logo Blaxton",
-  },
-  {
     id: 8,
     name: "Chez Boulay",
     logo: "/images/partners/Chez_Boulay (1).png",
