@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
+import { OctogoneButton } from "@/components/ui/octogone-button";
+import Image from "next/image";
 import { targetSectors, restaurantStyles, type TargetSector } from "@/data/sectors-data";
 import { testimonials, type Testimonial } from "@/data/testimonials-data";
-
-// Les données sont maintenant importées depuis /src/data/
-// Plus besoin de les définir ici - elles sont centralisées !
-
 /**
  * Fonction pour obtenir l'icône SVG de chaque secteur
  */
@@ -129,7 +126,7 @@ const TargetSectors = () => {
       </div>
 
       {/* Logo en arrière-plan */}
-      <div className="absolute -bottom-[500px] -right-[500px] w-[1400px] h-[1400px]">
+      <div className="absolute -bottom-[500px] -right-[500px] w-[1400px] h-[1400px] opacity-20">
         <Image
           src="/logo_octogone.svg"
           alt="Octogone Logo"
@@ -153,7 +150,7 @@ const TargetSectors = () => {
               onClick={() => setActiveTab('business')}
               className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300 cursor-pointer hover:bg-opacity-80"
               style={{
-                backgroundColor: activeTab === 'business' ? '#dcb26b' : 'transparent',
+                backgroundColor: activeTab === 'business' ? '#f3f4f6' : 'transparent',
                 color: activeTab === 'business' ? 'black' : 'black'
               }}
               onMouseEnter={(e) => {
@@ -173,7 +170,7 @@ const TargetSectors = () => {
               onClick={() => setActiveTab('styles')}
               className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300 cursor-pointer hover:bg-opacity-80"
               style={{
-                backgroundColor: activeTab === 'styles' ? '#dcb26b' : 'transparent',
+                backgroundColor: activeTab === 'styles' ? '#f3f4f6' : 'transparent',
                 color: activeTab === 'styles' ? 'black' : 'black'
               }}
               onMouseEnter={(e) => {
@@ -193,7 +190,7 @@ const TargetSectors = () => {
               onClick={() => setActiveTab('testimonials')}
               className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300 cursor-pointer hover:bg-opacity-80"
               style={{
-                backgroundColor: activeTab === 'testimonials' ? '#dcb26b' : 'transparent',
+                backgroundColor: activeTab === 'testimonials' ? '#f3f4f6' : 'transparent',
                 color: activeTab === 'testimonials' ? 'black' : 'black'
               }}
               onMouseEnter={(e) => {
@@ -325,11 +322,9 @@ const TargetSectors = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-colors cursor-pointer ${
-                    index === currentTestimonial ? 'bg-gold-500' : 'bg-gray-300'
-                  }`}
+                  className="w-3 h-3 rounded-full transition-colors cursor-pointer"
                   style={{
-                    backgroundColor: index === currentTestimonial ? '#dcb26b' : '#d1d5db'
+                    backgroundColor: index === currentTestimonial ? '#000000' : '#ffffff'
                   }}
                 />
               ))}
@@ -416,6 +411,9 @@ const TargetSectors = () => {
               
               {/* Paragraphe d'encouragement pour Types et Styles */}
               <div className="mt-12 text-center max-w-3xl mx-auto">
+                <h3 className="text-2xl lg:text-3xl font-bold text-marine-900 mb-6">
+                  {locale === "fr" ? "Est-ce qu'Octogone s'adresse à mon entreprise ?" : "Is Octogone right for my business?"}
+                </h3>
                 <p className="text-marine-700 text-lg leading-relaxed">
                   {locale === "fr" ? (
                     <>
@@ -436,21 +434,23 @@ const TargetSectors = () => {
                 
                 {/* Bouton Nous contacter */}
                 <div className="mt-8">
-                  <Link
+                  <OctogoneButton
                     href={`/${locale}/contact`}
-                    className="inline-flex items-center px-8 py-4 bg-primary_color hover:bg-gold-600 text-black font-semibold rounded-lg transition-all duration-300 ease-out transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    variant="primary"
+                    size="lg"
+                    icon={
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                    }
                   >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
                     {locale === "fr" ? "Nous contacter" : "Contact us"}
-                  </Link>
+                  </OctogoneButton>
                 </div>
               </div>
             </div>
           )}
         </div>
-
       </div>
     </ResponsiveSection>
   );

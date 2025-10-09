@@ -396,6 +396,11 @@ const Hero = () => {
                       <span className="text-[7px] xs:text-[8px] sm:text-[9px] lg:text-xs font-semibold text-marine-900 mt-0.5 xs:mt-1 text-center px-0.5 xs:px-1">
                         {locale === 'fr' ? oct.titleFr : oct.titleEn}
                       </span>
+                      {oct.id === 3 && isActive && (
+                        <div className="bg-white text-black px-4 py-1 rounded-sm text-[8px] xs:text-[9px] sm:text-[10px] lg:text-xs font-medium mt-1 antialiased">
+                          {locale === 'fr' ? 'Bientôt' : 'Coming Soon'}
+                        </div>
+                      )}
                     </Link>
                   );
                 })}
