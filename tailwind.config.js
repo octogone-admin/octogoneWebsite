@@ -22,6 +22,18 @@ module.exports = {
     'to-gold-400', 'to-gold-500', 'to-gold-600', 'to-gold-700', 'to-gold-800', 'to-gold-900',
     // Dégradé Cortex
     'bg-gradient-cortex',
+    // Couleurs pastel pour les octogones
+    'bg-green_pastel', 'bg-blue_pastel', 'bg-yellow_pastel', 'bg-purple_pastel',
+    'text-green_pastel', 'text-blue_pastel', 'text-yellow_pastel', 'text-purple_pastel',
+    'border-green_pastel', 'border-blue_pastel', 'border-yellow_pastel', 'border-purple_pastel',
+    // Couleurs Tailwind pour les dégradés
+    'from-purple_pastel', 'to-purple-200', 'from-green_pastel', 'to-green-200', 'from-blue_pastel', 'to-blue-200',
+    // Couleurs principales simplifiées
+    'bg-primary_color', 'bg-secondary_color', 'bg-outline_color',
+    'text-primary_color', 'text-secondary_color', 'text-outline_color',
+    'border-primary_color', 'border-secondary_color', 'border-outline_color',
+    'hover:bg-primary_color', 'hover:bg-secondary_color', 'hover:bg-outline_color',
+    'hover:text-primary_color', 'hover:text-secondary_color', 'hover:border-outline_color',
   ],
   theme: {
     screens: {
@@ -61,6 +73,15 @@ module.exports = {
           900: '#002236', // Couleur principale marine
           950: '#001018',
         },
+        // Couleurs pastel pour les octogones animés
+        green_pastel: '#B8E0D2', // Vert menthe pastel - Opérer
+        blue_pastel: '#B4D4FF',  // Bleu ciel pastel - Automatiser
+        yellow_pastel: '#FFE5B4', // Jaune pastel - Analyser
+        purple_pastel: '#C8B6FF', // Mauve pastel - Prédire (Cortex)
+        // Couleurs principales simplifiées
+        primary_color: '#dcb26b', // Couleur principale (gold-500)
+        secondary_color: '#BADFF6', // Couleur secondaire (bleu Cortex)
+        outline_color: '#E5E5E5', // Couleur des bordures
       },
       backgroundImage: {
         'gradient-cortex': 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)',

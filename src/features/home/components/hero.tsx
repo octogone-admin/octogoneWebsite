@@ -165,6 +165,17 @@ const Hero = () => {
     scrollRange: 250
   });
 
+  // Fonction pour convertir les couleurs du thème en valeurs hex pour SVG
+  const getColorValue = (colorName: string) => {
+    const colorMap: { [key: string]: string } = {
+      'green_pastel': '#B8E0D2',
+      'blue_pastel': '#B4D4FF',
+      'yellow_pastel': '#FFE5B4',
+      'purple_pastel': '#C8B6FF'
+    };
+    return colorMap[colorName] || '#000000';
+  };
+
   // Données des octogones (4 au total - Opérer, Automatiser, Analyser, Prédire)
   const octogones = [
     {
@@ -175,7 +186,7 @@ const Hero = () => {
       descEn: "Manage your inventory in real-time",
       LucideIcon: Rocket,
       color: "text-marine-500",
-      pastelColor: "#B8E0D2", // Vert menthe pastel
+      pastelColor: "green_pastel", // Vert menthe pastel
       position: "top-left",
       media: "https://video-previews.elements.envatousercontent.com/files/4d84a701-5c1b-47d2-bcee-fe25efab5926/video_preview_h264.mp4",
       mediaType: "video",
@@ -189,7 +200,7 @@ const Hero = () => {
       descEn: "Automated recipes and processes",
       LucideIcon: Settings,
       color: "text-gold-500",
-      pastelColor: "#B4D4FF", // Bleu ciel pastel
+      pastelColor: "blue_pastel", // Bleu ciel pastel
       position: "top-right",
       media: "https://video-previews.elements.envatousercontent.com/files/a7d69e9a-192d-41bb-ae64-ebf5b295cfeb/video_preview_h264.mp4",
       mediaType: "video",
@@ -203,7 +214,7 @@ const Hero = () => {
       descEn: "Food cost and optimization",
       LucideIcon: BarChart3,
       color: "text-marine-500",
-      pastelColor: "#FFE5B4", // Jaune pastel
+      pastelColor: "yellow_pastel", // Jaune pastel
       position: "bottom-right",
       media: "https://video-previews.elements.envatousercontent.com/7e71a914-f289-4e20-9519-bc1721bece49/watermarked_preview/watermarked_preview.mp4",
       mediaType: "video",
@@ -217,7 +228,7 @@ const Hero = () => {
       descEn: "AI that anticipates your needs",
       LucideIcon: Brain,
       color: "text-gold-500",
-      pastelColor: "#C8B6FF", // Mauve du dégradé Cortex
+      pastelColor: "purple_pastel", // Mauve du dégradé Cortex
       position: "bottom-left",
       media: "https://video-previews.elements.envatousercontent.com/e341f344-626e-40a6-ab21-24c2140998d1/watermarked_preview/watermarked_preview.mp4",
       mediaType: "video",
@@ -248,7 +259,7 @@ const Hero = () => {
                   {/* Coins */}
                   <line 
                     x1="50%" y1="50%" x2="10%" y2="10%" 
-                    stroke={activeOctogone === 0 ? octogones[0].pastelColor : "#000000"} 
+                    stroke={activeOctogone === 0 ? getColorValue(octogones[0].pastelColor) : "#000000"} 
                     strokeWidth="4" 
                     strokeDasharray="1,8"
                     strokeLinecap="round"
@@ -256,7 +267,7 @@ const Hero = () => {
                   />
                   <line 
                     x1="50%" y1="50%" x2="90%" y2="10%" 
-                    stroke={activeOctogone === 1 ? octogones[1].pastelColor : "#000000"} 
+                    stroke={activeOctogone === 1 ? getColorValue(octogones[1].pastelColor) : "#000000"} 
                     strokeWidth="4" 
                     strokeDasharray="1,8"
                     strokeLinecap="round"
@@ -264,7 +275,7 @@ const Hero = () => {
                   />
                   <line 
                     x1="50%" y1="50%" x2="10%" y2="90%" 
-                    stroke={activeOctogone === 3 ? octogones[3].pastelColor : "#000000"} 
+                    stroke={activeOctogone === 3 ? getColorValue(octogones[3].pastelColor) : "#000000"} 
                     strokeWidth="4" 
                     strokeDasharray="1,8"
                     strokeLinecap="round"
@@ -272,7 +283,7 @@ const Hero = () => {
                   />
                   <line 
                     x1="50%" y1="50%" x2="90%" y2="90%" 
-                    stroke={activeOctogone === 2 ? octogones[2].pastelColor : "#000000"} 
+                    stroke={activeOctogone === 2 ? getColorValue(octogones[2].pastelColor) : "#000000"} 
                     strokeWidth="4" 
                     strokeDasharray="1,8"
                     strokeLinecap="round"
@@ -372,7 +383,7 @@ const Hero = () => {
                         zIndex: 3,
                         transform: isActive ? 'scale(1.1)' : 'scale(1)',
                         boxShadow: isActive ? '0 10px 30px rgba(0,0,0,0.3)' : '0 4px 6px rgba(0,0,0,0.1)',
-                        backgroundColor: isActive ? oct.pastelColor : '#ffffff',
+                        backgroundColor: isActive ? getColorValue(oct.pastelColor) : '#ffffff',
                         transition: 'all 0.5s linear'
                       }}
                       onMouseEnter={() => setHoveredOctogone(oct.id)}

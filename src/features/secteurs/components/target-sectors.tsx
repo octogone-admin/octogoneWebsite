@@ -87,14 +87,40 @@ const TargetSectors = () => {
   // Données à afficher selon l'onglet actif (seulement pour les cartes)
   const currentData = activeTab === 'business' ? targetSectors : restaurantStyles;
 
+  // Couleurs de fond selon le toggle actif
+  const getBackgroundStyle = () => {
+    switch (activeTab) {
+      case 'business':
+        return { background: 'radial-gradient(ellipse at top left, #B8E0D2 0%, #A5D6CC 25%, #B8E0D2 50%, #9BCCC4 75%, #B8E0D2 100%)' }; // Vert pastel
+      case 'styles':
+        return { background: 'radial-gradient(ellipse at top left, #B4D4FF 0%, #A1C7FF 25%, #B4D4FF 50%, #8EBAFF 75%, #B4D4FF 100%)' }; // Bleu pastel
+      case 'testimonials':
+        return { background: 'radial-gradient(ellipse at top left, #BADFF6 0%, #A7D6F3 25%, #BADFF6 50%, #94CDF0 75%, #BADFF6 100%)' }; // Secondary color (bleu Cortex)
+      default:
+        return { background: 'radial-gradient(ellipse at top left, #e5f1ff 0%, #ddeeff 25%, #e5f1ff 50%, #d5ebff 75%, #e5f1ff 100%)' };
+    }
+  };
+
+  // Couleur du bouton selon le toggle actif
+  const getButtonColor = () => {
+    switch (activeTab) {
+      case 'business':
+        return '#B8E0D2'; // Vert pastel
+      case 'styles':
+        return '#B4D4FF'; // Bleu pastel
+      case 'testimonials':
+        return '#BADFF6'; // Secondary color (bleu Cortex)
+      default:
+        return '#e5f1ff';
+    }
+  };
+
   return (
     <ResponsiveSection
       as="section"
       spacing="xxl"
-      className="relative overflow-hidden"
-      style={{ 
-        background: 'radial-gradient(ellipse at top left, #e5f1ff 0%, #ddeeff 25%, #e5f1ff 50%, #d5ebff 75%, #e5f1ff 100%)'
-      }}
+      className="relative overflow-hidden transition-all duration-500 ease-out"
+      style={getBackgroundStyle()}
     >
       {/* Fond décoratif avec octogones en filigrane */}
       <div className="absolute inset-0 opacity-5">
@@ -186,10 +212,12 @@ const TargetSectors = () => {
           </div>
         </div>
 
-        {/* Affichage conditionnel : Grille ou Carrousel */}
-        {activeTab === 'testimonials' ? (
-          /* Carrousel de cartes de témoignages */
-          <div className="relative">
+        {/* Conteneur avec hauteur fixe basée sur la section témoignages */}
+        <div className="relative min-h-[650px] lg:min-h-[770px]">
+          {/* Affichage conditionnel : Grille ou Carrousel */}
+          {activeTab === 'testimonials' ? (
+            /* Carrousel de cartes de témoignages */
+            <div className="relative h-full flex flex-col justify-center">
             {/* Contrôle gauche */}
             <button
               onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
@@ -307,9 +335,10 @@ const TargetSectors = () => {
               ))}
             </div>
           </div>
-        ) : (
-          /* Grille des secteurs */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          ) : (
+            /* Grille des secteurs */
+            <div className="h-full flex flex-col justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {currentData.map((sector) => (
               <Link
                 key={sector.id}
@@ -338,14 +367,36 @@ const TargetSectors = () => {
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                   
-                  {/* Contenu de la carte */}
-                  <div className="relative z-10 text-center">
+                  {/* Contenu de la carte - État normal */}
+                  <div className="relative z-10 text-center transition-all duration-300 ease-out group-hover:opacity-0 group-hover:translate-y-4">
                     <h3 className="text-xl lg:text-2xl font-bold text-white">
                       {locale === "fr" ? sector.titleFr : sector.titleEn}
                     </h3>
                     <p className="text-white/90 text-sm mt-1">
                       {locale === "fr" ? sector.descriptionFr : sector.descriptionEn}
                     </p>
+                  </div>
+
+                  {/* Contenu de la carte - État hover */}
+                  <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0">
+                    <div className="text-center">
+                      <div 
+                        className="rounded-md px-6 py-3 shadow-lg transform-gpu" 
+                        style={{ 
+                          backgroundColor: getButtonColor(),
+                          backfaceVisibility: 'hidden',
+                          WebkitFontSmoothing: 'antialiased',
+                          MozOsxFontSmoothing: 'grayscale'
+                        }}
+                      >
+                        <span className="text-black font-semibold text-sm antialiased">
+                          {locale === "fr" ? "En savoir plus" : "Learn more"}
+                        </span>
+                        <svg className="inline-block ml-2 w-5 h-5 text-black transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
 
                 </div>
@@ -361,8 +412,44 @@ const TargetSectors = () => {
                 ></div>
               </Link>
             ))}
-          </div>
-        )}
+              </div>
+              
+              {/* Paragraphe d'encouragement pour Types et Styles */}
+              <div className="mt-12 text-center max-w-3xl mx-auto">
+                <p className="text-marine-700 text-lg leading-relaxed">
+                  {locale === "fr" ? (
+                    <>
+                      Octogone s'adapte à tous les types d'établissements et de modèles d'affaires. 
+                      Si vous pensez que notre solution pourrait vous être utile, 
+                      <span className="font-semibold text-marine-900"> n'hésitez pas à contacter notre service à la clientèle</span> 
+                      {" "}pour discuter de vos besoins spécifiques.
+                    </>
+                  ) : (
+                    <>
+                      Octogone adapts to all types of establishments and business models. 
+                      If you think our solution could be useful to you, 
+                      <span className="font-semibold text-marine-900"> don't hesitate to contact our customer service</span> 
+                      {" "}to discuss your specific needs.
+                    </>
+                  )}
+                </p>
+                
+                {/* Bouton Nous contacter */}
+                <div className="mt-8">
+                  <Link
+                    href={`/${locale}/contact`}
+                    className="inline-flex items-center px-8 py-4 bg-primary_color hover:bg-gold-600 text-black font-semibold rounded-lg transition-all duration-300 ease-out transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    {locale === "fr" ? "Nous contacter" : "Contact us"}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
       </div>
     </ResponsiveSection>
