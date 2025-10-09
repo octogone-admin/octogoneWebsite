@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import Navigation from "@/features/navigation";
 import { Footer } from "@/components/ui/footer";
+import { SimpleSchema } from "@/components/seo/simple-schema";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -163,6 +164,9 @@ export default function LocaleLayout({
 
   return (
     <div lang={locale} className={inter.className}>
+      {/* Schema.org simple et fiable pour SEO IA */}
+      <SimpleSchema locale={locale} />
+      
       <Navigation routes={translatedRoutes} activeRoute={activeRoute} theme="light" locale={locale} />
       <div className="pt-20 min-h-screen flex flex-col">
         <main className="flex-grow">{children}</main>

@@ -146,6 +146,61 @@ const restaurantStyles: TargetSector[] = [
   }
 ];
 
+// Données des témoignages clients
+interface Testimonial {
+  id: string;
+  nameFr: string;
+  nameEn: string;
+  businessFr: string;
+  businessEn: string;
+  quoteFr: string;
+  quoteEn: string;
+  rating: number;
+}
+
+const testimonials: Testimonial[] = [
+  {
+    id: "mario-rossi",
+    nameFr: "Mario Rossi",
+    nameEn: "Mario Rossi",
+    businessFr: "Restaurant Mario - Cuisine italienne",
+    businessEn: "Restaurant Mario - Italian Cuisine",
+    quoteFr: "Octogone a transformé notre gestion. Nous avons réduit nos coûts de 25% en 6 mois grâce à Cortex qui anticipe parfaitement nos besoins.",
+    quoteEn: "Octogone transformed our management. We reduced our costs by 25% in 6 months thanks to Cortex perfectly anticipating our needs.",
+    rating: 5
+  },
+  {
+    id: "laurent-dubois",
+    nameFr: "Laurent Dubois",
+    nameEn: "Laurent Dubois",
+    businessFr: "Bistro Laurent - Bistro français",
+    businessEn: "Bistro Laurent - French Bistro",
+    quoteFr: "L'automatisation des inventaires nous fait gagner 3h par jour. L'interface est intuitive et l'équipe s'est adaptée en une semaine.",
+    quoteEn: "Inventory automation saves us 3 hours per day. The interface is intuitive and the team adapted in one week.",
+    rating: 5
+  },
+  {
+    id: "yuki-tanaka",
+    nameFr: "Yuki Tanaka",
+    nameEn: "Yuki Tanaka",
+    businessFr: "Sushi Zen - Restaurant japonais",
+    businessEn: "Sushi Zen - Japanese Restaurant",
+    quoteFr: "Les prédictions de Cortex sont impressionnantes. Nous n'avons plus de ruptures de stock et nos marges ont augmenté de 18%.",
+    quoteEn: "Cortex's predictions are impressive. We no longer have stock shortages and our margins increased by 18%.",
+    rating: 5
+  },
+  {
+    id: "sophie-martin",
+    nameFr: "Sophie Martin",
+    nameEn: "Sophie Martin",
+    businessFr: "Café Central - Chaîne de 12 établissements",
+    businessEn: "Café Central - Chain of 12 locations",
+    quoteFr: "La vue d'ensemble sur nos 12 cafés est un game-changer. Octogone nous permet de piloter efficacement notre croissance.",
+    quoteEn: "The overview of our 12 cafes is a game-changer. Octogone allows us to efficiently manage our growth.",
+    rating: 5
+  }
+];
+
 /**
  * Fonction pour obtenir l'icône SVG de chaque secteur
  */
@@ -205,9 +260,21 @@ const TargetSectors = () => {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   const [hoveredSector, setHoveredSector] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'business' | 'styles'>('business');
+  const [activeTab, setActiveTab] = useState<'business' | 'styles' | 'testimonials'>('business');
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
-  // Données à afficher selon l'onglet actif
+  // Auto-rotation du carrousel de témoignages (simple boucle)
+  React.useEffect(() => {
+    if (activeTab === 'testimonials') {
+      const interval = setInterval(() => {
+        setCurrentTestimonial(prev => (prev + 1) % testimonials.length);
+      }, 5000); // Change toutes les 5 secondes
+
+      return () => clearInterval(interval);
+    }
+  }, [activeTab]);
+
+  // Données à afficher selon l'onglet actif (seulement pour les cartes)
   const currentData = activeTab === 'business' ? targetSectors : restaurantStyles;
 
   return (
@@ -215,13 +282,17 @@ const TargetSectors = () => {
       as="section"
       spacing="xxl"
       className="relative overflow-hidden"
-      style={{ backgroundColor: '#e5f1ff' }}
+      style={{ 
+        background: 'radial-gradient(ellipse at top left, #e5f1ff 0%, #ddeeff 25%, #e5f1ff 50%, #d5ebff 75%, #e5f1ff 100%)'
+      }}
     >
-      {/* Fond décoratif subtil */}
+      {/* Fond décoratif avec octogones en filigrane */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 bg-marine-500 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-40 h-40 bg-gold-500 rounded-full blur-3xl"></div>
       </div>
+
+
 
       <div className="relative z-10">
         {/* En-tête de section */}
@@ -234,64 +305,211 @@ const TargetSectors = () => {
           <div className="inline-flex gap-2">
             <button
               onClick={() => setActiveTab('business')}
-              className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300"
+              className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300 cursor-pointer hover:bg-opacity-80"
               style={{
                 backgroundColor: activeTab === 'business' ? '#dcb26b' : 'transparent',
                 color: activeTab === 'business' ? 'black' : 'black'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'business') {
+                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'business') {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
               }}
             >
               {locale === "fr" ? "Types d'entreprises" : "Business Types"}
             </button>
             <button
               onClick={() => setActiveTab('styles')}
-              className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300"
+              className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300 cursor-pointer hover:bg-opacity-80"
               style={{
                 backgroundColor: activeTab === 'styles' ? '#dcb26b' : 'transparent',
                 color: activeTab === 'styles' ? 'black' : 'black'
               }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'styles') {
+                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'styles') {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
+              }}
             >
               {locale === "fr" ? "Styles de restaurants" : "Restaurant Styles"}
+            </button>
+            <button
+              onClick={() => setActiveTab('testimonials')}
+              className="px-6 py-3 rounded-md font-semibold text-sm transition-all duration-300 cursor-pointer hover:bg-opacity-80"
+              style={{
+                backgroundColor: activeTab === 'testimonials' ? '#dcb26b' : 'transparent',
+                color: activeTab === 'testimonials' ? 'black' : 'black'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'testimonials') {
+                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'testimonials') {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
+              }}
+            >
+              {locale === "fr" ? "Témoignages" : "Testimonials"}
             </button>
           </div>
         </div>
 
-        {/* Grille des secteurs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {currentData.map((sector) => (
-            <Link
-              key={sector.id}
-              href={`/${locale}/secteurs/${sector.id}`}
-              className={`
-                relative group cursor-pointer transform transition-all duration-300 ease-out
-                hover:scale-105 hover:-translate-y-2 block
-                ${hoveredSector === sector.id ? 'z-10' : 'z-0'}
-              `}
-              onMouseEnter={() => setHoveredSector(sector.id)}
-              onMouseLeave={() => setHoveredSector(null)}
+        {/* Affichage conditionnel : Grille ou Carrousel */}
+        {activeTab === 'testimonials' ? (
+          /* Carrousel de cartes de témoignages */
+          <div className="relative">
+            {/* Contrôle gauche */}
+            <button
+              onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
             >
-              {/* Carte principale */}
-              <div className="relative h-48 lg:h-56 rounded-2xl overflow-hidden shadow-lg bg-white transition-all duration-300 ease-out group-hover:shadow-xl flex flex-col justify-end p-6">
-                {/* Contenu de la carte */}
-                <div className="text-center">
-                  <h3 className="text-xl lg:text-2xl font-bold text-gray-900">
-                    {locale === "fr" ? sector.titleFr : sector.titleEn}
-                  </h3>
+              <svg className="w-6 h-6 text-marine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            {/* Contrôle droit */}
+            <button
+              onClick={() => setCurrentTestimonial(prev => prev === testimonials.length - 1 ? 0 : prev + 1)}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
+            >
+              <svg className="w-6 h-6 text-marine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Conteneur du carrousel */}
+            <div className="overflow-hidden">
+              <div 
+                className="flex transition-transform duration-800 ease-out"
+                style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
+              >
+                {testimonials.map((testimonial, index) => (
+                  <div key={testimonial.id} className="w-full flex-shrink-0 px-4">
+                    <Link
+                      href={`/${locale}/temoignages/${testimonial.id}`}
+                      className="block max-w-4xl mx-auto group cursor-pointer"
+                    >
+                      <div className="bg-white rounded-2xl p-8 lg:p-12 relative transform transition-all duration-700 ease-out group-hover:scale-102">
+                        {/* Badge "Témoignage" */}
+                        <div className="absolute top-6 right-6">
+                          <div className="bg-gold-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            {locale === "fr" ? "Témoignage" : "Testimonial"}
+                          </div>
+                        </div>
+
+                        {/* Citation */}
+                        <div className="text-center mb-8">
+                          <div className="text-6xl text-gold-400 mb-4">"</div>
+                          <p className="text-xl lg:text-2xl text-gray-700 leading-relaxed mb-8 line-clamp-3">
+                            {locale === "fr" ? testimonial.quoteFr : testimonial.quoteEn}
+                          </p>
+                          
+                          {/* Étoiles */}
+                          <div className="flex justify-center mb-6">
+                            {[...Array(testimonial.rating)].map((_, i) => (
+                              <svg key={i} className="w-6 h-6 text-gold-500 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
+                          </div>
+
+                          {/* Nom et entreprise */}
+                          <div>
+                            <h4 className="text-xl font-bold text-marine-900 mb-2">
+                              {locale === "fr" ? testimonial.nameFr : testimonial.nameEn}
+                            </h4>
+                            <p className="text-marine-600">
+                              {locale === "fr" ? testimonial.businessFr : testimonial.businessEn}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Indicateur "Lire plus" */}
+                        <div className="text-center">
+                          <div className="inline-flex items-center text-marine-600 group-hover:text-marine-800 transition-colors duration-500">
+                            <span className="text-sm font-medium">
+                              {locale === "fr" ? "Lire le témoignage complet" : "Read full testimonial"}
+                            </span>
+                            <svg className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-500 ease-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Indicateurs centrés */}
+            <div className="flex justify-center gap-2 mt-8">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTestimonial(index)}
+                  className={`w-3 h-3 rounded-full transition-colors cursor-pointer ${
+                    index === currentTestimonial ? 'bg-gold-500' : 'bg-gray-300'
+                  }`}
+                  style={{
+                    backgroundColor: index === currentTestimonial ? '#dcb26b' : '#d1d5db'
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* Grille des secteurs */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {currentData.map((sector) => (
+              <Link
+                key={sector.id}
+                href={`/${locale}/secteurs/${sector.id}`}
+                className={`
+                  relative group cursor-pointer transform transition-all duration-300 ease-out
+                  hover:scale-105 hover:-translate-y-2 block
+                  ${hoveredSector === sector.id ? 'z-10' : 'z-0'}
+                `}
+                onMouseEnter={() => setHoveredSector(sector.id)}
+                onMouseLeave={() => setHoveredSector(null)}
+              >
+                {/* Carte principale */}
+                <div className="relative h-48 lg:h-56 rounded-2xl overflow-hidden shadow-lg bg-white transition-all duration-300 ease-out group-hover:shadow-xl flex flex-col justify-end p-6">
+                  {/* Contenu de la carte */}
+                  <div className="text-center">
+                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900">
+                      {locale === "fr" ? sector.titleFr : sector.titleEn}
+                    </h3>
+                  </div>
+
                 </div>
 
-              </div>
-
-              {/* Indicateur de sélection */}
-              <div 
-                className={`
-                  absolute -bottom-2 left-1/2 transform -translate-x-1/2
-                  w-8 h-1 rounded-full shadow-lg transition-all duration-300
-                  ${hoveredSector === sector.id ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}
-                `}
-                style={{ backgroundColor: '#dcb26b' }}
-              ></div>
-            </Link>
-          ))}
-        </div>
+                {/* Indicateur de sélection */}
+                <div 
+                  className={`
+                    absolute -bottom-2 left-1/2 transform -translate-x-1/2
+                    w-8 h-1 rounded-full shadow-lg transition-all duration-300
+                    ${hoveredSector === sector.id ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}
+                  `}
+                  style={{ backgroundColor: '#dcb26b' }}
+                ></div>
+              </Link>
+            ))}
+          </div>
+        )}
 
       </div>
     </ResponsiveSection>

@@ -192,8 +192,8 @@ const Hero = () => {
               {/* Description */}
               <p className="mt-0.5 xs:mt-1 lg:mt-2 text-xs xs:text-sm lg:text-base lg:text-lg xl:text-xl max-w-2xl mx-auto lg:mx-0">
                 {locale === "fr" ? 
-                  "Maîtrisez vos inventaires et food cost, transformez vos données en insights stratégiques et laissez Cortex vous guider vers une rentabilité optimale." : 
-                  "Master your inventory and food cost, transform your data into strategic insights, and let Cortex guide you to optimal profitability."}
+                  "Maîtrisez vos inventaires et food cost, transformez vos données en insights stratégiques et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale." : 
+                  "Master your inventory and food cost, transform your data into strategic insights, and let Cortex, our AI agent, guide you to optimal profitability."}
               </p>
 
               {/* Boutons d'action */}

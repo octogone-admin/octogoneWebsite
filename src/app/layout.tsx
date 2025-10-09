@@ -4,10 +4,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: {
     template: '%s | Octogone',
-    default: 'Octogone - Gestion intelligente pour restaurants',
+    default: 'Octogone - Opérer, analyser, prédire | Plateforme IA pour restaurants',
   },
-  description: 'Solution complète de gestion pour restaurants : inventaire en temps réel, gestion des coûts, recettes standardisées et bien plus.',
-  keywords: ['restaurant', 'gestion', 'inventaire', 'POS', 'food cost', 'recettes', 'facturation'],
+  description: 'Octogone - Opérer, analyser, prédire. Plateforme IA qui automatise la gestion restaurant : maîtrisez inventaires et food cost, transformez données en insights stratégiques et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale. Clients : 25% réduction coûts, 3h économisées/jour, 18% marges.',
+  keywords: ['opérer analyser prédire', 'plateforme IA restaurant', 'automatise gestion restaurant', 'Cortex agent IA', 'agent IA restaurant', 'maîtriser inventaires', 'food cost automatique', 'insights stratégiques', 'rentabilité optimale', 'restaurant', 'gestion', 'inventaire', 'POS', 'recettes', 'facturation', 'prédictions', 'multi-établissements', 'gastronomique', 'restauration rapide', 'traiteurs', 'hôtels', 'Mario Rossi', 'Laurent Dubois', 'Yuki Tanaka', 'Sophie Martin'],
   authors: [{ name: 'Octogone' }],
   creator: 'Octogone',
   publisher: 'Octogone',
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Octogone - Gestion intelligente pour restaurants',
-    description: 'Solution complète de gestion pour restaurants : inventaire en temps réel, gestion des coûts, recettes standardisées.',
+    title: 'Octogone - Opérer, analyser, prédire | Plateforme IA restaurants',
+    description: 'Automatisez votre gestion restaurant : maîtrisez inventaires et food cost, transformez données en insights stratégiques et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale. 25% réduction coûts, 3h économisées/jour, 18% marges.',
     url: 'https://octogone.ca',
     siteName: 'Octogone',
     images: [
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Octogone - Gestion intelligente pour restaurants',
-    description: 'Solution complète de gestion pour restaurants',
+    title: 'Octogone - Opérer, analyser, prédire | Plateforme IA restaurants',
+    description: 'Automatisez votre gestion restaurant : maîtrisez inventaires et food cost, laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale. 25% réduction coûts.',
     images: ['/twitter-image.jpg'],
   },
   robots: {
