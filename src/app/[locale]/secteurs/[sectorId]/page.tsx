@@ -2,145 +2,14 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
+import { allSectors } from "@/data/sectors-data";
 
-// Types pour les secteurs (même structure que dans target-sectors.tsx)
-interface TargetSector {
-  id: string;
-  titleFr: string;
-  titleEn: string;
-  descriptionFr: string;
-  descriptionEn: string;
-  image: string;
-  gradient: string;
-  hoverGradient: string;
-}
+// Les données sont maintenant importées depuis /src/data/sectors-data.ts
+// Plus besoin de les définir ici !
 
-// Données des secteurs (importées depuis target-sectors.tsx pour cohérence)
-const allSectors: TargetSector[] = [
-  // Types d'entreprises
-  {
-    id: "restaurants",
-    titleFr: "Restaurants",
-    titleEn: "Restaurants",
-    descriptionFr: "Indépendants & franchisés",
-    descriptionEn: "Independent & franchised",
-    image: "",
-    gradient: "from-marine-400 to-marine-600",
-    hoverGradient: "from-marine-500 to-marine-700"
-  },
-  {
-    id: "chains",
-    titleFr: "Chaînes",
-    titleEn: "Chains",
-    descriptionFr: "Multi-établissements",
-    descriptionEn: "Multi-location",
-    image: "",
-    gradient: "from-gold-400 to-gold-600",
-    hoverGradient: "from-gold-500 to-gold-700"
-  },
-  {
-    id: "hotels",
-    titleFr: "Hôtels",
-    titleEn: "Hotels",
-    descriptionFr: "Restauration hôtelière",
-    descriptionEn: "Hotel dining",
-    image: "",
-    gradient: "from-marine-500 to-marine-700",
-    hoverGradient: "from-marine-600 to-marine-800"
-  },
-  {
-    id: "catering",
-    titleFr: "Traiteurs",
-    titleEn: "Caterers",
-    descriptionFr: "Événementiel & corporate",
-    descriptionEn: "Events & corporate",
-    image: "",
-    gradient: "from-gold-500 to-gold-700",
-    hoverGradient: "from-gold-600 to-gold-800"
-  },
-  {
-    id: "rpa",
-    titleFr: "RPA",
-    titleEn: "Senior Living",
-    descriptionFr: "Résidences pour aînés",
-    descriptionEn: "Senior residences",
-    image: "",
-    gradient: "from-marine-600 to-marine-800",
-    hoverGradient: "from-marine-700 to-marine-900"
-  },
-  {
-    id: "retail",
-    titleFr: "Commerce",
-    titleEn: "Retail",
-    descriptionFr: "Alimentaire & détail",
-    descriptionEn: "Food & retail",
-    image: "",
-    gradient: "from-gold-600 to-gold-800",
-    hoverGradient: "from-gold-700 to-gold-900"
-  },
-  // Styles de restaurants
-  {
-    id: "fine-dining",
-    titleFr: "Gastronomique",
-    titleEn: "Fine Dining",
-    descriptionFr: "Haute gastronomie",
-    descriptionEn: "High-end cuisine",
-    image: "",
-    gradient: "from-marine-400 to-marine-600",
-    hoverGradient: "from-marine-500 to-marine-700"
-  },
-  {
-    id: "casual",
-    titleFr: "Décontracté",
-    titleEn: "Casual Dining",
-    descriptionFr: "Ambiance détendue",
-    descriptionEn: "Relaxed atmosphere",
-    image: "",
-    gradient: "from-gold-400 to-gold-600",
-    hoverGradient: "from-gold-500 to-gold-700"
-  },
-  {
-    id: "fast-casual",
-    titleFr: "Rapide Premium",
-    titleEn: "Fast-Casual",
-    descriptionFr: "Service rapide, qualité",
-    descriptionEn: "Quick service, quality",
-    image: "",
-    gradient: "from-marine-500 to-marine-700",
-    hoverGradient: "from-marine-600 to-marine-800"
-  },
-  {
-    id: "qsr",
-    titleFr: "Restauration Rapide",
-    titleEn: "Quick Service",
-    descriptionFr: "Service ultra-rapide",
-    descriptionEn: "Ultra-fast service",
-    image: "",
-    gradient: "from-gold-500 to-gold-700",
-    hoverGradient: "from-gold-600 to-gold-800"
-  },
-  {
-    id: "food-truck",
-    titleFr: "Camion Restaurant",
-    titleEn: "Food Truck",
-    descriptionFr: "Mobile & flexible",
-    descriptionEn: "Mobile & flexible",
-    image: "",
-    gradient: "from-marine-600 to-marine-800",
-    hoverGradient: "from-marine-700 to-marine-900"
-  },
-  {
-    id: "buffet",
-    titleFr: "Buffet",
-    titleEn: "Buffet",
-    descriptionFr: "Service libre-service",
-    descriptionEn: "Self-service dining",
-    image: "",
-    gradient: "from-gold-600 to-gold-800",
-    hoverGradient: "from-gold-700 to-gold-900"
-  }
-];
+/* SUPPRIMÉ - Données maintenant dans /src/data/sectors-data.ts */
 
 export default function SectorDetailPage() {
   const params = useParams();
@@ -168,13 +37,26 @@ export default function SectorDetailPage() {
 
   return (
     <main className="flex min-h-screen flex-col">
-      {/* Hero Section du secteur */}
+      {/* Hero Section du secteur avec image */}
       <ResponsiveSection 
         spacing="xl" 
         className="relative overflow-hidden"
-        style={{ backgroundColor: '#e5f1ff' }}
       >
-        <div className="text-center">
+        {/* Image de fond */}
+        {sector.image && (
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={sector.image}
+              alt={locale === "fr" ? sector.titleFr : sector.titleEn}
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/50"></div>
+          </div>
+        )}
+
+        <div className="relative z-10 text-center">
           {/* Badge du secteur */}
           <div 
             className="inline-block px-6 py-2 rounded-full text-white font-semibold mb-6"
@@ -186,18 +68,18 @@ export default function SectorDetailPage() {
           </div>
 
           {/* Titre du secteur */}
-          <h1 className="text-4xl lg:text-6xl font-bold text-marine-900 mb-6">
+          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
             {locale === "fr" ? sector.titleFr : sector.titleEn}
           </h1>
 
           {/* Description */}
-          <p className="text-xl lg:text-2xl text-marine-700 max-w-3xl mx-auto mb-8">
+          <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto mb-8 drop-shadow">
             {locale === "fr" ? sector.descriptionFr : sector.descriptionEn}
           </p>
 
           {/* Description détaillée */}
-          <div className="max-w-4xl mx-auto text-left">
-            <p className="text-lg text-marine-600 leading-relaxed">
+          <div className="max-w-4xl mx-auto text-left p-8 rounded-2xl" style={{ backgroundColor: 'rgba(186, 223, 246, 0.3)' }}>
+            <p className="text-lg text-white leading-relaxed drop-shadow">
               {locale === "fr" 
                 ? `Octogone s'adapte parfaitement aux besoins spécifiques du secteur ${sector.titleFr.toLowerCase()}. Notre plateforme offre des fonctionnalités sur mesure pour optimiser vos opérations, analyser vos performances et prédire vos besoins futurs.`
                 : `Octogone perfectly adapts to the specific needs of the ${sector.titleEn.toLowerCase()} sector. Our platform offers tailored features to optimize your operations, analyze your performance, and predict your future needs.`

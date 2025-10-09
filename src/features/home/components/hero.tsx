@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { useScaleIn } from "@/hooks/use-scroll-scale";
-import { useTranslation } from "../../../../lib/i18n/client";
 import { useParams } from "next/navigation";
 
 // Définition du type pour les logos des clients
@@ -79,27 +78,14 @@ const Hero = () => {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   
-  // État pour stocker la fonction de traduction
-  const [t, setT] = useState<any>(() => (key: string, options?: any) => {
-    return (options?.defaultValue || key);
-  });
+  // Fonction de traduction simple (les traductions seront ajoutées plus tard dans les fichiers i18n)
+  const t = (key: string, options?: { defaultValue?: string }) => {
+    return options?.defaultValue || key;
+  };
   
-  // Initialiser les traductions
-  useEffect(() => {
-    const loadTranslations = async () => {
-      try {
-        const { t: translationFunc } = await useTranslation(locale, "home");
-        setT(() => translationFunc);
-      } catch (error) {
-        console.error("Error loading translations:", error);
-      }
-    };
-    
-    loadTranslations();
-  }, [locale]);
-  
-  // Référence pour l'effet de défilement
+  // Références pour les effets de défilement
   const heroRef = useRef<HTMLDivElement>(null);
+  const octogoneRef = useRef<HTMLDivElement>(null);
 
   // Détecter si on est sur mobile pour ajuster la taille initiale
   const [isMobile, setIsMobile] = useState(false);
@@ -129,6 +115,7 @@ const Hero = () => {
       bgColor="bg-white"
       spacing="lg"
       className="flex flex-col justify-between overflow-hidden"
+      aria-labelledby="hero-title"
     >
       <div ref={heroRef} className="w-full h-full relative">
         {/* Fond décoratif */}
@@ -144,7 +131,7 @@ const Hero = () => {
               <div className="relative w-full max-w-[260px] xs:max-w-[320px] md:max-w-[380px] lg:max-w-[480px] xl:max-w-[580px] h-[260px] xs:h-[320px] md:h-[380px] lg:h-[480px] xl:h-[580px] flex justify-center items-center">
                 {/* Octogone bleu de fond avec animation de scale au scroll */}
                 <div 
-                  ref={heroRef}
+                  ref={octogoneRef}
                   className="absolute w-[260px] xs:w-[340px] md:w-[380px] lg:w-[490px] xl:w-[590px] h-[260px] xs:h-[340px] md:h-[380px] lg:h-[490px] xl:h-[590px] bg-[#dbeafe] transition-transform duration-300 ease-out"
                   style={{
                     clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
@@ -157,7 +144,9 @@ const Hero = () => {
                 {/* Image principale */}
                 <Image
                   src="/images/serious_octogone_users.png?v=2"
-                  alt="Utilisateurs professionnels d'Octogone"
+                  alt={locale === 'fr' 
+                    ? "Professionnels de la restauration utilisant la plateforme Octogone pour gérer leur restaurant" 
+                    : "Restaurant professionals using the Octogone platform to manage their business"}
                   width={500}
                   height={500}
                   priority
@@ -170,17 +159,20 @@ const Hero = () => {
             {/* Contenu textuel - En bas sur mobile */}
             <div className="flex flex-col gap-2 xs:gap-3 lg:gap-4 lg:gap-6 text-center lg:text-left pt-0 order-last lg:order-first">
               {/* Titre principal - maintenant le slogan */}
-              <h1 className="text-2xl xs:text-3xl lg:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide mb-2 xs:mb-3 lg:mb-4">
-                {locale === "fr" ? (
-                  <>Opérer, analyser, prédire</>
-                ) : (
-                  <>Operate, analyze, predict</>
-                )}
+              <h1 
+                id="hero-title"
+                className="font-bold tracking-wide mb-2 xs:mb-3 lg:mb-4"
+                style={{ fontSize: 'clamp(1.5rem, 5vw, 4.5rem)', lineHeight: '1.1' }}
+              >
+                {t('hero.title', { defaultValue: locale === 'fr' ? 'Opérer, analyser, prédire' : 'Operate, analyze, predict' })}
               </h1>
 
               {/* Sous-titre - maintenant l'explication */}
               <div className="text-center lg:text-left">
-                <p className="text-lg xs:text-xl lg:text-2xl xl:text-3xl font-semibold text-marine-600 tracking-wide">
+                <p 
+                  className="font-semibold text-marine-600 tracking-wide"
+                  style={{ fontSize: 'clamp(1.125rem, 3vw, 1.875rem)', lineHeight: '1.3' }}
+                >
                   {locale === "fr" ? (
                     <>La plateforme qui automatise la <span className="text-gold-500">gestion</span> de votre restaurant</>
                   ) : (
@@ -190,29 +182,38 @@ const Hero = () => {
               </div>
 
               {/* Description */}
-              <p className="mt-0.5 xs:mt-1 lg:mt-2 text-xs xs:text-sm lg:text-base lg:text-lg xl:text-xl max-w-2xl mx-auto lg:mx-0">
-                {locale === "fr" ? 
-                  "Maîtrisez vos inventaires et food cost, transformez vos données en insights stratégiques et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale." : 
-                  "Master your inventory and food cost, transform your data into strategic insights, and let Cortex, our AI agent, guide you to optimal profitability."}
+              <p 
+                className="mt-0.5 xs:mt-1 lg:mt-2 max-w-2xl mx-auto lg:mx-0"
+                style={{ fontSize: 'clamp(0.875rem, 2vw, 1.25rem)' }}
+              >
+                {t('hero.description', { 
+                  defaultValue: locale === 'fr' 
+                    ? "Maîtrisez vos inventaires et food cost, transformez vos données en insights stratégiques et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale." 
+                    : "Master your inventory and food cost, transform your data into strategic insights, and let Cortex, our AI agent, guide you to optimal profitability."
+                })}
               </p>
 
               {/* Boutons d'action */}
-              <div className="mt-2 xs:mt-4 lg:mt-6 flex flex-row gap-2 xs:gap-3 lg:gap-4 justify-center lg:justify-start">
-                <Button
-                  variant="primary"
-                  size="default"
-                  className="btn-gold text-sm lg:text-base font-medium w-full sm:w-auto py-1.5 lg:py-2 px-3 lg:px-4"
-                >
-                  {locale === "fr" ? "Voir la plateforme en action" : "See the platform in action"}
-                  <ArrowRight className="ml-2 h-4 w-4 hidden lg:inline" />
-                </Button>
+              <div className="mt-2 xs:mt-4 lg:mt-6 flex flex-row gap-2 xs:gap-3 lg:gap-4 justify-center lg:justify-start" role="group" aria-label={locale === 'fr' ? 'Actions principales' : 'Main actions'}>
+                <Link href={`/${locale}/demo`}>
+                  <Button
+                    variant="primary"
+                    size="default"
+                    className="btn-gold text-sm lg:text-base font-medium w-full sm:w-auto py-1.5 lg:py-2 px-3 lg:px-4"
+                    aria-label={locale === 'fr' ? 'Voir la plateforme en action' : 'See the platform in action'}
+                  >
+                    {t('hero.cta.primary', { defaultValue: locale === "fr" ? "Voir la plateforme en action" : "See the platform in action" })}
+                    <ArrowRight className="ml-2 h-4 w-4 hidden lg:inline" aria-hidden="true" />
+                  </Button>
+                </Link>
 
                 <Link
                   href={`/${locale}/contact`}
                   className="inline-flex items-center justify-center rounded-md px-3 py-1.5 lg:px-4 lg:py-2 text-sm lg:text-base font-medium text-marine-700 hover:text-marine-900 transition-colors w-full sm:w-auto"
+                  aria-label={locale === 'fr' ? 'Demander une démo personnalisée' : 'Request a custom demo'}
                 >
-                  {locale === "fr" ? "Démo personnalisée" : "Custom demo"}
-                  <ArrowRight className="ml-2 h-4 w-4 hidden lg:inline" />
+                  {t('hero.cta.secondary', { defaultValue: locale === "fr" ? "Démo personnalisée" : "Custom demo" })}
+                  <ArrowRight className="ml-2 h-4 w-4 hidden lg:inline" aria-hidden="true" />
                 </Link>
               </div>
 
@@ -222,10 +223,10 @@ const Hero = () => {
 
         {/* Carrousel de logos clients en bas du Hero */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-auto pt-16 xs:pt-20 lg:pt-24 xl:pt-32">
-          <div className="w-full">
+          <div className="w-full" role="region" aria-label={locale === 'fr' ? 'Nos clients partenaires' : 'Our partner clients'}>
             <LogoMarquee
               logos={clientLogos}
-              title={locale === "fr" ? "Partenaire de leur succès" : "Partner in their success"}
+              title={t('hero.clients.title', { defaultValue: locale === "fr" ? "Partenaire de leur succès" : "Partner in their success" })}
               titleClassName="text-sm lg:text-lg"
             />
           </div>

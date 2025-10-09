@@ -20,6 +20,8 @@ module.exports = {
     'hover:text-gold-50', 'hover:text-gold-100', 'hover:text-gold-200', 'hover:text-gold-300', 'hover:text-gold-400', 'hover:text-gold-500', 'hover:text-gold-600', 'hover:text-gold-700', 'hover:text-gold-800', 'hover:text-gold-900',
     'from-gold-400', 'from-gold-500', 'from-gold-600', 'from-gold-700', 'from-gold-800', 'from-gold-900',
     'to-gold-400', 'to-gold-500', 'to-gold-600', 'to-gold-700', 'to-gold-800', 'to-gold-900',
+    // Dégradé Cortex
+    'bg-gradient-cortex',
   ],
   theme: {
     screens: {
@@ -60,6 +62,9 @@ module.exports = {
           950: '#001018',
         },
       },
+      backgroundImage: {
+        'gradient-cortex': 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)',
+      },
       keyframes: {
         marquee: {
           '0%': { transform: 'translateX(0%)' },
@@ -72,12 +77,17 @@ module.exports = {
         'scroll-shrink': {
           '0%': { transform: 'scale(1.3)' },
           '100%': { transform: 'scale(1)' }
+        },
+        'pulse-scale': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.1)' }
         }
       },
       animation: {
         marquee: 'marquee 25s linear infinite',
         marquee2: 'marquee2 25s linear infinite',
-        'shrink-on-scroll': 'scroll-shrink 1s ease-out forwards'
+        'shrink-on-scroll': 'scroll-shrink 1s ease-out forwards',
+        'pulse-scale': 'pulse-scale 2s ease-in-out infinite'
       },
     },
   },

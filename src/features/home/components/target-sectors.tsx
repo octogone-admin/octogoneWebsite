@@ -5,201 +5,11 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
+import { targetSectors, restaurantStyles, type TargetSector } from "@/data/sectors-data";
+import { testimonials, type Testimonial } from "@/data/testimonials-data";
 
-// Types pour les secteurs cibles
-interface TargetSector {
-  id: string;
-  titleFr: string;
-  titleEn: string;
-  descriptionFr: string;
-  descriptionEn: string;
-  image: string;
-  gradient: string;
-  hoverGradient: string;
-}
-
-// Données des secteurs cibles
-const targetSectors: TargetSector[] = [
-  {
-    id: "restaurants",
-    titleFr: "Restaurants",
-    titleEn: "Restaurants",
-    descriptionFr: "Indépendants & franchisés",
-    descriptionEn: "Independent & franchised",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
-    gradient: "from-marine-400 to-marine-600",
-    hoverGradient: "from-marine-500 to-marine-700"
-  },
-  {
-    id: "chains",
-    titleFr: "Chaînes",
-    titleEn: "Chains",
-    descriptionFr: "Multi-établissements",
-    descriptionEn: "Multi-location",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
-    gradient: "from-gold-400 to-gold-600",
-    hoverGradient: "from-gold-500 to-gold-700"
-  },
-  {
-    id: "hotels",
-    titleFr: "Hôtels",
-    titleEn: "Hotels",
-    descriptionFr: "Restauration hôtelière",
-    descriptionEn: "Hotel dining",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
-    gradient: "from-marine-500 to-marine-700",
-    hoverGradient: "from-marine-600 to-marine-800"
-  },
-  {
-    id: "catering",
-    titleFr: "Traiteurs",
-    titleEn: "Caterers",
-    descriptionFr: "Événementiel & corporate",
-    descriptionEn: "Events & corporate",
-    image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=300&fit=crop",
-    gradient: "from-gold-500 to-gold-700",
-    hoverGradient: "from-gold-600 to-gold-800"
-  },
-  {
-    id: "rpa",
-    titleFr: "RPA",
-    titleEn: "Senior Living",
-    descriptionFr: "Résidences pour aînés",
-    descriptionEn: "Senior residences",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=300&fit=crop",
-    gradient: "from-marine-600 to-marine-800",
-    hoverGradient: "from-marine-700 to-marine-900"
-  },
-  {
-    id: "retail",
-    titleFr: "Commerce",
-    titleEn: "Retail",
-    descriptionFr: "Alimentaire & détail",
-    descriptionEn: "Food & retail",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
-    gradient: "from-yellow-600 to-yellow-800",
-    hoverGradient: "from-yellow-700 to-yellow-900"
-  }
-];
-
-// Données des styles de restaurants
-const restaurantStyles: TargetSector[] = [
-  {
-    id: "fine-dining",
-    titleFr: "Gastronomique",
-    titleEn: "Fine Dining",
-    descriptionFr: "Haute gastronomie",
-    descriptionEn: "High-end cuisine",
-    image: "",
-    gradient: "from-blue-400 to-blue-600",
-    hoverGradient: "from-blue-500 to-blue-700"
-  },
-  {
-    id: "casual",
-    titleFr: "Décontracté",
-    titleEn: "Casual Dining",
-    descriptionFr: "Ambiance détendue",
-    descriptionEn: "Relaxed atmosphere",
-    image: "",
-    gradient: "from-yellow-400 to-yellow-600",
-    hoverGradient: "from-yellow-500 to-yellow-700"
-  },
-  {
-    id: "fast-casual",
-    titleFr: "Rapide Premium",
-    titleEn: "Fast-Casual",
-    descriptionFr: "Service rapide, qualité",
-    descriptionEn: "Quick service, quality",
-    image: "",
-    gradient: "from-blue-500 to-blue-700",
-    hoverGradient: "from-blue-600 to-blue-800"
-  },
-  {
-    id: "qsr",
-    titleFr: "Restauration Rapide",
-    titleEn: "Quick Service",
-    descriptionFr: "Service ultra-rapide",
-    descriptionEn: "Ultra-fast service",
-    image: "",
-    gradient: "from-yellow-500 to-yellow-700",
-    hoverGradient: "from-yellow-600 to-yellow-800"
-  },
-  {
-    id: "food-truck",
-    titleFr: "Camion Restaurant",
-    titleEn: "Food Truck",
-    descriptionFr: "Mobile & flexible",
-    descriptionEn: "Mobile & flexible",
-    image: "",
-    gradient: "from-blue-600 to-blue-800",
-    hoverGradient: "from-blue-700 to-blue-900"
-  },
-  {
-    id: "buffet",
-    titleFr: "Buffet",
-    titleEn: "Buffet",
-    descriptionFr: "Service libre-service",
-    descriptionEn: "Self-service dining",
-    image: "",
-    gradient: "from-yellow-600 to-yellow-800",
-    hoverGradient: "from-yellow-700 to-yellow-900"
-  }
-];
-
-// Données des témoignages clients
-interface Testimonial {
-  id: string;
-  nameFr: string;
-  nameEn: string;
-  businessFr: string;
-  businessEn: string;
-  quoteFr: string;
-  quoteEn: string;
-  rating: number;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    id: "mario-rossi",
-    nameFr: "Mario Rossi",
-    nameEn: "Mario Rossi",
-    businessFr: "Restaurant Mario - Cuisine italienne",
-    businessEn: "Restaurant Mario - Italian Cuisine",
-    quoteFr: "Octogone a transformé notre gestion. Nous avons réduit nos coûts de 25% en 6 mois grâce à Cortex qui anticipe parfaitement nos besoins.",
-    quoteEn: "Octogone transformed our management. We reduced our costs by 25% in 6 months thanks to Cortex perfectly anticipating our needs.",
-    rating: 5
-  },
-  {
-    id: "laurent-dubois",
-    nameFr: "Laurent Dubois",
-    nameEn: "Laurent Dubois",
-    businessFr: "Bistro Laurent - Bistro français",
-    businessEn: "Bistro Laurent - French Bistro",
-    quoteFr: "L'automatisation des inventaires nous fait gagner 3h par jour. L'interface est intuitive et l'équipe s'est adaptée en une semaine.",
-    quoteEn: "Inventory automation saves us 3 hours per day. The interface is intuitive and the team adapted in one week.",
-    rating: 5
-  },
-  {
-    id: "yuki-tanaka",
-    nameFr: "Yuki Tanaka",
-    nameEn: "Yuki Tanaka",
-    businessFr: "Sushi Zen - Restaurant japonais",
-    businessEn: "Sushi Zen - Japanese Restaurant",
-    quoteFr: "Les prédictions de Cortex sont impressionnantes. Nous n'avons plus de ruptures de stock et nos marges ont augmenté de 18%.",
-    quoteEn: "Cortex's predictions are impressive. We no longer have stock shortages and our margins increased by 18%.",
-    rating: 5
-  },
-  {
-    id: "sophie-martin",
-    nameFr: "Sophie Martin",
-    nameEn: "Sophie Martin",
-    businessFr: "Café Central - Chaîne de 12 établissements",
-    businessEn: "Café Central - Chain of 12 locations",
-    quoteFr: "La vue d'ensemble sur nos 12 cafés est un game-changer. Octogone nous permet de piloter efficacement notre croissance.",
-    quoteEn: "The overview of our 12 cafes is a game-changer. Octogone allows us to efficiently manage our growth.",
-    rating: 5
-  }
-];
+// Les données sont maintenant importées depuis /src/data/
+// Plus besoin de les définir ici - elles sont centralisées !
 
 /**
  * Fonction pour obtenir l'icône SVG de chaque secteur
@@ -292,7 +102,17 @@ const TargetSectors = () => {
         <div className="absolute bottom-10 right-10 w-40 h-40 bg-gold-500 rounded-full blur-3xl"></div>
       </div>
 
-
+      {/* Logo en arrière-plan */}
+      <div className="absolute -bottom-[500px] -right-[500px] w-[1400px] h-[1400px]">
+        <Image
+          src="/logo_octogone.svg"
+          alt="Octogone Logo"
+          width={1400}
+          height={1400}
+          className="object-contain"
+          style={{ filter: 'brightness(0) invert(1)' }}
+        />
+      </div>
 
       <div className="relative z-10">
         {/* En-tête de section */}
@@ -402,16 +222,31 @@ const TargetSectors = () => {
                       href={`/${locale}/temoignages/${testimonial.id}`}
                       className="block max-w-4xl mx-auto group cursor-pointer"
                     >
-                      <div className="bg-white rounded-2xl p-8 lg:p-12 relative transform transition-all duration-700 ease-out group-hover:scale-102">
-                        {/* Badge "Témoignage" */}
-                        <div className="absolute top-6 right-6">
-                          <div className="bg-gold-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            {locale === "fr" ? "Témoignage" : "Testimonial"}
+                      <div className="bg-white rounded-2xl overflow-hidden relative transform transition-all duration-700 ease-out group-hover:scale-102">
+                        {/* Image de fond */}
+                        {testimonial.image && (
+                          <div className="relative h-48 lg:h-64 w-full">
+                            <Image
+                              src={testimonial.image}
+                              alt={locale === "fr" ? testimonial.businessFr : testimonial.businessEn}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 1024px) 100vw, 896px"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white"></div>
                           </div>
-                        </div>
+                        )}
 
-                        {/* Citation */}
-                        <div className="text-center mb-8">
+                        <div className="p-8 lg:p-12">
+                          {/* Badge "Témoignage" */}
+                          <div className="absolute top-6 right-6 z-10">
+                            <div className="bg-gold-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                              {locale === "fr" ? "Témoignage" : "Testimonial"}
+                            </div>
+                          </div>
+
+                          {/* Citation */}
+                          <div className="text-center mb-8">
                           <div className="text-6xl text-gold-400 mb-4">"</div>
                           <p className="text-xl lg:text-2xl text-gray-700 leading-relaxed mb-8 line-clamp-3">
                             {locale === "fr" ? testimonial.quoteFr : testimonial.quoteEn}
@@ -437,15 +272,16 @@ const TargetSectors = () => {
                           </div>
                         </div>
 
-                        {/* Indicateur "Lire plus" */}
-                        <div className="text-center">
-                          <div className="inline-flex items-center text-marine-600 group-hover:text-marine-800 transition-colors duration-500">
-                            <span className="text-sm font-medium">
-                              {locale === "fr" ? "Lire le témoignage complet" : "Read full testimonial"}
-                            </span>
-                            <svg className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-500 ease-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
+                          {/* Indicateur "Lire plus" */}
+                          <div className="text-center">
+                            <div className="inline-flex items-center text-marine-600 group-hover:text-marine-800 transition-colors duration-500">
+                              <span className="text-sm font-medium">
+                                {locale === "fr" ? "Lire le témoignage complet" : "Read full testimonial"}
+                              </span>
+                              <svg className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-500 ease-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                              </svg>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -488,11 +324,28 @@ const TargetSectors = () => {
               >
                 {/* Carte principale */}
                 <div className="relative h-48 lg:h-56 rounded-2xl overflow-hidden shadow-lg bg-white transition-all duration-300 ease-out group-hover:shadow-xl flex flex-col justify-end p-6">
+                  {/* Image de fond */}
+                  {sector.image && (
+                    <Image
+                      src={sector.image}
+                      alt={locale === "fr" ? sector.titleFr : sector.titleEn}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  )}
+                  
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                  
                   {/* Contenu de la carte */}
-                  <div className="text-center">
-                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900">
+                  <div className="relative z-10 text-center">
+                    <h3 className="text-xl lg:text-2xl font-bold text-white">
                       {locale === "fr" ? sector.titleFr : sector.titleEn}
                     </h3>
+                    <p className="text-white/90 text-sm mt-1">
+                      {locale === "fr" ? sector.descriptionFr : sector.descriptionEn}
+                    </p>
                   </div>
 
                 </div>
