@@ -60,13 +60,8 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
   return (
     <main className="flex min-h-screen flex-col">
       {/* Hero section avec centrage ajusté pour la barre de navigation */}
-      <div className="flex items-center justify-center w-full h-screen">
-        {/* Ajout d'un div avec margin-top négative pour compenser la barre de navigation et la bannière si présente */}
-        <div className="w-full" style={{ marginTop: `${offsetMargin}px` }}>
-          <Hero />
-        </div>
-
-        {/* La flèche de défilement a été supprimée */}
+      <div className="w-full">
+        <Hero />
       </div>
 
       {/* Conteneur pour les autres sections qui viendront après le hero */}
