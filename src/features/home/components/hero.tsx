@@ -118,7 +118,7 @@ const Hero = () => {
       setActiveOctogone(sequence[currentIndex]);
       setRotationDegrees(prev => prev + 45); // Ajoute 45° à chaque fois
       currentIndex = (currentIndex + 1) % sequence.length;
-    }, 3000); // Change tous les 3 secondes
+    }, 4000); // Change tous les 4 secondes
 
     return () => clearInterval(interval);
   }, []);
@@ -141,7 +141,9 @@ const Hero = () => {
       LucideIcon: Rocket,
       color: "text-marine-500",
       pastelColor: "#B8E0D2", // Vert menthe pastel
-      position: "top-left"
+      position: "top-left",
+      image: "/operate.jpg",
+      link: "/features/operate"
     },
     {
       id: 1,
@@ -152,7 +154,9 @@ const Hero = () => {
       LucideIcon: Settings,
       color: "text-gold-500",
       pastelColor: "#B4D4FF", // Bleu ciel pastel
-      position: "top-right"
+      position: "top-right",
+      image: "/resto.jpg",
+      link: "/features/automate"
     },
     {
       id: 2,
@@ -163,7 +167,9 @@ const Hero = () => {
       LucideIcon: BarChart3,
       color: "text-marine-500",
       pastelColor: "#FFE5B4", // Jaune pastel
-      position: "bottom-right"
+      position: "bottom-right",
+      image: "/resto.jpg",
+      link: "/features/analyze"
     },
     {
       id: 3,
@@ -174,7 +180,9 @@ const Hero = () => {
       LucideIcon: Brain,
       color: "text-gold-500",
       pastelColor: "#C8B6FF", // Mauve du dégradé Cortex
-      position: "bottom-left"
+      position: "bottom-left",
+      image: "/predict.jpg",
+      link: "/features/predict"
     }
   ];
 
@@ -204,29 +212,33 @@ const Hero = () => {
                   <line 
                     x1="50%" y1="50%" x2="10%" y2="10%" 
                     stroke={activeOctogone === 0 ? octogones[0].pastelColor : "#000000"} 
-                    strokeWidth="3" 
-                    strokeDasharray="8,4"
+                    strokeWidth="4" 
+                    strokeDasharray="1,8"
+                    strokeLinecap="round"
                     style={{ transition: 'stroke 0.5s linear' }}
                   />
                   <line 
                     x1="50%" y1="50%" x2="90%" y2="10%" 
                     stroke={activeOctogone === 1 ? octogones[1].pastelColor : "#000000"} 
-                    strokeWidth="3" 
-                    strokeDasharray="8,4"
+                    strokeWidth="4" 
+                    strokeDasharray="1,8"
+                    strokeLinecap="round"
                     style={{ transition: 'stroke 0.5s linear' }}
                   />
                   <line 
                     x1="50%" y1="50%" x2="10%" y2="90%" 
                     stroke={activeOctogone === 3 ? octogones[3].pastelColor : "#000000"} 
-                    strokeWidth="3" 
-                    strokeDasharray="8,4"
+                    strokeWidth="4" 
+                    strokeDasharray="1,8"
+                    strokeLinecap="round"
                     style={{ transition: 'stroke 0.5s linear' }}
                   />
                   <line 
                     x1="50%" y1="50%" x2="90%" y2="90%" 
                     stroke={activeOctogone === 2 ? octogones[2].pastelColor : "#000000"} 
-                    strokeWidth="3" 
-                    strokeDasharray="8,4"
+                    strokeWidth="4" 
+                    strokeDasharray="1,8"
+                    strokeLinecap="round"
                     style={{ transition: 'stroke 0.5s linear' }}
                   />
                 </svg>
@@ -234,28 +246,47 @@ const Hero = () => {
                 {/* Octogone central principal */}
                 <div 
                   ref={octogoneRef}
-                  className="absolute w-[140px] xs:w-[180px] sm:w-[220px] md:w-[260px] lg:w-[320px] xl:w-[380px] h-[140px] xs:h-[180px] sm:h-[220px] md:h-[260px] lg:h-[320px] xl:h-[380px] bg-[#dbeafe] flex items-center justify-center"
+                  className="absolute w-[140px] xs:w-[180px] sm:w-[220px] md:w-[260px] lg:w-[320px] xl:w-[380px] h-[140px] xs:h-[180px] sm:h-[220px] md:h-[260px] lg:h-[320px] xl:h-[380px]"
                   style={{
                     clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
                     zIndex: 5,
                     transformOrigin: "center center",
                     transform: `scale(${octogoneScale}) rotate(${rotationDegrees}deg)`,
-                    transition: 'transform 0.5s ease-out'
+                    transition: 'transform 0.5s ease-out',
+                    backgroundColor: '#ffffff',
+                    position: 'relative'
                   }}
                 >
-                  <div style={{ 
+                  <div style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
                     transform: `rotate(-${rotationDegrees}deg)`,
                     transition: 'transform 0.5s ease-out'
                   }}>
                     <Image
-                      src="/cortex.svg"
-                      alt="Cortex AI"
-                      width={120}
-                      height={120}
-                      className="w-12 h-12 xs:w-16 xs:h-16 sm:w-20 sm:h-20 lg:w-28 lg:h-28"
-                      style={{ filter: 'brightness(0)' }}
+                      key={activeOctogone !== null ? activeOctogone : 0}
+                      src={activeOctogone !== null ? octogones[activeOctogone].image : octogones[0].image}
+                      alt="Restaurant"
+                      fill
+                      className="object-cover"
+                      style={{
+                        animation: 'fadeIn 0.5s ease-out'
+                      }}
+                      priority
+                      sizes="(max-width: 768px) 220px, (max-width: 1024px) 320px, 380px"
                     />
                   </div>
+                  <style jsx>{`
+                    @keyframes fadeIn {
+                      from {
+                        opacity: 0;
+                      }
+                      to {
+                        opacity: 1;
+                      }
+                    }
+                  `}</style>
                 </div>
 
                 {/* Octogones satellites avec interaction */}
@@ -269,8 +300,9 @@ const Hero = () => {
                   };
 
                   return (
-                    <div 
+                    <Link 
                       key={oct.id}
+                      href={`/${locale}${oct.link}`}
                       className={`absolute ${positionClasses[oct.position as keyof typeof positionClasses]} w-[60px] xs:w-[80px] sm:w-[100px] md:w-[130px] lg:w-[160px] h-[60px] xs:h-[80px] sm:h-[100px] md:h-[130px] lg:h-[160px] shadow-lg flex flex-col items-center justify-center cursor-pointer`}
                       style={{
                         clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
@@ -290,7 +322,7 @@ const Hero = () => {
                       <span className="text-[7px] xs:text-[8px] sm:text-[9px] lg:text-xs font-semibold text-marine-900 mt-0.5 xs:mt-1 text-center px-0.5 xs:px-1">
                         {locale === 'fr' ? oct.titleFr : oct.titleEn}
                       </span>
-                    </div>
+                    </Link>
                   );
                 })}
 
