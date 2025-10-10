@@ -7,6 +7,7 @@ import { ArrowRight, Rocket, Settings, BarChart3, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
+import { OctogoneButton } from "@/components/ui/octogone-button";
 import { useScaleIn } from "@/hooks/use-scroll-scale";
 import { useParams } from "next/navigation";
 
@@ -126,6 +127,10 @@ const Hero = () => {
   const [activeOctogone, setActiveOctogone] = useState<number | null>(0); // Démarre avec Opérer (id: 0)
   const [hoveredOctogone, setHoveredOctogone] = useState<number | null>(null);
   const [rotationDegrees, setRotationDegrees] = useState<number>(0);
+  
+  // État pour l'alternance du texte des restaurants
+  const [currentRestaurantText, setCurrentRestaurantText] = useState<number>(0);
+  const [isTextTransitioning, setIsTextTransitioning] = useState<boolean>(false);
 
   // Détecter si on est sur mobile pour ajuster la taille initiale
   const [isMobile, setIsMobile] = useState(false);
@@ -235,6 +240,34 @@ const Hero = () => {
       link: "/features/predict"
     }
   ];
+
+  // Textes alternatifs pour les restaurants
+  const restaurantTexts = {
+    fr: [
+      "votre restaurant",
+      "vos restaurants", 
+      "votre groupe de restaurants",
+      "votre franchise de restaurants"
+    ],
+    en: [
+      "your restaurant",
+      "your restaurants",
+      "your restaurant group", 
+      "your restaurant franchise"
+    ]
+  };
+
+  // Synchroniser le texte avec l'octogone actif
+  useEffect(() => {
+    if (activeOctogone !== null) {
+      setIsTextTransitioning(true);
+      
+      setTimeout(() => {
+        setCurrentRestaurantText(activeOctogone);
+        setIsTextTransitioning(false);
+      }, 300); // Durée du fade out
+    }
+  }, [activeOctogone]);
 
   return (
     <section 
@@ -426,9 +459,26 @@ const Hero = () => {
                   style={{ fontSize: 'clamp(1.125rem, 3vw, 1.875rem)', lineHeight: '1.3' }}
                 >
                   {locale === "fr" ? (
-                    <>La plateforme qui optimise <span className="text-gold-500">vraiment</span> la gestion de vos restaurants</>
+                    <>
+                      La plateforme qui optimise <span className="text-gold-500">vraiment</span> la gestion de{" "}
+                      <span 
+                        className="inline-block transition-opacity duration-300"
+                        style={{ opacity: isTextTransitioning ? 0 : 1 }}
+                      >
+                        {restaurantTexts.fr[currentRestaurantText]}
+                      </span>
+                    </>
                   ) : (
-                    <>The platform that <span className="text-gold-500">truly</span> optimizes your restaurants management</>
+                    <>
+                      The platform that <span className="text-gold-500">truly</span> optimizes{" "}
+                      <span 
+                        className="inline-block transition-opacity duration-300"
+                        style={{ opacity: isTextTransitioning ? 0 : 1 }}
+                      >
+                        {restaurantTexts.en[currentRestaurantText]}
+                      </span>
+                      {" "}management
+                    </>
                   )}
                 </p>
               </div>
@@ -440,24 +490,21 @@ const Hero = () => {
               >
                 {t('hero.description', { 
                   defaultValue: locale === 'fr' 
-                    ? "Gérez tous vos établissements depuis une seule plateforme. Maîtrisez vos inventaires et food cost, et laissez Cortex, notre agent IA, vous guider vers une rentabilité optimale." 
-                    : "Manage all your locations from one platform. Master your inventory and food cost, and let Cortex, our AI agent, guide you to optimal profitability."
+                    ? "Maximisez vos profits et marges en gérant tous vos établissements depuis une seule plateforme. Comparez les performances de vos succursales, optimisez vos inventaires et augmentez votre rentabilité opérationnelle." 
+                    : "Maximize your profits and margins by managing all your locations from one platform. Compare branch performance, optimize inventory, and increase your operational profitability."
                 })}
               </p>
 
               {/* Boutons d'action */}
               <div className="mt-2 xs:mt-4 lg:mt-6 flex justify-center lg:justify-start" role="group" aria-label={locale === 'fr' ? 'Actions principales' : 'Main actions'}>
-                <Link href={`/${locale}/demo`}>
-                  <Button
-                    variant="primary"
-                    size="default"
-                    className="btn-gold text-sm lg:text-base font-medium w-full sm:w-auto py-1.5 lg:py-2 px-3 lg:px-4"
-                    aria-label={locale === 'fr' ? 'Voir la plateforme en action' : 'See the platform in action'}
-                  >
-                    {t('hero.cta.primary', { defaultValue: locale === "fr" ? "Voir la plateforme en action" : "See the platform in action" })}
-                    <ArrowRight className="ml-2 h-4 w-4 hidden lg:inline" aria-hidden="true" />
-                  </Button>
-                </Link>
+                <OctogoneButton
+                  href={`/${locale}/demo`}
+                  variant="primary"
+                  size="lg"
+                  icon={<ArrowRight className="w-5 h-5" />}
+                >
+                  {t('hero.cta.primary', { defaultValue: locale === "fr" ? "Voir la plateforme en action" : "See the platform in action" })}
+                </OctogoneButton>
               </div>
           </div>
         </div>
