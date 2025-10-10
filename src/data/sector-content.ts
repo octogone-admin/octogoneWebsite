@@ -555,6 +555,13 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Unifiez vos opérations et maximisez la rentabilité de votre réseau dès le premier mois.",
       en: "Unify operations and maximize your network's profitability from month one."
+    },
+    testimonial: {
+      id: "sophie-martin",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -614,6 +621,13 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Gardez votre liberté d'entrepreneur tout en sécurisant vos marges et votre rentabilité.",
       en: "Keep your entrepreneurial freedom while securing margins and profitability."
+    },
+    testimonial: {
+      id: "yuki-tanaka",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -673,6 +687,13 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Transformez chaque événement en succès financier avec une gestion maîtrisée des coûts.",
       en: "Turn every event into financial success with controlled cost management."
+    },
+    testimonial: {
+      id: "pierre-traiteur-secteur",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -732,6 +753,13 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Préservez votre savoir-faire tout en maximisant la rentabilité de chaque production.",
       en: "Preserve your expertise while maximizing profitability of every production."
+    },
+    testimonial: {
+      id: "marc-brasseur-secteur",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -791,6 +819,13 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Démultipliez votre pouvoir d'achat et créez de la valeur pour tous vos membres.",
       en: "Multiply your purchasing power and create value for all your members."
+    },
+    testimonial: {
+      id: "jean-regroupement-secteur",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -850,6 +885,13 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Automatisez votre gestion et concentrez-vous sur l'expérience client.",
       en: "Automate your management and focus on customer experience."
+    },
+    testimonial: {
+      id: "anne-commerce-secteur",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   }
 };
@@ -912,6 +954,13 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Élevez votre art culinaire avec une gestion digne de vos ambitions gastronomiques.",
       en: "Elevate your culinary art with management worthy of your gastronomic ambitions."
+    },
+    testimonial: {
+      id: "mario-rossi",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -971,6 +1020,13 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Optimisez vos menus et vos marges, sans perdre la chaleur de votre service.",
       en: "Optimize menus and margins without losing your service's warmth."
+    },
+    testimonial: {
+      id: "laurent-dubois",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -1030,6 +1086,13 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
     ctaTexte: {
       fr: "Gérez vos opérations à la seconde près, réduisez vos pertes et augmentez votre marge sans effort.",
       en: "Manage operations by the second, reduce losses, and grow margins effortlessly."
+    },
+    testimonial: {
+      id: "julie-fastfood-secteur",
+      title: {
+        fr: "Témoignage client",
+        en: "Client testimonial"
+      }
     }
   },
 
@@ -1388,14 +1451,7 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
   }
 };
 
-// Fonction utilitaire pour récupérer le contenu d'un secteur (ancien format)
-export function getSectorContent(sectorId: string, isRestaurantStyle: boolean): SectorContent | null {
-  if (isRestaurantStyle) {
-    return restaurantStylesContent[sectorId] || null;
-  } else {
-    return businessTypesContent[sectorId] || null;
-  }
-}
+// Fonction V1 supprimée - utiliser getSectorContentV2() uniquement
 
 // Fonction utilitaire pour récupérer le contenu V2 (nouveau format)
 export function getSectorContentV2(sectorId: string, isRestaurantStyle: boolean): SectorContentV2 | null {

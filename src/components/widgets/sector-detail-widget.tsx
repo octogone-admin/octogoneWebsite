@@ -5,7 +5,7 @@ import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { OctogoneButton } from "@/components/ui/octogone-button";
 import { TargetSector } from "@/data/sectors-data";
 import { getSectorContentV2 } from "@/data/sector-content";
-import { getTestimonialForSector } from "@/data/testimonials-data";
+import { getTestimonialForSector, getTestimonialById } from "@/data/testimonials-data";
 import TestimonialWidget from "@/components/widgets/testimonial-widget";
 import { 
   Package, 
@@ -159,7 +159,11 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
 
         {/* Témoignage client associé au secteur - Widget réutilisable */}
         {(() => {
-          const testimonial = getTestimonialForSector(sector.id, isRestaurantStyle);
+          // Utiliser le testimonial du V2 si disponible, sinon fallback
+          const testimonialId = contentV2?.testimonial?.id;
+          const testimonial = testimonialId ? 
+            getTestimonialById(testimonialId) : 
+            getTestimonialForSector(sector.id, isRestaurantStyle);
           
           if (testimonial) {
             return (

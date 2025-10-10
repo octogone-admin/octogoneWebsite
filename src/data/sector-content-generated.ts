@@ -106,42 +106,20 @@ export const generatedBusinessTypes = {
   },
 
   "independent-restaurants": {
-    "sectorId": "independent-restaurants",
-    "fr": {
-      "bloc1_resultats": {
-        "title": "Des résultats clairs et immédiats",
-        "introResultats": "Optimisez chaque aspect de votre restaurant indépendant avec des outils pensés pour l'efficacité. Réduisez les coûts et augmentez vos marges dès les premières semaines.",
-        "metriques": [
-          "+15 h/sem économisées",
-          ">98 % de précision des coûts",
-          "Gaspillage réduit jusqu'à 20 %",
-          "Ruptures critiques < 1 %"
-        ]
-      },
-      "bloc4_temoignage": {
-        "testimonialId": "yuki-tanaka",
-        "title": "Témoignage client"
-      }
-    },
-    "en": {
-      "bloc1_resultats": {
-        "title": "Clear and immediate results", 
-        "introResultats": "Optimize every aspect of your independent restaurant with tools designed for efficiency. Reduce costs and increase margins within weeks.",
-        "metriques": [
-          "+15 h/week saved",
-          ">98% cost accuracy",
-          "Waste reduced up to 20%",
-          "Critical shortages < 1%"
-        ]
-      },
-      "bloc4_temoignage": {
-        "testimonialId": "yuki-tanaka",
-        "title": "Client testimonial"
-      }
-    }
+    "bloc4_temoignage": { "testimonialId": "yuki-tanaka" }
+  },
+  "caterers": {
+    "bloc4_temoignage": { "testimonialId": "laurent-dubois" }
+  },
+  "brewers-distillers": {
+    "bloc4_temoignage": { "testimonialId": "mario-rossi" }
+  },
+  "purchasing-groups": {
+    "bloc4_temoignage": { "testimonialId": "sophie-martin" }
+  },
+  "retail-commerce": {
+    "bloc4_temoignage": { "testimonialId": "yuki-tanaka" }
   }
-
-  // ... Autres secteurs à compléter
 };
 
 // ===== STYLES DE RESTAURANTS (9 secteurs) =====
@@ -184,42 +162,29 @@ export const generatedRestaurantStyles = {
   },
 
   "bistro-brasserie": {
-    "sectorId": "bistro-brasserie", 
-    "fr": {
-      "bloc1_resultats": {
-        "title": "Des résultats clairs et immédiats",
-        "introResultats": "Optimisez votre bistro avec des outils adaptés à votre rythme soutenu. Gérez efficacement vos stocks et maximisez vos marges sur chaque service.",
-        "metriques": [
-          "–25 % de gaspillage",
-          "+15 h/sem économisées",
-          "Rotation stock +10 %",
-          "Décisions prix 1,5× plus rapides"
-        ]
-      },
-      "bloc4_temoignage": {
-        "testimonialId": "laurent-dubois",
-        "title": "Témoignage client"
-      }
-    },
-    "en": {
-      "bloc1_resultats": {
-        "title": "Clear and immediate results",
-        "introResultats": "Optimize your bistro with tools adapted to your sustained pace. Efficiently manage your inventory and maximize margins on every service.",
-        "metriques": [
-          "–25% waste",
-          "+15 h/week saved",
-          "Stock rotation +10%",
-          "Pricing decisions 1.5× faster"
-        ]
-      },
-      "bloc4_temoignage": {
-        "testimonialId": "laurent-dubois",
-        "title": "Client testimonial"
-      }
-    }
+    "bloc4_temoignage": { "testimonialId": "laurent-dubois" }
+  },
+  "fast-food": {
+    "bloc4_temoignage": { "testimonialId": "mario-rossi" }
+  },
+  "casse-croute": {
+    "bloc4_temoignage": { "testimonialId": "yuki-tanaka" }
+  },
+  "family-restaurant": {
+    "bloc4_temoignage": { "testimonialId": "sophie-martin" }
+  },
+  "cafe": {
+    "bloc4_temoignage": { "testimonialId": "sophie-martin" }
+  },
+  "pub-microbrewery": {
+    "bloc4_temoignage": { "testimonialId": "laurent-dubois" }
+  },
+  "catering-corporate": {
+    "bloc4_temoignage": { "testimonialId": "mario-rossi" }
+  },
+  "tourism-industrial": {
+    "bloc4_temoignage": { "testimonialId": "yuki-tanaka" }
   }
-
-  // ... Autres styles à compléter
 };
 
 /**
