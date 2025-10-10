@@ -168,5 +168,30 @@ export const restaurantStyles: TargetSector[] = [
   }
 ];
 
-// Tous les secteurs combinés
-export const allSectors = [...targetSectors, ...restaurantStyles];
+// Fonction pour récupérer tous les secteurs (types + styles)
+export function getAllSectors(): TargetSector[] {
+  return [...targetSectors, ...restaurantStyles];
+}
+
+// Fonctions de navigation entre secteurs
+export function getNextSector(currentSectorId: string, isRestaurantStyle: boolean): TargetSector | null {
+  const sectors = isRestaurantStyle ? restaurantStyles : targetSectors;
+  const currentIndex = sectors.findIndex(sector => sector.id === currentSectorId);
+  
+  if (currentIndex === -1) return null;
+  
+  // Navigation en boucle : si on est au dernier, on va au premier
+  const nextIndex = (currentIndex + 1) % sectors.length;
+  return sectors[nextIndex];
+}
+
+export function getPreviousSector(currentSectorId: string, isRestaurantStyle: boolean): TargetSector | null {
+  const sectors = isRestaurantStyle ? restaurantStyles : targetSectors;
+  const currentIndex = sectors.findIndex(sector => sector.id === currentSectorId);
+  
+  if (currentIndex === -1) return null;
+  
+  // Navigation en boucle : si on est au premier, on va au dernier
+  const previousIndex = currentIndex === 0 ? sectors.length - 1 : currentIndex - 1;
+  return sectors[previousIndex];
+}
