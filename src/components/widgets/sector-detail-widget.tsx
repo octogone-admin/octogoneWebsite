@@ -4,7 +4,7 @@ import React from "react";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { OctogoneButton } from "@/components/ui/octogone-button";
 import { TargetSector } from "@/data/sectors-data";
-import { getSectorContent, getSectorContentV2 } from "@/data/sector-content";
+import { getSectorContentV2 } from "@/data/sector-content";
 import { getTestimonialForSector } from "@/data/testimonials-data";
 import TestimonialWidget from "@/components/widgets/testimonial-widget";
 import { 
@@ -145,48 +145,16 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
 
         {/* Métriques chiffrées en évidence */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {(() => {
-            // Métriques traduites selon le secteur
-            const getTranslatedMetrics = () => {
-              if (contentV2 && sector.id === 'chains-groups') {
-                return locale === "fr" ? [
-                  "Décisions multi-sites 3× plus rapides",
-                  "Marge réseau +1 à +2 pts",
-                  "-25 % de gaspillage",
-                  "+15 h/sem économisées"
-                ] : [
-                  "Multi-site decisions 3× faster",
-                  "Network margin +1 to +2 pts",
-                  "-25% waste",
-                  "+15 h/week saved"
-                ];
-              }
-              
-              // Fallback par défaut
-              return locale === "fr" ? [
-                "-25% de gaspillage",
-                "+10% de marge brute",
-                "+15h/sem économisées",
-                ">98% précision des coûts"
-              ] : [
-                "-25% waste",
-                "+10% gross margin",
-                "+15h/week saved",
-                ">98% cost accuracy"
-              ];
-            };
-            
-            return getTranslatedMetrics().map((metric: string, index: number) => (
-              <div key={index} className="text-center bg-white rounded-xl p-6 shadow-lg border-2" style={{ borderColor: '#E5E5E5' }}>
-                <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-10 h-10 text-gold-600" />
-                </div>
-                <p className="text-xl font-bold text-marine-900 mb-2">
-                  {metric}
-                </p>
+          {(contentV2?.metriques || ["-25% de gaspillage", "+10% de marge brute", "+15h/sem économisées", ">98% précision des coûts"]).map((metric: string, index: number) => (
+            <div key={index} className="text-center bg-white rounded-xl p-6 shadow-lg border-2" style={{ borderColor: '#E5E5E5' }}>
+              <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-10 h-10 text-gold-600" />
               </div>
-            ));
-          })()}
+              <p className="text-xl font-bold text-marine-900 mb-2">
+                {metric}
+              </p>
+            </div>
+          ))}
         </div>
 
         {/* Témoignage client associé au secteur - Widget réutilisable */}
