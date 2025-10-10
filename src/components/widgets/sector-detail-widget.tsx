@@ -128,7 +128,7 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
   }
 
   return (
-    <div className="space-y-16">
+    <div>
       {/* 1. Résultats mesurables */}
       <ResponsiveSection spacing="lg" className="bg-marine-50">
         <div className="text-center mb-12">
@@ -196,7 +196,7 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
 
       {/* 2. Outils qui font la différence */}
       <ResponsiveSection spacing="lg">
-        <div className="text-center mb-12">
+        <div className="text-center mb-24">
           <h2 className="text-3xl lg:text-4xl font-bold text-marine-900 mb-4">
             {locale === "fr" ? "Les outils qui transforment votre gestion" : "The tools that transform your management"}
           </h2>
@@ -222,12 +222,12 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
                 {/* Image/Mockup */}
                 <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                   <div className="bg-gradient-to-br from-marine-100 to-gold-100 rounded-2xl p-8 aspect-video flex items-center justify-center border-2" style={{ borderColor: '#E5E5E5' }}>
-                    <div className="text-center text-marine-600">
-                      <IconComponent className="w-16 h-16 mx-auto mb-4" />
-                      <p className="text-sm font-medium">
+                    <div className="text-center">
+                      <IconComponent className="w-16 h-16 mx-auto mb-4" style={{ color: '#dcb26b' }} />
+                      <p className="text-sm font-medium text-marine-600">
                         {locale === "fr" ? `Interface ${module.titleFr}` : `${module.titleEn} Interface`}
                       </p>
-                      <p className="text-xs mt-1 opacity-70">(placeholder)</p>
+                      <p className="text-xs mt-1 opacity-70 text-marine-500">(placeholder)</p>
                     </div>
                   </div>
                 </div>
@@ -297,7 +297,10 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
                         locale === "fr" ? "Amélioration de la précision" : "Improved accuracy"
                       ]).map((benefit, index) => (
                         <li key={index} className="flex items-start">
-                          <div className="w-2 h-2 bg-gold-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                          <div 
+                            className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0"
+                            style={{ backgroundColor: '#dcb26b' }}
+                          ></div>
                           <span className="text-marine-700">
                             {benefit}
                           </span>
@@ -321,94 +324,19 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
         </div>
       </ResponsiveSection>
 
-      {/* 3. Octogone en action */}
-      <ResponsiveSection spacing="lg" className="bg-gold-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-marine-900 mb-6">
-            {locale === "fr" ? "Découvrez Octogone en action" : "See Octogone in action"}
-          </h2>
-          
-          <p className="text-lg text-marine-700 mb-8">
-            {locale === "fr" ? 
-              (contentV2?.texteDemo.fr || "Découvrez Octogone en action") : 
-              (contentV2?.texteDemo.en || "See Octogone in action")
-            }
-          </p>
-
-          {/* Format simplifié */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl border-2" style={{ borderColor: '#E5E5E5' }}>
-            <div className="aspect-video bg-gradient-to-br from-marine-100 to-gold-100 rounded-xl flex items-center justify-center">
-              <div className="text-center text-marine-600">
-                <BarChart3 className="w-24 h-24 mx-auto mb-4" />
-                <p className="text-lg font-semibold">
-                  {locale === "fr" ? "Animation du dashboard en action" : "Dashboard animation in action"}
-                </p>
-                <p className="text-sm mt-2 opacity-80">
-                  {locale === "fr" 
-                    ? "Performance d'un établissement en temps réel"
-                    : "Real-time establishment performance"
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ResponsiveSection>
-
-      {/* 4. Appel à l'action */}
+      {/* 3. Appel à l'action */}
       <ResponsiveSection spacing="lg" className="bg-marine-900 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">
             {locale === "fr" ? "Passez à la performance mesurable" : "Move to measurable performance"}
           </h2>
           
-          <p className="text-xl mb-8 opacity-90">
+          <p className="text-xl opacity-90">
             {locale === "fr" ? 
               (contentV2?.ctaTexte.fr || "Transformez votre gestion avec Octogone") : 
               (contentV2?.ctaTexte.en || "Transform your management with Octogone")
             }
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <OctogoneButton
-              href={`/${locale}/demo`}
-              variant="primary"
-              size="lg"
-              icon={<ArrowRight className="w-5 h-5" />}
-            >
-              {locale === "fr" ? "Voir la plateforme en action" : "See the platform in action"}
-            </OctogoneButton>
-            
-            <OctogoneButton
-              href={`/${locale}/contact`}
-              variant="secondary"
-              size="lg"
-              icon={
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              }
-            >
-              {locale === "fr" ? "Nous contacter" : "Contact us"}
-            </OctogoneButton>
-          </div>
-
-          {/* {IMAGE_CTA_PLACEHOLDER} */}
-          <div className="bg-white/10 rounded-xl p-6 border-2" style={{ borderColor: 'rgba(229, 229, 229, 0.3)' }}>
-            <div className="flex items-center justify-center space-x-4 text-white/80">
-              <Package className="w-8 h-8" />
-              <span className="text-2xl">→</span>
-              <Calculator className="w-8 h-8" />
-              <span className="text-2xl">→</span>
-              <BarChart3 className="w-8 h-8" />
-            </div>
-            <p className="text-sm mt-4 opacity-80">
-              {locale === "fr" 
-                ? "Flux : Inventaire → Recette → Analyse des résultats"
-                : "Flow: Inventory → Recipe → Results Analysis"
-              }
-            </p>
-          </div>
         </div>
       </ResponsiveSection>
     </div>
