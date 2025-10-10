@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { OctogoneButton } from "@/components/ui/octogone-button";
 import { TargetSector } from "@/data/sectors-data";
-import { getSectorContent } from "@/data/sector-content";
+import { getSectorContent, getSectorContentV2 } from "@/data/sector-content";
 import { 
   Package, 
   BarChart3, 
@@ -117,7 +117,8 @@ const getRelevantModules = (sectorId: string, isRestaurantStyle: boolean = false
 export default function SectorDetailWidget({ sector, locale, isRestaurantStyle = false }: SectorDetailWidgetProps) {
   const relevantModules = getRelevantModules(sector.id, isRestaurantStyle);
   
-  // Récupérer le contenu personnalisé pour ce secteur
+  // Récupérer le contenu personnalisé pour ce secteur (nouveau format en priorité)
+  const sectorContentV2 = getSectorContentV2(sector.id, isRestaurantStyle);
   const sectorContent = getSectorContent(sector.id, isRestaurantStyle);
   
   // Contenu par défaut si pas de contenu spécifique
@@ -146,7 +147,12 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
     }
   };
   
+  // Utiliser le nouveau format V2 si disponible, sinon l'ancien
+  const contentV2 = sectorContentV2;
   const content = sectorContent || defaultContent;
+  
+  // Debug: Forcer l'utilisation du nouveau format pour tous les secteurs
+  console.log('Sector ID:', sector.id, 'isRestaurantStyle:', isRestaurantStyle, 'contentV2:', !!contentV2);
 
   return (
     <div className="space-y-16">
@@ -157,19 +163,22 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
             {locale === "fr" ? "Des résultats clairs et immédiats" : "Clear and immediate results"}
           </h2>
           <p className="text-lg text-marine-700 max-w-3xl mx-auto">
-            {locale === "fr" ? content.introResultats.fr : content.introResultats.en}
+            {locale === "fr" ? 
+              (contentV2?.introResultats.fr || content.introResultats.fr) : 
+              (contentV2?.introResultats.en || content.introResultats.en)
+            }
           </p>
         </div>
 
         {/* Métriques chiffrées en évidence */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {content.metriques.map((metric, index) => (
+          {(contentV2?.metriques || content.metriques).map((metric, index) => (
             <div key={index} className="text-center bg-white rounded-xl p-6 shadow-lg border-2" style={{ borderColor: '#E5E5E5' }}>
               <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <TrendingUp className="w-10 h-10 text-gold-600" />
               </div>
               <p className="text-xl font-bold text-marine-900 mb-2">
-                {locale === "fr" ? metric.fr : metric.en}
+                {typeof metric === 'string' ? metric : (locale === "fr" ? metric.fr : metric.en)}
               </p>
             </div>
           ))}
@@ -193,74 +202,198 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
             {locale === "fr" ? "Les outils qui transforment votre gestion" : "The tools that transform your management"}
           </h2>
           <p className="text-lg text-marine-700 max-w-3xl mx-auto">
-            {locale === "fr" ? content.sousTexteSolutions.fr : content.sousTexteSolutions.en}
+            {locale === "fr" ? 
+              (contentV2?.sousTexteSolutions.fr || content.sousTexteSolutions.fr) : 
+              (contentV2?.sousTexteSolutions.en || content.sousTexteSolutions.en)
+            }
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {relevantModules.slice(0, 6).map((moduleKey) => {
-            const module = availableModules[moduleKey as keyof typeof availableModules];
-            if (!module) return null;
-            
-            const IconComponent = module.icon;
-            
-            return (
-              <div key={moduleKey} className="bg-white rounded-xl p-6 shadow-lg border-2" style={{ borderColor: '#E5E5E5' }}>
-                {/* {IMAGE_MODULE_PLACEHOLDER} */}
-                <div className="w-12 h-12 bg-marine-100 rounded-lg flex items-center justify-center mb-4">
-                  <IconComponent className="w-6 h-6 text-marine-600" />
+        {/* Affichage des modules - Nouveau format V2 avec blocs alternés */}
+        {true ? (
+          /* Nouveau format : blocs de fonctionnalités alternés gauche/droite */
+          <div className="space-y-16">
+            {relevantModules.slice(0, 4).map((moduleKey, index) => {
+              const module = availableModules[moduleKey as keyof typeof availableModules];
+              if (!module) return null;
+              
+              const isEven = index % 2 === 0;
+              const IconComponent = module.icon;
+              
+              return (
+                <div key={moduleKey} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-col-dense'}`}>
+                  {/* Image/Mockup */}
+                  <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                    <div className="bg-gradient-to-br from-marine-100 to-gold-100 rounded-2xl p-8 aspect-video flex items-center justify-center border-2" style={{ borderColor: '#E5E5E5' }}>
+                      <div className="text-center text-marine-600">
+                        <IconComponent className="w-16 h-16 mx-auto mb-4" />
+                        <p className="text-sm font-medium">
+                          {locale === "fr" ? `Interface ${module.titleFr}` : `${module.titleEn} Interface`}
+                        </p>
+                        <p className="text-xs mt-1 opacity-70">(placeholder)</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Contenu */}
+                  <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
+                    <div className="mb-6">
+                      <h3 className="text-3xl lg:text-4xl font-bold text-marine-900 mb-2">
+                        {locale === "fr" ? module.titleFr : module.titleEn}
+                      </h3>
+                      <p className="text-marine-600 text-lg">
+                        {locale === "fr" ? "Module Octogone" : "Octogone Module"}
+                      </p>
+                    </div>
+                    
+                    <p className="text-marine-700 mb-6 text-lg leading-relaxed">
+                      {locale === "fr" ? module.descFr : module.descEn}
+                    </p>
+                    
+                    {/* Points de bénéfices */}
+                    <ul className="space-y-3 mb-6">
+                      {(locale === "fr" ? [
+                        "Suivi en temps réel des données",
+                        "Automatisation des processus",
+                        "Analyses prédictives avancées"
+                      ] : [
+                        "Real-time data tracking",
+                        "Process automation",
+                        "Advanced predictive analytics"
+                      ]).map((benefit, index) => (
+                        <li key={index} className="flex items-start">
+                          <div className="w-2 h-2 bg-gold-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                          <span className="text-marine-700">
+                            {benefit}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <OctogoneButton
+                      href={`/${locale}/demo`}
+                      variant="secondary"
+                      size="sm"
+                      icon={<ArrowRight className="w-4 h-4" />}
+                    >
+                      {locale === "fr" ? "Voir en détail" : "See details"}
+                    </OctogoneButton>
+                  </div>
                 </div>
-                
-                <h3 className="text-xl font-bold text-marine-900 mb-3">
-                  {locale === "fr" ? module.titleFr : module.titleEn}
-                </h3>
-                <p className="text-marine-700">
-                  {locale === "fr" ? module.descFr : module.descEn}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* {IMAGE_MOCKUP_PLACEHOLDER} */}
-        <div className="bg-gradient-to-r from-marine-900 to-marine-700 rounded-2xl p-8 text-center">
-          <div className="text-white">
-            <BarChart3 className="w-20 h-20 mx-auto mb-4 opacity-80" />
-            <p className="text-sm font-medium opacity-90">
-              {locale === "fr" ? "Capture combinant plusieurs modules Octogone" : "Screenshot combining multiple Octogone modules"}
-            </p>
+              );
+            })}
           </div>
-        </div>
+        ) : (
+          /* Ancien format : modules détaillés */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {relevantModules.slice(0, 6).map((moduleKey) => {
+              const module = availableModules[moduleKey as keyof typeof availableModules];
+              if (!module) return null;
+              
+              const IconComponent = module.icon;
+              
+              return (
+                <div key={moduleKey} className="bg-white rounded-xl p-6 shadow-lg border-2" style={{ borderColor: '#E5E5E5' }}>
+                  {/* {IMAGE_MODULE_PLACEHOLDER} */}
+                  <div className="w-12 h-12 bg-marine-100 rounded-lg flex items-center justify-center mb-4">
+                    <IconComponent className="w-6 h-6 text-marine-600" />
+                  </div>
+                  
+                  <h3 className="text-xl font-bold text-marine-900 mb-3">
+                    {locale === "fr" ? module.titleFr : module.titleEn}
+                  </h3>
+                  <p className="text-marine-700">
+                    {locale === "fr" ? module.descFr : module.descEn}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </ResponsiveSection>
 
       {/* 3. Octogone en action */}
       <ResponsiveSection spacing="lg" className="bg-gold-50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-marine-900 mb-6">
-            {locale === "fr" ? "Découvrez Octogone en action" : "Discover Octogone in action"}
+            {locale === "fr" ? "Découvrez Octogone en action" : "See Octogone in action"}
           </h2>
           
           <p className="text-lg text-marine-700 mb-8">
-            {locale === "fr" ? content.texteDemo.fr : content.texteDemo.en}
+            {locale === "fr" ? 
+              (contentV2?.texteDemo.fr || content.texteDemo.fr) : 
+              (contentV2?.texteDemo.en || content.texteDemo.en)
+            }
           </p>
 
-          {/* {IMAGE_APP_PLACEHOLDER} */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl border-2" style={{ borderColor: '#E5E5E5' }}>
-            <div className="aspect-video bg-gradient-to-br from-marine-100 to-gold-100 rounded-xl flex items-center justify-center">
-              <div className="text-center text-marine-600">
-                <BarChart3 className="w-24 h-24 mx-auto mb-4" />
-                <p className="text-lg font-semibold">
-                  {locale === "fr" ? "Animation du dashboard en action" : "Dashboard animation in action"}
+          {/* Nouveau format featureShowcase si disponible */}
+          {contentV2?.visuel ? (
+            <div className="bg-white rounded-2xl p-8 shadow-xl border-2" style={{ borderColor: '#E5E5E5' }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                {/* Image placeholder */}
+                <div className="aspect-video bg-gradient-to-br from-marine-100 to-gold-100 rounded-xl flex items-center justify-center">
+                  <div className="text-center text-marine-600">
+                    <BarChart3 className="w-16 h-16 mx-auto mb-2" />
+                    <p className="text-sm font-medium">
+                      {contentV2.visuel.imagePlaceholder}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Contenu featureShowcase */}
+                <div className="text-left">
+                  <h3 className="text-2xl font-bold text-marine-900 mb-2">
+                    {locale === "fr" ? contentV2.visuel.title.fr : contentV2.visuel.title.en}
+                  </h3>
+                  <p className="text-marine-600 mb-4">
+                    {locale === "fr" ? contentV2.visuel.subtitle.fr : contentV2.visuel.subtitle.en}
+                  </p>
+                  
+                  <ul className="space-y-3 mb-6">
+                    {(locale === "fr" ? contentV2.visuel.points.fr : contentV2.visuel.points.en).map((point, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="w-2 h-2 bg-gold-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-marine-700">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <OctogoneButton
+                    href={`/${locale}/demo`}
+                    variant="primary"
+                    size="sm"
+                    icon={<ArrowRight className="w-4 h-4" />}
+                  >
+                    {locale === "fr" ? contentV2.visuel.cta.fr : contentV2.visuel.cta.en}
+                  </OctogoneButton>
+                </div>
+              </div>
+              
+              {contentV2.caption && (
+                <p className="text-center text-marine-600 mt-6 italic">
+                  {locale === "fr" ? contentV2.caption.fr : contentV2.caption.en}
                 </p>
-                <p className="text-sm mt-2 opacity-80">
-                  {locale === "fr" 
-                    ? "Performance d'un établissement en temps réel"
-                    : "Real-time establishment performance"
-                  }
-                </p>
+              )}
+            </div>
+          ) : (
+            /* Format ancien si pas de nouveau contenu */
+            <div className="bg-white rounded-2xl p-8 shadow-xl border-2" style={{ borderColor: '#E5E5E5' }}>
+              <div className="aspect-video bg-gradient-to-br from-marine-100 to-gold-100 rounded-xl flex items-center justify-center">
+                <div className="text-center text-marine-600">
+                  <BarChart3 className="w-24 h-24 mx-auto mb-4" />
+                  <p className="text-lg font-semibold">
+                    {locale === "fr" ? "Animation du dashboard en action" : "Dashboard animation in action"}
+                  </p>
+                  <p className="text-sm mt-2 opacity-80">
+                    {locale === "fr" 
+                      ? "Performance d'un établissement en temps réel"
+                      : "Real-time establishment performance"
+                    }
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </ResponsiveSection>
 
@@ -272,7 +405,10 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
           </h2>
           
           <p className="text-xl mb-8 opacity-90">
-            {locale === "fr" ? content.ctaTexte.fr : content.ctaTexte.en}
+            {locale === "fr" ? 
+              (contentV2?.ctaTexte.fr || content.ctaTexte.fr) : 
+              (contentV2?.ctaTexte.en || content.ctaTexte.en)
+            }
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
