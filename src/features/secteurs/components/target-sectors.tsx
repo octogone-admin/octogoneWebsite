@@ -361,16 +361,13 @@ const TargetSectors = () => {
                   )}
                   
                   {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20"></div>
                   
                   {/* Contenu de la carte - État normal */}
                   <div className="relative z-10 text-center transition-all duration-300 ease-out group-hover:opacity-0 group-hover:translate-y-4">
                     <h3 className="text-xl lg:text-2xl font-bold text-white">
                       {locale === "fr" ? sector.titleFr : sector.titleEn}
                     </h3>
-                    <p className="text-white/90 text-sm mt-1">
-                      {locale === "fr" ? sector.descriptionFr : sector.descriptionEn}
-                    </p>
                   </div>
 
                   {/* Contenu de la carte - État hover */}

@@ -13,128 +13,158 @@ export interface TargetSector {
 // Données des secteurs cibles - SOURCE UNIQUE DE VÉRITÉ
 export const targetSectors: TargetSector[] = [
   {
-    id: "restaurants",
-    titleFr: "Restaurants",
-    titleEn: "Restaurants",
-    descriptionFr: "Indépendants & franchisés",
-    descriptionEn: "Independent & franchised",
-    image: "/resto.jpg",
-    gradient: "from-marine-400 to-marine-600",
-    hoverGradient: "from-marine-500 to-marine-700"
-  },
-  {
-    id: "chains",
-    titleFr: "Chaînes",
-    titleEn: "Chains",
-    descriptionFr: "Multi-établissements",
-    descriptionEn: "Multi-location",
+    id: "chains-groups",
+    titleFr: "Chaînes et groupes de restaurants",
+    titleEn: "Restaurant chains and groups",
+    descriptionFr: "Multi-établissements & franchises",
+    descriptionEn: "Multi-location & franchises",
     image: "/resto.jpg",
     gradient: "from-gold-400 to-gold-600",
     hoverGradient: "from-gold-500 to-gold-700"
   },
   {
-    id: "hotels",
-    titleFr: "Hôtels",
-    titleEn: "Hotels",
-    descriptionFr: "Restauration hôtelière",
-    descriptionEn: "Hotel dining",
+    id: "independent-restaurants",
+    titleFr: "Restaurants indépendants",
+    titleEn: "Independent restaurants",
+    descriptionFr: "Établissements uniques",
+    descriptionEn: "Single establishments",
     image: "/resto.jpg",
-    gradient: "from-marine-500 to-marine-700",
-    hoverGradient: "from-marine-600 to-marine-800"
+    gradient: "from-marine-400 to-marine-600",
+    hoverGradient: "from-marine-500 to-marine-700"
   },
   {
-    id: "catering",
+    id: "caterers",
     titleFr: "Traiteurs",
     titleEn: "Caterers",
     descriptionFr: "Événementiel & corporate",
     descriptionEn: "Events & corporate",
     image: "/resto.jpg",
-    gradient: "from-gold-500 to-gold-700",
-    hoverGradient: "from-gold-600 to-gold-800"
+    gradient: "from-blue-400 to-blue-600",
+    hoverGradient: "from-blue-500 to-blue-700"
   },
   {
-    id: "rpa",
-    titleFr: "RPA",
-    titleEn: "Senior Living",
-    descriptionFr: "Résidences pour aînés",
-    descriptionEn: "Senior residences",
+    id: "brewers-distillers",
+    titleFr: "Brasseurs & distilleries",
+    titleEn: "Brewers & distilleries",
+    descriptionFr: "Production de boissons",
+    descriptionEn: "Beverage production",
     image: "/resto.jpg",
-    gradient: "from-marine-600 to-marine-800",
-    hoverGradient: "from-marine-700 to-marine-900"
+    gradient: "from-amber-400 to-amber-600",
+    hoverGradient: "from-amber-500 to-amber-700"
   },
   {
-    id: "retail",
-    titleFr: "Commerce",
-    titleEn: "Retail",
-    descriptionFr: "Alimentaire & détail",
-    descriptionEn: "Food & retail",
+    id: "purchasing-groups",
+    titleFr: "Regroupements d'achats",
+    titleEn: "Purchasing groups",
+    descriptionFr: "Achats groupés",
+    descriptionEn: "Group purchasing",
     image: "/resto.jpg",
-    gradient: "from-yellow-600 to-yellow-800",
-    hoverGradient: "from-yellow-700 to-yellow-900"
+    gradient: "from-purple-400 to-purple-600",
+    hoverGradient: "from-purple-500 to-purple-700"
+  },
+  {
+    id: "retail-commerce",
+    titleFr: "Commerces de détail",
+    titleEn: "Retail commerce",
+    descriptionFr: "Vente au détail",
+    descriptionEn: "Retail sales",
+    image: "/resto.jpg",
+    gradient: "from-yellow-400 to-yellow-600",
+    hoverGradient: "from-yellow-500 to-yellow-700"
   }
 ];
 
 // Données des styles de restaurants
 export const restaurantStyles: TargetSector[] = [
   {
-    id: "fine-dining",
-    titleFr: "Gastronomique",
-    titleEn: "Fine Dining",
-    descriptionFr: "Haute gastronomie",
-    descriptionEn: "High-end cuisine",
+    id: "gastronomic",
+    titleFr: "Restauration gastronomique",
+    titleEn: "Gastronomic dining",
+    descriptionFr: "Haute cuisine raffinée",
+    descriptionEn: "Refined haute cuisine",
     image: "/resto.jpg",
-    gradient: "from-blue-400 to-blue-600",
-    hoverGradient: "from-blue-500 to-blue-700"
+    gradient: "from-purple-400 to-purple-600",
+    hoverGradient: "from-purple-500 to-purple-700"
   },
   {
-    id: "casual",
-    titleFr: "Décontracté",
-    titleEn: "Casual Dining",
-    descriptionFr: "Ambiance détendue",
-    descriptionEn: "Relaxed atmosphere",
+    id: "bistro-brasserie",
+    titleFr: "Bistro & brasserie",
+    titleEn: "Bistro & brasserie",
+    descriptionFr: "Ambiance conviviale",
+    descriptionEn: "Friendly atmosphere",
+    image: "/resto.jpg",
+    gradient: "from-amber-400 to-amber-600",
+    hoverGradient: "from-amber-500 to-amber-700"
+  },
+  {
+    id: "fast-food",
+    titleFr: "Restauration rapide",
+    titleEn: "Fast food",
+    descriptionFr: "Service rapide et efficace",
+    descriptionEn: "Quick and efficient service",
+    image: "/resto.jpg",
+    gradient: "from-red-400 to-red-600",
+    hoverGradient: "from-red-500 to-red-700"
+  },
+  {
+    id: "casse-croute",
+    titleFr: "Casse-croûte",
+    titleEn: "Snack bar",
+    descriptionFr: "Mets simples servis au comptoir",
+    descriptionEn: "Simple meals served at counter",
+    image: "/resto.jpg",
+    gradient: "from-orange-400 to-orange-600",
+    hoverGradient: "from-orange-500 to-orange-700"
+  },
+  {
+    id: "family-restaurant",
+    titleFr: "Restaurant familial",
+    titleEn: "Family restaurant",
+    descriptionFr: "Ambiance chaleureuse",
+    descriptionEn: "Warm atmosphere",
+    image: "/resto.jpg",
+    gradient: "from-green-400 to-green-600",
+    hoverGradient: "from-green-500 to-green-700"
+  },
+  {
+    id: "cafe",
+    titleFr: "Café",
+    titleEn: "Café",
+    descriptionFr: "Produits frais et artisanaux",
+    descriptionEn: "Fresh and artisanal products",
     image: "/resto.jpg",
     gradient: "from-yellow-400 to-yellow-600",
     hoverGradient: "from-yellow-500 to-yellow-700"
   },
   {
-    id: "fast-casual",
-    titleFr: "Rapide Premium",
-    titleEn: "Fast-Casual",
-    descriptionFr: "Service rapide, qualité",
-    descriptionEn: "Quick service, quality",
+    id: "pub-microbrewery",
+    titleFr: "Pub & microbrasserie",
+    titleEn: "Pub & microbrewery",
+    descriptionFr: "Bières artisanales",
+    descriptionEn: "Craft beers",
     image: "/resto.jpg",
-    gradient: "from-blue-500 to-blue-700",
-    hoverGradient: "from-blue-600 to-blue-800"
+    gradient: "from-blue-400 to-blue-600",
+    hoverGradient: "from-blue-500 to-blue-700"
   },
   {
-    id: "qsr",
-    titleFr: "Restauration Rapide",
-    titleEn: "Quick Service",
-    descriptionFr: "Service ultra-rapide",
-    descriptionEn: "Ultra-fast service",
+    id: "catering-corporate",
+    titleFr: "Traiteur & service alimentaire",
+    titleEn: "Catering & food service",
+    descriptionFr: "Services événementiels",
+    descriptionEn: "Event services",
     image: "/resto.jpg",
-    gradient: "from-yellow-500 to-yellow-700",
-    hoverGradient: "from-yellow-600 to-yellow-800"
+    gradient: "from-indigo-400 to-indigo-600",
+    hoverGradient: "from-indigo-500 to-indigo-700"
   },
   {
-    id: "food-truck",
-    titleFr: "Camion Restaurant",
-    titleEn: "Food Truck",
-    descriptionFr: "Mobile & flexible",
-    descriptionEn: "Mobile & flexible",
+    id: "tourism-industrial",
+    titleFr: "Restauration touristique et industrielle",
+    titleEn: "Tourism and industrial dining",
+    descriptionFr: "Secteurs spécialisés",
+    descriptionEn: "Specialized sectors",
     image: "/resto.jpg",
-    gradient: "from-blue-600 to-blue-800",
-    hoverGradient: "from-blue-700 to-blue-900"
-  },
-  {
-    id: "buffet",
-    titleFr: "Buffet",
-    titleEn: "Buffet",
-    descriptionFr: "Service libre-service",
-    descriptionEn: "Self-service dining",
-    image: "/resto.jpg",
-    gradient: "from-yellow-600 to-yellow-800",
-    hoverGradient: "from-yellow-700 to-yellow-900"
+    gradient: "from-teal-400 to-teal-600",
+    hoverGradient: "from-teal-500 to-teal-700"
   }
 ];
 

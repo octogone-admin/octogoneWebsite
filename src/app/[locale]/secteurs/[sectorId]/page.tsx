@@ -4,12 +4,8 @@ import React from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
-import { allSectors } from "@/data/sectors-data";
-
-// Les données sont maintenant importées depuis /src/data/sectors-data.ts
-// Plus besoin de les définir ici !
-
-/* SUPPRIMÉ - Données maintenant dans /src/data/sectors-data.ts */
+import { allSectors, targetSectors, restaurantStyles } from "@/data/sectors-data";
+import SectorDetailWidget from "@/components/widgets/sector-detail-widget";
 
 export default function SectorDetailPage() {
   const params = useParams();
@@ -18,6 +14,9 @@ export default function SectorDetailPage() {
 
   // Trouver le secteur correspondant
   const sector = allSectors.find(s => s.id === sectorId);
+  
+  // Déterminer si c'est un style de restaurant ou un type d'entreprise
+  const isRestaurantStyle = restaurantStyles.some(s => s.id === sectorId);
 
   // Si le secteur n'existe pas, afficher une page 404
   if (!sector) {
@@ -64,79 +63,25 @@ export default function SectorDetailPage() {
               background: `linear-gradient(to right, ${sector.gradient.replace('from-', '').replace(' to-', ', ')})`.replace('marine-', '#0073ff').replace('gold-', '#dcb26b')
             }}
           >
-            {locale === "fr" ? "Secteur" : "Sector"}
+            {locale === "fr" 
+              ? (isRestaurantStyle ? "Style de restaurant" : "Type d'entreprise")
+              : (isRestaurantStyle ? "Restaurant style" : "Business type")
+            }
           </div>
 
           {/* Titre du secteur */}
           <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
-            {locale === "fr" ? sector.titleFr : sector.titleEn}
+            {locale === "fr" ? `Octogone pour ${sector.titleFr}` : `Octogone for ${sector.titleEn}`}
           </h1>
-
-          {/* Description */}
-          <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto mb-8 drop-shadow">
-            {locale === "fr" ? sector.descriptionFr : sector.descriptionEn}
-          </p>
-
-          {/* Description détaillée */}
-          <div className="max-w-4xl mx-auto text-left p-8 rounded-2xl" style={{ backgroundColor: 'rgba(186, 223, 246, 0.3)' }}>
-            <p className="text-lg text-white leading-relaxed drop-shadow">
-              {locale === "fr" 
-                ? `Octogone s'adapte parfaitement aux besoins spécifiques du secteur ${sector.titleFr.toLowerCase()}. Notre plateforme offre des fonctionnalités sur mesure pour optimiser vos opérations, analyser vos performances et prédire vos besoins futurs.`
-                : `Octogone perfectly adapts to the specific needs of the ${sector.titleEn.toLowerCase()} sector. Our platform offers tailored features to optimize your operations, analyze your performance, and predict your future needs.`
-              }
-            </p>
-          </div>
         </div>
       </ResponsiveSection>
 
-      {/* Section des fonctionnalités spécifiques */}
-      <ResponsiveSection spacing="xl">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-marine-900 mb-4">
-            {locale === "fr" 
-              ? `Solutions pour ${sector.titleFr.toLowerCase()}` 
-              : `Solutions for ${sector.titleEn.toLowerCase()}`}
-          </h2>
-          <p className="text-lg text-marine-700 max-w-3xl mx-auto">
-            {locale === "fr" 
-              ? "Découvrez comment Octogone transforme votre gestion quotidienne"
-              : "Discover how Octogone transforms your daily management"}
-          </p>
-        </div>
-
-        {/* Grille des fonctionnalités (exemple) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              titleFr: "Gestion des inventaires",
-              titleEn: "Inventory Management",
-              descFr: "Suivi en temps réel adapté à votre secteur",
-              descEn: "Real-time tracking adapted to your sector"
-            },
-            {
-              titleFr: "Analyse des coûts",
-              titleEn: "Cost Analysis", 
-              descFr: "Optimisation du food cost spécifique",
-              descEn: "Specific food cost optimization"
-            },
-            {
-              titleFr: "Prédictions IA",
-              titleEn: "AI Predictions",
-              descFr: "Cortex anticipe vos besoins sectoriels",
-              descEn: "Cortex anticipates your sector needs"
-            }
-          ].map((feature, index) => (
-            <div key={index} className="bg-white p-6 rounded-xl shadow-lg">
-              <h3 className="text-xl font-bold text-marine-900 mb-3">
-                {locale === "fr" ? feature.titleFr : feature.titleEn}
-              </h3>
-              <p className="text-marine-700">
-                {locale === "fr" ? feature.descFr : feature.descEn}
-              </p>
-            </div>
-          ))}
-        </div>
-      </ResponsiveSection>
+      {/* Widget de contenu principal */}
+      <SectorDetailWidget 
+        sector={sector} 
+        locale={locale} 
+        isRestaurantStyle={isRestaurantStyle}
+      />
     </main>
   );
 }
