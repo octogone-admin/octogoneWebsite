@@ -61,7 +61,10 @@ export interface SectorContentV2 {
     fr: string;
     en: string;
   };
-  metriques: string[]; // Format simplifié pour les métriques
+  metriques: {
+    fr: string[];
+    en: string[];
+  };
   
   // Bloc 2: Outils différenciants
   sousTexteSolutions: {
@@ -504,12 +507,20 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
       fr: "Standardisez vos opérations multi-sites et éliminez les écarts de performance entre établissements. Octogone centralise la gestion pour une rentabilité uniforme.",
       en: "Standardize multi-site operations and eliminate performance gaps between locations. Octogone centralizes management for uniform profitability."
     },
-    metriques: [
-      "Décisions multi-sites 3× plus rapides",
-      "Marge réseau +1 à +2 pts (standardisation)",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Décisions multi-sites 3× plus rapides",
+        "Marge réseau +1 à +2 pts (standardisation)",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Multi-site decisions 3× faster",
+        "Network margin +1 to +2 pts (standardization)",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Conçus pour la centralisation et la comparabilité entre emplacements, ces modules garantissent une exécution constante sur tout votre réseau.",
       en: "Built for centralization and cross-location comparability, these modules ensure consistent execution across your entire network."
@@ -570,12 +581,20 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
       fr: "Reprenez le contrôle de vos coûts réels et sécurisez vos marges sans alourdir votre charge opérationnelle. Octogone simplifie la gestion pour les restaurateurs indépendants.",
       en: "Regain control over true costs and secure margins without adding operational burden. Octogone simplifies management for independent restaurateurs."
     },
-    metriques: [
-      "Variance coût-plat -10 à -15 %",
-      "0 rupture critique (alertes seuils)",
-      "> 98 % de précision des coûts",
-      "+10 % de marge brute"
-    ],
+    metriques: {
+      fr: [
+        "Variance coût-plat -10 à -15 %",
+        "0 rupture critique (alertes seuils)",
+        "> 98 % de précision des coûts",
+        "+10 % de marge brute"
+      ],
+      en: [
+        "Dish cost variance -10 to -15%",
+        "0 critical stockouts (threshold alerts)",
+        "> 98% cost accuracy",
+        "+10% gross margin"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les restaurateurs qui veulent garder leur indépendance tout en professionnalisant leur gestion quotidienne.",
       en: "Designed for restaurateurs who want to maintain independence while professionalizing their daily management."
@@ -636,12 +655,20 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
       fr: "Optimisez vos événements et services de traiteur avec une gestion précise des coûts et des portions. Octogone maximise la rentabilité de chaque prestation.",
       en: "Optimize your catering events and services with precise cost and portion management. Octogone maximizes profitability for every service."
     },
-    metriques: [
-      "Écart coût/portion -8 à -12 %",
-      "Marge par événement +3 à +5 pts",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Écart coût/portion -8 à -12 %",
+        "Marge par événement +3 à +5 pts",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Cost/portion variance -8 to -12%",
+        "Margin per event +3 to +5 pts",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Conçus pour les traiteurs qui gèrent des volumes variables et doivent garantir une rentabilité constante sur chaque événement.",
       en: "Built for caterers managing variable volumes who must ensure consistent profitability on every event."
@@ -702,12 +729,20 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
       fr: "Maîtrisez votre production artisanale avec un suivi précis des coûts et de la qualité. Octogone optimise chaque lot tout en préservant votre savoir-faire.",
       en: "Master your craft production with precise cost and quality tracking. Octogone optimizes every batch while preserving your expertise."
     },
-    metriques: [
-      "Marge par lot +2 à +4 pts",
-      "Pertes fermentation/stock ↓ (températures sous contrôle)",
-      "-25 % de gaspillage",
-      "> 98 % de précision des coûts"
-    ],
+    metriques: {
+      fr: [
+        "Marge par lot +2 à +4 pts",
+        "Pertes fermentation/stock ↓ (températures sous contrôle)",
+        "-25 % de gaspillage",
+        "> 98 % de précision des coûts"
+      ],
+      en: [
+        "Margin per batch +2 to +4 pts",
+        "Fermentation/stock losses ↓ (temperature controlled)",
+        "-25% waste",
+        "> 98% cost accuracy"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les brasseurs et distillateurs qui allient tradition artisanale et excellence opérationnelle.",
       en: "Built for brewers and distillers who combine artisanal tradition with operational excellence."
@@ -768,12 +803,20 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
       fr: "Optimisez vos achats groupés et réduisez les coûts pour tous vos membres. Octogone centralise la gestion et maximise le pouvoir d'achat collectif.",
       en: "Optimize group purchasing and reduce costs for all members. Octogone centralizes management and maximizes collective buying power."
     },
-    metriques: [
-      "Coût matière -3 à -6 % (mutualisation)",
-      "Temps AP/AR -30 à -50 %",
-      "+10 % de marge brute",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Coût matière -3 à -6 % (mutualisation)",
+        "Temps AP/AR -30 à -50 %",
+        "+10 % de marge brute",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Material cost -3 to -6% (pooling)",
+        "AP/AR time -30 to -50%",
+        "+10% gross margin",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Conçus pour les regroupements d'achats qui veulent maximiser leur pouvoir de négociation et simplifier la gestion administrative.",
       en: "Built for purchasing groups seeking to maximize negotiating power and simplify administrative management."
@@ -834,12 +877,20 @@ export const businessTypesContentV2: Record<string, SectorContentV2> = {
       fr: "Optimisez votre commerce de détail alimentaire avec une gestion automatisée des stocks et des marges. Octogone élimine les ruptures et maximise la rentabilité.",
       en: "Optimize your food retail business with automated inventory and margin management. Octogone eliminates stock-outs and maximizes profitability."
     },
-    metriques: [
-      "0 rupture critique (réassort auto)",
-      "Marge par référence +2 à +3 pts",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "0 rupture critique (réassort auto)",
+        "Marge par référence +2 à +3 pts",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "0 critical stockouts (auto reorder)",
+        "Margin per item +2 to +3 pts",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les commerces de détail qui veulent automatiser la gestion des stocks et optimiser la rotation des produits frais.",
       en: "Built for retail businesses seeking to automate inventory management and optimize fresh product rotation."
@@ -903,12 +954,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Atteignez l'excellence culinaire avec une maîtrise parfaite des coûts et de la qualité. Octogone préserve votre créativité tout en optimisant vos marges.",
       en: "Achieve culinary excellence with perfect cost and quality control. Octogone preserves your creativity while optimizing margins."
     },
-    metriques: [
-      "Variance portion -15 à -20 %",
-      "Pertes à froid ↓ (traçabilité températures)",
-      "-25 % de gaspillage",
-      "+10 % de marge brute"
-    ],
+    metriques: {
+      fr: [
+        "Variance portion -15 à -20 %",
+        "Pertes à froid ↓ (traçabilité températures)",
+        "-25 % de gaspillage",
+        "+10 % de marge brute"
+      ],
+      en: [
+        "Portion variance -15 to -20%",
+        "Cold losses ↓ (temperature traceability)",
+        "-25% waste",
+        "+10% gross margin"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Conçus pour la haute gastronomie où chaque détail compte : précision des portions, traçabilité des produits et excellence du service.",
       en: "Built for fine dining where every detail matters: portion precision, product traceability, and service excellence."
@@ -969,12 +1028,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Optimisez votre bistro-brasserie avec une gestion fluide qui préserve la convivialité. Octogone accélère vos décisions sans compromettre l'ambiance.",
       en: "Optimize your bistro-brasserie with smooth management that preserves conviviality. Octogone accelerates decisions without compromising atmosphere."
     },
-    metriques: [
-      "Rotation stocks +10 à +15 %",
-      "Décisions pricing 2–3× plus rapides",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Rotation stocks +10 à +15 %",
+        "Décisions pricing 2–3× plus rapides",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Stock rotation +10 to +15%",
+        "Pricing decisions 2–3× faster",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les établissements à fort volume qui recherchent régularité, rapidité et convivialité dans un cadre décontracté.",
       en: "Built for high-volume establishments seeking consistency, speed, and conviviality in a relaxed setting."
@@ -1035,12 +1102,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Gagnez en vitesse, en précision et en rentabilité : réduisez le gaspillage, optimisez vos coûts et automatisez la gestion de vos points de vente.",
       en: "Gain speed, precision, and profitability: cut waste, optimize costs, and automate your multi-location operations."
     },
-    metriques: [
-      "Temps service -20 à -40 s",
-      "Exactitude commande ≥ 90 %",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Temps service -20 à -40 s",
+        "Exactitude commande ≥ 90 %",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Service time -20 to -40 s",
+        "Order accuracy ≥ 90%",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour la rapidité d'exécution, la précision des données et la gestion simplifiée de plusieurs emplacements.",
       en: "Designed for fast execution, data accuracy, and simplified multi-location management."
@@ -1101,12 +1176,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Gérez votre casse-croûte avec simplicité et efficacité : maîtrisez vos coûts, réduisez les pertes et augmentez vos profits, même avec de petits volumes.",
       en: "Manage your snack bar with simplicity and efficiency: control costs, cut waste, and boost profits—even with small volumes."
     },
-    metriques: [
-      "Marge combo +2 à +3 pts",
-      "Gaspillage préparation -20 %",
-      "-25 % de gaspillage",
-      "> 98 % de précision des coûts"
-    ],
+    metriques: {
+      fr: [
+        "Marge combo +2 à +3 pts",
+        "Gaspillage préparation -20 %",
+        "-25 % de gaspillage",
+        "> 98 % de précision des coûts"
+      ],
+      en: [
+        "Combo margin +2 to +3 pts",
+        "Preparation waste -20%",
+        "-25% waste",
+        "> 98% cost accuracy"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Simplicité, rapidité et rentabilité — tout ce dont un casse-croûte a besoin pour mieux performer sans complexité.",
       en: "Simplicity, speed, and profitability—everything a snack bar needs to perform better without added complexity."
@@ -1160,12 +1243,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Offrez une expérience conviviale tout en gardant le contrôle sur vos coûts, vos stocks et vos marges. Simplifiez la gestion sans compromettre la qualité du service.",
       en: "Deliver a welcoming family experience while keeping full control over costs, stocks, and margins. Simplify management without compromising service quality."
     },
-    metriques: [
-      "Variance portion -30 %",
-      "Ruptures < 1 %",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Variance portion -30 %",
+        "Ruptures < 1 %",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Portion variance -30%",
+        "Stockouts < 1%",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Conçus pour les restaurants familiaux qui recherchent stabilité, simplicité et visibilité sur leurs résultats.",
       en: "Built for family restaurants seeking stability, simplicity, and visibility over their results."
@@ -1219,12 +1310,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Optimisez vos coûts et votre productivité tout en offrant une expérience client irréprochable. Octogone simplifie la gestion de votre café, du comptoir à la caisse.",
       en: "Optimize costs and productivity while delivering a flawless customer experience. Octogone simplifies café management—from bar to till."
     },
-    metriques: [
-      "Gaspillage lait -10 à -25 %",
-      "Ticket moyen +5 à +7 %",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Gaspillage lait -10 à -25 %",
+        "Ticket moyen +5 à +7 %",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Milk waste -10 to -25%",
+        "Average ticket +5 to +7%",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les cafés qui veulent conjuguer rapidité, constance et rentabilité sans sacrifier l'ambiance.",
       en: "Designed for cafés seeking speed, consistency, and profitability without losing atmosphere."
@@ -1278,12 +1377,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Augmentez vos marges et votre efficacité tout en conservant l'ambiance et la qualité qui font la réputation de votre pub ou microbrasserie.",
       en: "Boost margins and efficiency while maintaining the atmosphere and quality your pub or microbrewery is known for."
     },
-    metriques: [
-      "Pertes bière (spillage/ligne) ↓",
-      "Marge boisson +2 à +3 pts",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Pertes bière (spillage/ligne) ↓",
+        "Marge boisson +2 à +3 pts",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Beer losses (spillage/line) ↓",
+        "Beverage margin +2 to +3 pts",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les établissements qui conjuguent production et service, où la rentabilité se joue sur chaque litre et chaque assiette.",
       en: "Designed for venues combining production and service, where profitability depends on every pint and plate."
@@ -1337,12 +1444,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Optimisez vos opérations de service alimentaire d'entreprise : anticipez les besoins, réduisez les pertes et améliorez la rentabilité de chaque contrat.",
       en: "Optimize your corporate food service operations: anticipate needs, cut waste, and improve profitability for every contract."
     },
-    metriques: [
-      "Dérapage food cost -6 à -10 %/contrat",
-      "Adhérence planning > 95 %",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "Dérapage food cost -6 à -10 %/contrat",
+        "Adhérence planning > 95 %",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "Food cost overrun -6 to -10%/contract",
+        "Planning adherence > 95%",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les traiteurs et services alimentaires à haut volume où la planification, la régularité et le contrôle des coûts sont essentiels.",
       en: "Designed for high-volume catering services where planning, consistency, and cost control are key."
@@ -1396,12 +1511,20 @@ export const restaurantStylesContentV2: Record<string, SectorContentV2> = {
       fr: "Simplifiez la gestion de vos services alimentaires en milieux isolés ou à grand volume — réduisez les pertes, améliorez la planification et assurez la constance de vos opérations.",
       en: "Simplify food service management in remote or high-volume environments—reduce waste, improve planning, and ensure consistency across operations."
     },
-    metriques: [
-      "0 rupture critique multi-sites (stocks à distance)",
-      "Coût logistique repas -5 à -8 %",
-      "-25 % de gaspillage",
-      "+15 h/sem économisées"
-    ],
+    metriques: {
+      fr: [
+        "0 rupture critique multi-sites (stocks à distance)",
+        "Coût logistique repas -5 à -8 %",
+        "-25 % de gaspillage",
+        "+15 h/sem économisées"
+      ],
+      en: [
+        "0 critical multi-site stockouts (remote inventory)",
+        "Meal logistics cost -5 to -8%",
+        "-25% waste",
+        "+15 h/week saved"
+      ]
+    },
     sousTexteSolutions: {
       fr: "Pensés pour les sites touristiques, industriels et éloignés, où chaque décision logistique et chaque repas compte.",
       en: "Built for tourism, industrial, and remote sites where every logistic and meal decision matters."

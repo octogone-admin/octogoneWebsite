@@ -145,7 +145,10 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
 
         {/* Métriques chiffrées en évidence */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {(contentV2?.metriques || ["-25% de gaspillage", "+10% de marge brute", "+15h/sem économisées", ">98% précision des coûts"]).map((metric: string, index: number) => (
+          {(locale === "fr" ? 
+            (contentV2?.metriques?.fr || ["-25% de gaspillage", "+10% de marge brute", "+15h/sem économisées", ">98% précision des coûts"]) :
+            (contentV2?.metriques?.en || ["-25% waste", "+10% gross margin", "+15h/week saved", ">98% cost accuracy"])
+          ).map((metric: string, index: number) => (
             <div key={index} className="text-center bg-white rounded-xl p-6 shadow-lg border-2" style={{ borderColor: '#E5E5E5' }}>
               <div className="w-20 h-20 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <TrendingUp className="w-10 h-10 text-gold-600" />
