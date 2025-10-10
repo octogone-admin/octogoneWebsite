@@ -67,6 +67,71 @@ export const testimonials: Testimonial[] = [
     image: "/resto.jpg",
     sectors: ["chains-groups", "cafe"],
     isRestaurantStyle: false
+  },
+  {
+    id: "pierre-traiteur",
+    nameFr: "Pierre Dubois",
+    nameEn: "Pierre Dubois",
+    businessFr: "Saveurs & Événements - Traiteur",
+    businessEn: "Flavors & Events - Catering",
+    quoteFr: "Octogone nous aide à calculer précisément nos coûts par événement. Nos marges sont maintenant prévisibles et nos clients satisfaits.",
+    quoteEn: "Octogone helps us calculate precisely our costs per event. Our margins are now predictable and our clients satisfied.",
+    rating: 5,
+    image: "/resto.jpg",
+    sectors: ["caterers", "catering-corporate"],
+    isRestaurantStyle: false
+  },
+  {
+    id: "marc-brasseur",
+    nameFr: "Marc Brasseur",
+    nameEn: "Marc Brasseur",
+    businessFr: "Brasserie des Monts - Microbrasserie",
+    businessEn: "Mountain Brewery - Microbrewery",
+    quoteFr: "Le suivi de nos fermentations et coûts de production nous a fait économiser 15% sur chaque lot. Un outil indispensable.",
+    quoteEn: "Tracking our fermentations and production costs saved us 15% on each batch. An indispensable tool.",
+    rating: 5,
+    image: "/resto.jpg",
+    sectors: ["brewers-distillers", "pub-microbrewery"],
+    isRestaurantStyle: true
+  },
+  {
+    id: "julie-fastfood",
+    nameFr: "Julie Moreau",
+    nameEn: "Julie Moreau",
+    businessFr: "Quick Burger - Restauration rapide",
+    businessEn: "Quick Burger - Fast food",
+    quoteFr: "Nos temps de service ont diminué de 30 secondes et nos stocks sont toujours optimaux. L'équipe adore la simplicité.",
+    quoteEn: "Our service times decreased by 30 seconds and our inventory is always optimal. The team loves the simplicity.",
+    rating: 5,
+    image: "/resto.jpg",
+    sectors: ["fast-food", "casse-croute"],
+    isRestaurantStyle: true
+  },
+  {
+    id: "robert-famille",
+    nameFr: "Robert Famille",
+    nameEn: "Robert Famille",
+    businessFr: "Chez Robert - Restaurant familial",
+    businessEn: "Chez Robert - Family restaurant",
+    quoteFr: "Octogone nous aide à maintenir nos portions généreuses tout en contrôlant nos coûts. Parfait pour notre style familial.",
+    quoteEn: "Octogone helps us maintain our generous portions while controlling costs. Perfect for our family style.",
+    rating: 5,
+    image: "/resto.jpg",
+    sectors: ["family-restaurant", "tourism-industrial"],
+    isRestaurantStyle: true
+  },
+  {
+    id: "anne-commerce",
+    nameFr: "Anne Retail",
+    nameEn: "Anne Retail",
+    businessFr: "Épicerie Fine Anne - Commerce de détail",
+    businessEn: "Anne's Fine Grocery - Retail",
+    quoteFr: "Plus jamais de ruptures sur nos produits phares. Le réassort automatique nous fait gagner un temps précieux.",
+    quoteEn: "Never again out of stock on our flagship products. Automatic restocking saves us precious time.",
+    rating: 5,
+    image: "/resto.jpg",
+    sectors: ["retail-commerce", "purchasing-groups"],
+    isRestaurantStyle: false
   }
 ];
 

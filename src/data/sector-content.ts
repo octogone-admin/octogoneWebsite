@@ -20,7 +20,6 @@ export interface SectorContent {
     en: string;
   }>;
   
-  // Bloc 2: Outils différenciants
   sousTexteSolutions: {
     fr: string;
     en: string;
@@ -36,6 +35,22 @@ export interface SectorContent {
   ctaTexte: {
     fr: string;
     en: string;
+  };
+  
+  // Nouveau bloc visuel avec featureShowcase
+  caption?: {
+    fr: string;
+    en: string;
+  };
+  
+  // Témoignage associé (optionnel)
+  testimonial?: {
+    id: string; // ID du témoignage à afficher
+    showTitle?: boolean; // Afficher le titre ou non
+    title?: {
+      fr: string;
+      en: string;
+    };
   };
 }
 
@@ -88,6 +103,16 @@ export interface SectorContentV2 {
   ctaTexte: {
     fr: string;
     en: string;
+  };
+  
+  // Témoignage associé (optionnel)
+  testimonial?: {
+    id: string; // ID du témoignage à afficher
+    showTitle?: boolean; // Afficher le titre ou non
+    title?: {
+      fr: string;
+      en: string;
+    };
   };
 }
 
