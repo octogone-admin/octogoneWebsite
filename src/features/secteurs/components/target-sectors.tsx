@@ -113,12 +113,13 @@ const TargetSectors = () => {
   };
 
   return (
-    <ResponsiveSection
-      as="section"
-      spacing="xxl"
-      className="relative overflow-hidden transition-all duration-500 ease-out"
-      style={getBackgroundStyle()}
-    >
+    <div className="px-4 sm:px-8">
+      <ResponsiveSection
+        as="section"
+        spacing="xxl"
+        className="relative overflow-hidden transition-all duration-500 ease-out rounded-2xl"
+        style={getBackgroundStyle()}
+      >
       {/* Fond décoratif avec octogones en filigrane */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 bg-marine-500 rounded-full blur-3xl"></div>
@@ -453,6 +454,7 @@ const TargetSectors = () => {
         </div>
       </div>
     </ResponsiveSection>
+    </div>
   );
 };
 
