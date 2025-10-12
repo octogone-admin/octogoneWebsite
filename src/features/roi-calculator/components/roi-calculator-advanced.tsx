@@ -65,71 +65,52 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
   const isInventorySelected = selectedModules.includes('inventory');
   
   return (
-    <div className="px-4 sm:px-8 py-4 sm:py-8" style={{ backgroundColor: 'var(--background)' }}>
-      <ResponsiveSection
-        as="section"
-        spacing="xxl"
-        className="rounded-2xl"
-        style={{ backgroundColor: 'var(--secondary-container)' }}
-      >
-        {/* En-tête */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--on-secondary-container)' }}>
-            {locale === "fr" ? "Calculez votre retour sur investissement" : "Calculate your return on investment"}
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--on-surface-variant)' }}>
-            {locale === "fr" 
-              ? "Découvrez combien vous pourriez économiser avec Octogone"
-              : "Discover how much you could save with Octogone"
-            }
-          </p>
-        </div>
+    <div className="py-4" style={{ backgroundColor: 'var(--background)' }}>
+      {/* En-tête */}
+      <div className="text-center mb-6">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2" style={{ color: 'var(--on-background)' }}>
+          {locale === "fr" ? "Calculez votre retour sur investissement" : "Calculate your return on investment"}
+        </h2>
+        <p className="text-sm sm:text-base" style={{ color: 'var(--on-surface-variant)' }}>
+          {locale === "fr" 
+            ? "Découvrez combien vous pourriez économiser avec Octogone"
+            : "Discover how much you could save with Octogone"
+          }
+        </p>
+      </div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Colonne gauche - Configuration */}
-          <div className="space-y-6">
-            {/* Nombre d'établissements */}
-            <div className="rounded-xl p-6 shadow-lg" style={{ backgroundColor: 'var(--surface)' }}>
-              <h3 className="text-xl font-bold mb-4" style={{ color: 'var(--on-surface)' }}>
-                {locale === "fr" ? "Nombre d'établissements" : "Number of locations"}
+          <div className="space-y-4">
+            {/* Paramètres de base */}
+            <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
+              <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--on-surface)' }}>
+                {locale === "fr" ? "Configuration" : "Configuration"}
               </h3>
               
-              <div className="grid grid-cols-1 gap-3">
-                {LOCATION_RANGES.map((range) => (
-                  <button
-                    key={`${range.min}-${range.max}`}
-                    onClick={() => setNumberOfLocations(range.min)}
-                    className="p-4 rounded-lg border-2 transition-all duration-200 text-left"
+              <div className="space-y-3">
+                {/* Nombre d'établissements - Input */}
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--on-surface)' }}>
+                    {locale === "fr" ? "Nombre d'établissements" : "Number of locations"}
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="1000"
+                    value={numberOfLocations}
+                    onChange={(e) => setNumberOfLocations(Math.max(1, Number(e.target.value)))}
+                    className="w-full px-4 py-2 rounded-lg border-2 focus:outline-none focus:ring-2"
                     style={{
-                      backgroundColor: numberOfLocations >= range.min && (range.max === null || numberOfLocations <= range.max)
-                        ? 'var(--primary-container)'
-                        : 'transparent',
-                      borderColor: numberOfLocations >= range.min && (range.max === null || numberOfLocations <= range.max)
-                        ? 'var(--primary-container)'
-                        : 'var(--outline)',
-                      color: 'var(--on-surface)'
-                    }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">
-                        {locale === "fr" ? range.labelFr : range.labelEn}
-                      </span>
-                      {numberOfLocations >= range.min && (range.max === null || numberOfLocations <= range.max) && (
-                        <Check className="w-5 h-5" style={{ color: 'var(--on-primary-container)' }} />
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
+                      backgroundColor: 'var(--surface-variant)',
+                      borderColor: 'var(--outline)',
+                      color: 'var(--on-surface)',
+                      '--tw-ring-color': 'var(--primary-container)'
+                    } as React.CSSProperties}
+                    placeholder={locale === "fr" ? "Ex: 5" : "Ex: 5"}
+                  />
+                </div>
 
-            {/* Paramètres personnalisés */}
-            <div className="rounded-xl p-6 shadow-lg" style={{ backgroundColor: 'var(--surface)' }}>
-              <h3 className="text-xl font-bold mb-4" style={{ color: 'var(--on-surface)' }}>
-                {locale === "fr" ? "Vos paramètres" : "Your parameters"}
-              </h3>
-              
-              <div className="space-y-4">
                 {/* Coût horaire */}
                 <div>
                   <label className="block text-sm font-medium mb-2" style={{ color: 'var(--on-surface)' }}>
@@ -218,46 +199,41 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
             </div>
 
             {/* Sélection des modules */}
-            <div className="rounded-xl p-6 shadow-lg" style={{ backgroundColor: 'var(--surface)' }}>
-              <h3 className="text-xl font-bold mb-4" style={{ color: 'var(--on-surface)' }}>
+            <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
+              <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--on-surface)' }}>
                 {locale === "fr" ? "Modules à utiliser" : "Modules to use"}
               </h3>
               
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 gap-2">
                 {AVAILABLE_MODULES.map((module) => {
                   const Icon = ICON_MAP[module.icon];
                   const isSelected = selectedModules.includes(module.id);
                   
                   return (
-                    <button
+                    <div
                       key={module.id}
                       onClick={() => toggleModule(module.id)}
-                      className="p-4 rounded-lg border-2 transition-all duration-200 text-left"
+                      className="p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer hover:scale-[1.02]"
                       style={{
-                        backgroundColor: isSelected ? 'var(--primary-container)' : 'transparent',
-                        borderColor: isSelected ? 'var(--primary-container)' : 'var(--outline)'
+                        backgroundColor: isSelected ? 'var(--secondary-container)' : 'var(--surface)',
+                        borderColor: isSelected ? 'var(--secondary-container)' : 'var(--outline)'
                       }}
                     >
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                             style={{ backgroundColor: 'var(--secondary-container)' }}>
-                          {Icon && <Icon className="w-5 h-5" style={{ color: 'var(--on-secondary-container)' }} />}
+                      <div className="flex items-center gap-2 w-full">
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                             style={{ backgroundColor: isSelected ? 'var(--surface)' : 'var(--secondary-container)' }}>
+                          {Icon && <Icon className="w-4 h-4" style={{ color: isSelected ? 'var(--on-surface)' : 'var(--on-secondary-container)' }} />}
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-semibold" style={{ color: 'var(--on-surface)' }}>
-                              {locale === "fr" ? module.nameFr : module.nameEn}
-                            </span>
-                            {isSelected && (
-                              <Check className="w-5 h-5" style={{ color: 'var(--on-primary-container)' }} />
-                            )}
-                          </div>
-                          <p className="text-sm" style={{ color: 'var(--on-surface-variant)' }}>
-                            {locale === "fr" ? module.descriptionFr : module.descriptionEn}
-                          </p>
+                        <div className="flex-1 text-left">
+                          <span className="font-semibold text-sm">
+                            {locale === "fr" ? module.nameFr : module.nameEn}
+                          </span>
                         </div>
+                        {isSelected && (
+                          <Check className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--on-secondary-container)' }} />
+                        )}
                       </div>
-                    </button>
+                    </div>
                   );
                 })}
               </div>
@@ -265,52 +241,52 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
           </div>
 
           {/* Colonne droite - Résultats */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Résumé des gains */}
-            <div className="rounded-xl p-6 shadow-lg" style={{ backgroundColor: 'var(--surface)' }}>
-              <h3 className="text-xl font-bold mb-6" style={{ color: 'var(--on-surface)' }}>
+            <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
+              <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--on-surface)' }}>
                 {locale === "fr" ? "Vos gains estimés (1ère année)" : "Your estimated savings (1st year)"}
               </h3>
               
               {selectedModules.length === 0 ? (
-                <p className="text-center py-8" style={{ color: 'var(--on-surface-variant)' }}>
+                <p className="text-center py-6 text-sm" style={{ color: 'var(--on-surface-variant)' }}>
                   {locale === "fr" 
                     ? "Sélectionnez des modules pour voir vos gains estimés"
                     : "Select modules to see your estimated savings"
                   }
                 </p>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {/* Gains monétaires */}
-                  <div className="flex items-start gap-4 p-4 rounded-lg" style={{ backgroundColor: 'var(--surface-variant)' }}>
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                         style={{ backgroundColor: 'var(--primary-container)' }}>
-                      <DollarSign className="w-6 h-6" style={{ color: 'var(--on-primary-container)' }} />
+                  <div className="flex items-center gap-3 p-3 rounded-lg border-2" style={{ borderColor: 'var(--outline)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                         style={{ backgroundColor: 'var(--secondary-container)' }}>
+                      <DollarSign className="w-5 h-5" style={{ color: 'var(--on-secondary-container)' }} />
                     </div>
-                    <div>
-                      <p className="text-sm mb-1" style={{ color: 'var(--on-surface-variant)' }}>
+                    <div className="flex-1">
+                      <p className="text-xs mb-0.5" style={{ color: 'var(--on-surface-variant)' }}>
                         {locale === "fr" ? "Économies monétaires" : "Money savings"}
                       </p>
-                      <p className="text-2xl font-bold" style={{ color: 'var(--on-surface)' }}>
+                      <p className="text-xl font-bold" style={{ color: 'var(--on-surface)' }}>
                         {formatCurrency(roiResult.yearlyMoneySavings, locale)}
                       </p>
                     </div>
                   </div>
 
                   {/* Gains de temps */}
-                  <div className="flex items-start gap-4 p-4 rounded-lg" style={{ backgroundColor: 'var(--surface-variant)' }}>
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                         style={{ backgroundColor: 'var(--primary-container)' }}>
-                      <Clock className="w-6 h-6" style={{ color: 'var(--on-primary-container)' }} />
+                  <div className="flex items-center gap-3 p-3 rounded-lg border-2" style={{ borderColor: 'var(--outline)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                         style={{ backgroundColor: 'var(--secondary-container)' }}>
+                      <Clock className="w-5 h-5" style={{ color: 'var(--on-secondary-container)' }} />
                     </div>
-                    <div>
-                      <p className="text-sm mb-1" style={{ color: 'var(--on-surface-variant)' }}>
+                    <div className="flex-1">
+                      <p className="text-xs mb-0.5" style={{ color: 'var(--on-surface-variant)' }}>
                         {locale === "fr" ? "Temps économisé" : "Time saved"}
                       </p>
-                      <p className="text-2xl font-bold" style={{ color: 'var(--on-surface)' }}>
+                      <p className="text-xl font-bold" style={{ color: 'var(--on-surface)' }}>
                         {formatHours(roiResult.yearlyTimeSavings, locale)}
                       </p>
-                      <p className="text-sm mt-1" style={{ color: 'var(--on-surface-variant)' }}>
+                      <p className="text-xs mt-0.5" style={{ color: 'var(--on-surface-variant)' }}>
                         {locale === "fr" ? "Valeur : " : "Value: "}
                         {formatCurrency(roiResult.timeSavingsValue, locale)}
                       </p>
@@ -318,19 +294,19 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                   </div>
 
                   {/* ROI */}
-                  <div className="flex items-start gap-4 p-4 rounded-lg" style={{ backgroundColor: 'var(--primary-container)' }}>
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--secondary-container)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
                          style={{ backgroundColor: 'var(--surface)' }}>
-                      <TrendingUp className="w-6 h-6" style={{ color: 'var(--primary)' }} />
+                      <TrendingUp className="w-5 h-5" style={{ color: 'var(--inverse-surface)' }} />
                     </div>
-                    <div>
-                      <p className="text-sm mb-1" style={{ color: 'var(--on-primary-container)' }}>
+                    <div className="flex-1">
+                      <p className="text-xs mb-0.5" style={{ color: 'var(--on-secondary-container)' }}>
                         {locale === "fr" ? "Retour sur investissement" : "Return on investment"}
                       </p>
-                      <p className="text-3xl font-bold" style={{ color: 'var(--on-primary-container)' }}>
+                      <p className="text-2xl font-bold" style={{ color: 'var(--on-secondary-container)' }}>
                         {Math.round(roiResult.roiPercentage)}%
                       </p>
-                      <p className="text-sm mt-1" style={{ color: 'var(--on-primary-container)' }}>
+                      <p className="text-xs mt-0.5" style={{ color: 'var(--on-secondary-container)' }}>
                         {locale === "fr" ? "Rentabilisé en " : "Payback in "}
                         {Math.ceil(roiResult.paybackPeriodMonths)}
                         {locale === "fr" ? " mois" : " months"}
@@ -339,21 +315,21 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                   </div>
 
                   {/* Détails des coûts */}
-                  <div className="pt-4 border-t" style={{ borderColor: 'var(--outline)' }}>
-                    <p className="text-sm mb-2" style={{ color: 'var(--on-surface-variant)' }}>
+                  <div className="pt-3 border-t" style={{ borderColor: 'var(--outline)' }}>
+                    <p className="text-xs mb-1.5" style={{ color: 'var(--on-surface-variant)' }}>
                       {locale === "fr" ? "Coût mensuel : " : "Monthly cost: "}
                       <span className="font-semibold" style={{ color: 'var(--on-surface)' }}>
                         {formatCurrency(roiResult.monthlySubscriptionCost, locale)}
                       </span>
                     </p>
-                    <p className="text-sm mb-3" style={{ color: 'var(--on-surface-variant)' }}>
+                    <p className="text-xs mb-2" style={{ color: 'var(--on-surface-variant)' }}>
                       {locale === "fr" ? "Gains nets annuels : " : "Net annual savings: "}
                       <span className="font-semibold" style={{ color: 'var(--on-surface)' }}>
                         {formatCurrency(roiResult.netYearlySavings, locale)}
                       </span>
                     </p>
-                    <div className="flex items-start gap-2 p-3 rounded-lg" style={{ backgroundColor: 'var(--surface-variant)' }}>
-                      <Info className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--on-surface-variant)' }} />
+                    <div className="flex items-start gap-2 p-2 rounded-lg" style={{ backgroundColor: 'var(--surface-variant)' }}>
+                      <Info className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: 'var(--on-surface-variant)' }} />
                       <p className="text-xs" style={{ color: 'var(--on-surface-variant)' }}>
                         {locale === "fr" 
                           ? "Les frais de démarrage sont inclus dans ce calcul. Contactez-nous pour connaître les détails."
@@ -368,11 +344,11 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
 
             {/* CTA */}
             {selectedModules.length > 0 && (
-              <div className="text-center">
+              <div className="text-center pt-2">
                 <OctogoneButton
                   href={`/${locale}/contact`}
-                  variant="primary"
-                  size="lg"
+                  variant="secondary"
+                  size="md"
                 >
                   {locale === "fr" ? "Discuter de mon projet" : "Discuss my project"}
                 </OctogoneButton>
@@ -380,7 +356,6 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
             )}
           </div>
         </div>
-      </ResponsiveSection>
-    </div>
+      </div>
   );
 }
