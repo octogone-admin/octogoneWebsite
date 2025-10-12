@@ -76,10 +76,15 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
       <NavigationMenu className="w-full max-w-screen-lg">
         <NavigationMenuList className="flex items-center gap-6 justify-center">
           {routes.map((route) => {
+            // Extraire le chemin sans locale pour la comparaison
+            const pathWithoutLocale = pathname.replace(/^\/[^\/]+/, '');
+            
             // Vérifie si l'item principal est actif en tenant compte des sous-chemins
             const isActive =
               activeRoute === route.path || 
-              pathname === route.path || 
+              pathname === route.path ||
+              pathWithoutLocale === route.path ||
+              pathWithoutLocale.startsWith(route.path + "/") ||
               // Vérifie si un des enfants est actif
               (route.children && route.children.some(child => 
                 pathname === child.path || pathname.startsWith(child.path + "/")
@@ -94,7 +99,10 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                       className={`${navigationTriggerVariants({ active: isActive })} nav-item ${isActive ? "active-nav-item" : ""} rounded-md px-3 py-2`}
                     >
                       {route.label}
-                      <ChevronDown className="h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180" style={{ color: 'var(--on-background)' }} />
+                      <ChevronDown 
+                        className="h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180" 
+                        style={{ color: isActive ? 'var(--on-secondary-container)' : 'var(--on-background)' }} 
+                      />
                     </NavigationMenuTrigger>
                     <NavigationMenuContent 
                       className="backdrop-blur-sm p-6 rounded-lg shadow-lg flex justify-center items-center absolute left-1/2 transform -translate-x-1/2 mt-8 border"
@@ -118,25 +126,36 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                               gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
                             }}
                           >
-                            {route.children?.map((item: Route) => (
-                              <Link
-                                key={item.path}
-                                href={item.path}
-                                className={`block p-4 rounded-md transition-all nav-item ${pathname.includes(item.path) ? "active-nav-item" : ""}`}
-                                style={{
-                                  backgroundColor: pathname.includes(item.path) ? 'var(--secondary)' : 'transparent'
-                                }}
-                              >
-                                <div className="text-lg font-medium mb-2" style={{ color: 'var(--on-background)' }}>
-                                  {item.label}
-                                </div>
-                                {item.description && (
-                                  <p className="text-sm" style={{ color: 'var(--on-surface)' }}>
-                                    {item.description}
-                                  </p>
-                                )}
-                              </Link>
-                            ))}
+                            {route.children?.map((item: any) => {
+                              const isActive = pathname.includes(item.path);
+                              return (
+                                <Link
+                                  key={item.path}
+                                  href={item.href || item.path}
+                                  className="block p-4 rounded-md transition-all duration-200"
+                                  style={{
+                                    backgroundColor: isActive ? 'var(--secondary-container)' : 'transparent'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'var(--secondary-container)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    if (!isActive) {
+                                      e.currentTarget.style.backgroundColor = 'transparent';
+                                    }
+                                  }}
+                                >
+                                  <div className="text-lg font-medium mb-2" style={{ color: 'var(--on-background)' }}>
+                                    {item.label}
+                                  </div>
+                                  {item.description && (
+                                    <p className="text-sm" style={{ color: 'var(--on-surface-variant)' }}>
+                                      {item.description}
+                                    </p>
+                                  )}
+                                </Link>
+                              );
+                            })}
                           </div>
                         );
                       })()}
@@ -145,7 +164,7 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                 ) : (
                   <NavigationMenuLink asChild>
                     <Link
-                      href={route.path}
+                      href={(route as any).href || route.path}
                       className={`
                       ${navigationLinkVariants({ active: isActive })} 
                       nav-item ${isActive ? "active-nav-item" : ""} 

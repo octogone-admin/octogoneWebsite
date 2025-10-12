@@ -152,7 +152,7 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
         />
 
         <div className="w-full relative">
-          <div className="flex h-16 items-center justify-between gap-4 md:h-20 px-4 sm:px-6 lg:px-8 max-w-[1800px] mx-auto">
+          <div className="flex h-16 items-center justify-between gap-4 md:h-20 px-4 sm:px-6 lg:px-8 w-full">
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link href="/">
@@ -176,7 +176,7 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
               />
             </div>
 
-            <div className="flex-shrink-0 flex items-center">
+            <div className="flex-shrink-0 flex items-center gap-3">
               {/* Mobile Menu Button - visible sur toutes les résolutions jusqu'à 1024px inclus */}
               <Button
                 variant="ghost"
@@ -187,8 +187,17 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
                 <Menu className="h-6 w-6" />
               </Button>
 
+              {/* Connexion Link */}
+              <Link
+                href={`/${locale}/login`}
+                className="hidden xl:inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary_color"
+                style={{ color: 'var(--on-background)' }}
+              >
+                {locale === "fr" ? "Connexion" : "Login"}
+              </Link>
+
               {/* Theme Toggle & Language Toggle */}
-              <div className="hidden xl:flex items-center gap-2 mr-4">
+              <div className="hidden xl:flex items-center gap-2">
                 <ThemeToggle />
                 <LanguageToggle currentLocale={locale} />
               </div>
@@ -196,7 +205,7 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
               {/* CTA Button */}
               <Link
                 href={`/${locale}/contact`}
-                className="hidden xl:inline-flex items-center justify-center rounded-md px-3 py-2 text-base font-medium bg-gold-500 text-marine-900 hover:bg-gold-400 dark:bg-primary_color dark:text-marine-900 dark:hover:bg-gold-400 transition-colors btn-gold"
+                className="hidden xl:inline-flex items-center justify-center rounded-md px-4 py-2 text-base font-medium bg-gold-500 text-marine-900 hover:bg-gold-400 dark:bg-primary_color dark:text-marine-900 dark:hover:bg-gold-400 transition-colors btn-gold"
               >
                 {locale === "fr" ? "Réserver une démo" : "Book a demo"}
               </Link>
