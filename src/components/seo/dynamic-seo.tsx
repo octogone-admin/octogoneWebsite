@@ -1,7 +1,25 @@
 "use client";
 
 import { useEffect } from 'react';
-import { useDynamicSEO, TestimonialData, FeatureData, SectorData } from '@/lib/seo/ai-seo-generator';
+// TODO: Créer le fichier ai-seo-generator.ts
+// import { useDynamicSEO, TestimonialData, FeatureData, SectorData } from '@/lib/seo/ai-seo-generator';
+
+interface TestimonialData {
+  id: string;
+  name: string;
+  content: string;
+}
+
+interface FeatureData {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface SectorData {
+  id: string;
+  name: string;
+}
 
 interface DynamicSEOProps {
   testimonials: TestimonialData[];
@@ -13,11 +31,21 @@ interface DynamicSEOProps {
 /**
  * Composant SEO IA Dynamique
  * Injecte automatiquement les données structurées et métadonnées
+ * TODO: Implémenter la logique SEO dynamique
  */
 export function DynamicSEO({ testimonials, features, sectors, locale }: DynamicSEOProps) {
-  const { schemas, metadata, jsonLd } = useDynamicSEO(testimonials, features, sectors, locale);
+  // const { schemas, metadata, jsonLd } = useDynamicSEO(testimonials, features, sectors, locale);
 
   useEffect(() => {
+    // TODO: Implémenter l'injection SEO dynamique quand ai-seo-generator sera créé
+    console.log('DynamicSEO loaded with:', { 
+      testimonials: testimonials.length, 
+      features: features.length, 
+      sectors: sectors.length, 
+      locale 
+    });
+    
+    /* 
     // Injecter le JSON-LD dans le head
     const existingScript = document.querySelector('#dynamic-seo-jsonld');
     if (existingScript) {
@@ -39,7 +67,8 @@ export function DynamicSEO({ testimonials, features, sectors, locale }: DynamicS
         scriptToRemove.remove();
       }
     };
-  }, [jsonLd, metadata]);
+    */
+  }, [testimonials, features, sectors, locale]);
 
   return null; // Ce composant n'affiche rien, il injecte juste le SEO
 }

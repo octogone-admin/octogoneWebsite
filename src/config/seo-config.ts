@@ -164,7 +164,7 @@ export const SEO_AI_CONFIG = {
  */
 export function generateAIOptimizedResponse(question: string, locale: string = 'fr'): string {
   const answers = SEO_AI_CONFIG.aiOptimizedAnswers[locale as 'fr' | 'en'];
-  return answers[question] || '';
+  return (answers as Record<string, string>)[question] || '';
 }
 
 /**

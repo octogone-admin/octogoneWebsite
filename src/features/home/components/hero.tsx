@@ -265,10 +265,9 @@ const Hero = () => {
 
   return (
     <section 
-      className="relative overflow-hidden flex items-center"
+      className="relative overflow-hidden flex items-center min-h-0 lg:min-h-screen"
       aria-labelledby="hero-title"
       style={{ 
-        minHeight: `calc(100vh - ${headerHeight}px)`,
         backgroundColor: 'var(--background)'
       }}
     >
@@ -280,7 +279,88 @@ const Hero = () => {
         </div>
 
         <div className="relative z-10 w-full flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
-            {/* Octogones interconnectés - Masqué sur mobile */}
+            {/* Version mobile compacte - Octogones superposés */}
+            <div className="flex lg:hidden justify-center items-start h-[450px] mb-12 order-first pt-4">
+              <div className="relative w-[450px] h-[450px] flex justify-center items-center">
+                {/* Octogone central avec image dynamique */}
+                <div 
+                  className="absolute w-[300px] h-[300px] overflow-hidden"
+                  style={{
+                    clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
+                    zIndex: 1,
+                    backgroundColor: 'var(--surface)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  {/* Images correspondant aux 4 octogones */}
+                  {octogones.map((oct) => {
+                    const isCurrentActive = activeOctogone === oct.id;
+                    const imageMap = {
+                      0: '/operate.jpg',  // Opérer
+                      1: '/resto.jpg',    // Automatiser
+                      2: '/resto.jpg',    // Analyser
+                      3: '/predict.jpg'   // Prédire
+                    };
+                    
+                    return (
+                      <div 
+                        key={oct.id}
+                        className="absolute inset-0 w-full h-full transition-opacity duration-500"
+                        style={{
+                          opacity: isCurrentActive ? 1 : 0,
+                          backgroundImage: `url(${imageMap[oct.id as keyof typeof imageMap]})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center'
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+                
+                {/* 4 petits octogones superposés */}
+                {octogones.map((oct, index) => {
+                  const isActive = activeOctogone === oct.id || hoveredOctogone === oct.id;
+                  const positions = {
+                    'top-left': { top: '5px', left: '5px' },
+                    'top-right': { top: '5px', right: '5px' },
+                    'bottom-left': { bottom: '5px', left: '5px' },
+                    'bottom-right': { bottom: '5px', right: '5px' }
+                  };
+                  const pos = positions[oct.position as keyof typeof positions];
+                  
+                  return (
+                    <Link 
+                      key={oct.id}
+                      href={`/${locale}${oct.link}`}
+                      className="absolute w-[150px] h-[150px] shadow-md flex flex-col items-center justify-center cursor-pointer gap-1"
+                      style={{
+                        ...pos,
+                        clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
+                        zIndex: isActive ? 10 : 3,
+                        transform: isActive ? 'scale(1.1)' : 'scale(1)',
+                        backgroundColor: isActive ? getColorValue(oct.pastelColor) : 'var(--surface)',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={() => setHoveredOctogone(oct.id)}
+                      onMouseLeave={() => setHoveredOctogone(null)}
+                    >
+                      <oct.LucideIcon 
+                        className={`w-10 h-10 ${isActive ? oct.color : ''}`}
+                        style={{ color: isActive ? undefined : 'var(--on-surface)' }}
+                      />
+                      <span 
+                        className={`text-[9px] font-semibold text-center px-1 ${isActive ? oct.color : ''}`}
+                        style={{ color: isActive ? undefined : 'var(--on-surface)' }}
+                      >
+                        {locale === 'fr' ? oct.titleFr : oct.titleEn}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Version desktop - Octogones interconnectés */}
             <div className="hidden lg:flex justify-center items-center h-full mt-0 pt-0 mb-2 xs:mb-4 lg:mb-8 order-first lg:order-last">
               <div className="relative w-full max-w-[220px] xs:max-w-[280px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[580px] h-[220px] xs:h-[280px] sm:h-[340px] md:h-[400px] lg:h-[480px] xl:h-[580px] flex justify-center items-center overflow-visible">
                 
@@ -447,14 +527,14 @@ const Hero = () => {
             </div>
 
             {/* Contenu textuel - En bas sur mobile */}
-            <div className="flex flex-col space-y-2 sm:space-y-3 lg:space-y-4 text-center lg:text-left order-last lg:order-first">
+            <div className="flex flex-col space-y-4 sm:space-y-5 lg:space-y-6 text-center lg:text-left order-last lg:order-first">
               {/* Titre principal - maintenant le slogan */}
               <h1 
                 id="hero-title"
-                className="font-bold tracking-wide mb-2 xs:mb-3 lg:mb-4"
+                className="font-bold tracking-wide"
                 style={{ 
                   color: 'var(--on-background)',
-                  fontSize: 'clamp(1.5rem, 5vw, 4.5rem)', 
+                  fontSize: 'clamp(2rem, 6vw, 4.5rem)', 
                   lineHeight: '1.1' 
                 }}
               >
