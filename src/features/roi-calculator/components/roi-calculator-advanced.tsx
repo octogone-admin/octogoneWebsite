@@ -42,7 +42,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
   const [hourlyCost, setHourlyCost] = useState(CALCULATION_CONFIG.defaultHourlyCost);
   const [inventoriesPerMonth, setInventoriesPerMonth] = useState(INVENTORY_SAVINGS.defaultInventoriesPerMonth);
   const [employeesPerInventory, setEmployeesPerInventory] = useState(INVENTORY_SAVINGS.defaultEmployeesPerInventory);
-  const [periodView, setPeriodView] = useState<'month' | 'year'>('year'); // Toggle mois/année
+  const [periodView, setPeriodView] = useState<'month' | 'year'>('month'); // Toggle mois/année - Mois par défaut
   const [roiResult, setRoiResult] = useState(calculateROI(1, [], CALCULATION_CONFIG.defaultHourlyCost, INVENTORY_SAVINGS.defaultInventoriesPerMonth));
   
   // Recalculer le ROI quand les paramètres changent
@@ -332,7 +332,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                         <div className="flex-1 text-left">
                           <div className="flex items-center gap-2">
                             <span className="font-semibold text-sm" style={{ 
-                              color: isSelected && isPro ? '#1F1F1F' : 'var(--on-surface)'
+                              color: isSelected ? (isPro ? '#1F1F1F' : 'var(--on-secondary-container)') : 'var(--on-surface)'
                             }}>
                               {locale === "fr" ? module.nameFr : module.nameEn}
                             </span>
@@ -350,7 +350,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                         )}
                         {(isSelected || isIncludedInPro) && (
                           <Check className="w-5 h-5 flex-shrink-0" style={{ 
-                            color: isPro ? '#1F1F1F' : 'var(--on-surface-variant)' 
+                            color: isPro ? '#1F1F1F' : 'var(--on-secondary-container)' 
                           }} />
                         )}
                       </div>
@@ -376,7 +376,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                       const Icon = ICON_MAP[module.icon];
                       const features = locale === "fr" ? module.featuresFr : module.featuresEn;
                       return (
-                        <div key={module.id} className="pb-3 border-b" style={{ borderColor: 'var(--outline)' }}>
+                        <div key={module.id} className="pb-3 border-b last:border-b-0" style={{ borderColor: 'var(--outline)' }}>
                           <div className="flex items-center gap-2 mb-2">
                             {Icon && <Icon className="w-5 h-5" style={{ color: 'var(--on-surface)' }} />}
                             <span className="font-bold text-sm" style={{ color: 'var(--on-surface)' }}>
@@ -385,9 +385,9 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                           </div>
                           <ul className="space-y-1 ml-7">
                             {features.map((feature, idx) => (
-                              <li key={idx} className="flex items-start gap-2 text-xs" style={{ color: 'var(--on-surface-variant)' }}>
+                              <li key={idx} className="flex items-start gap-2 text-xs">
                                 <Check className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: '#BFD495' }} />
-                                <span>{feature}</span>
+                                <span style={{ color: 'var(--on-surface-variant)' }}>{feature}</span>
                               </li>
                             ))}
                           </ul>
@@ -402,7 +402,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                       const Icon = ICON_MAP[module.icon];
                       const features = locale === "fr" ? module.featuresFr : module.featuresEn;
                       return (
-                        <div key={moduleId} className="pb-3 border-b" style={{ borderColor: 'var(--outline)' }}>
+                        <div key={moduleId} className="pb-3 border-b last:border-b-0" style={{ borderColor: 'var(--outline)' }}>
                           <div className="flex items-center gap-2 mb-2">
                             {Icon && <Icon className="w-5 h-5" style={{ color: 'var(--on-surface)' }} />}
                             <span className="font-bold text-sm" style={{ color: 'var(--on-surface)' }}>
@@ -411,9 +411,9 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                           </div>
                           <ul className="space-y-1 ml-7">
                             {features.map((feature, idx) => (
-                              <li key={idx} className="flex items-start gap-2 text-xs" style={{ color: 'var(--on-surface-variant)' }}>
+                              <li key={idx} className="flex items-start gap-2 text-xs">
                                 <Check className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: 'var(--secondary)' }} />
-                                <span>{feature}</span>
+                                <span style={{ color: 'var(--on-surface-variant)' }}>{feature}</span>
                               </li>
                             ))}
                           </ul>

@@ -180,7 +180,8 @@ export function calculateROI(
  * Formate un nombre en devise
  */
 export function formatCurrency(amount: number, locale: string = 'fr'): string {
-  const formatted = new Intl.NumberFormat(locale === 'fr' ? 'fr-CA' : 'en-CA', {
+  // Utiliser le format anglais (virgule pour milliers, point pour décimales)
+  const formatted = new Intl.NumberFormat('en-CA', {
     style: 'currency',
     currency: 'CAD',
     minimumFractionDigits: 2,
@@ -188,8 +189,8 @@ export function formatCurrency(amount: number, locale: string = 'fr'): string {
     useGrouping: true
   }).format(amount);
   
-  // Pour le français canadien, remplacer l'espace insécable par un espace normal pour le séparateur de milliers
-  return formatted;
+  // Format obtenu : $3,469.18 → On veut : 3,469.18$
+  return formatted.replace('$', '').trim() + '$';
 }
 
 /**
