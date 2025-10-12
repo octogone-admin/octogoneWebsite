@@ -108,8 +108,11 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
       {/* Bannière d'annonce */}
       {SHOW_ANNOUNCEMENT_BANNER && (
         <AnnouncementBanner
-          message="Nouvelle fonctionnalité disponible : Modules Premium avec IA intégrée !"
-          link={{ text: "En savoir plus", href: `/${locale}/modules-premium` }}
+          message={locale === 'fr' 
+            ? "Bienvenue sur notre nouveau site web, un avant-goût de la nouvelle version d'Octogone. Choisissez votre forfait maintenant et profitez du gel de votre tarif lors du lancement." 
+            : "Welcome to our new website, a preview of the new Octogone version. Choose your plan now and enjoy a rate freeze at launch."
+          }
+          link={undefined}
           isVisible={isAnnouncementVisible}
           onDismiss={() => {
             setIsAnnouncementVisible(false);
@@ -126,7 +129,7 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
           isScrolled
             ? "backdrop-blur-md shadow-lg border-b"
             : "bg-transparent",
-          isAnnouncementVisible ? "top-10" : "top-0",
+          isAnnouncementVisible ? "top-14" : "top-0",
           {
             "with-announcement":
               SHOW_ANNOUNCEMENT_BANNER && isAnnouncementVisible,

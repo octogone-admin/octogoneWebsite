@@ -15,7 +15,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center justify-center w-10 h-10 rounded-lg border transition-all duration-300 hover:opacity-80"
+      className="flex items-center justify-center w-10 h-10 rounded-lg border transition-all duration-300 hover:opacity-80 cursor-pointer"
       style={{
         backgroundColor: 'var(--surface)',
         borderColor: 'var(--outline)',

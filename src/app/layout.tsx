@@ -78,7 +78,7 @@ export default function RootLayout({
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         </head>
         <body className="antialiased" style={{
-          backgroundColor: 'var(--background)',
+          background: 'radial-gradient(circle at 20% 30%, rgba(186, 223, 246, 0.08) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(220, 178, 107, 0.06) 0%, transparent 50%), var(--background)',
           color: 'var(--on-background)'
         }}>
           {children}

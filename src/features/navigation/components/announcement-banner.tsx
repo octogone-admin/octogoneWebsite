@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Megaphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface AnnouncementBannerProps {
@@ -51,18 +51,19 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="announcement-banner bg-gold-100 text-marine-800 z-[70] overflow-hidden"
+          className="announcement-banner z-[70] overflow-hidden"
+          style={{ backgroundColor: '#C8B6FF' }}
         >
-          <div className="container mx-auto px-3 py-2 sm:py-3 flex items-center justify-center relative">
+          <div className="container mx-auto px-3 py-3 sm:py-4 flex items-center justify-center relative">
             {/* Contenu principal centré */}
-            <div className="flex items-center justify-center max-w-[90%] sm:max-w-[85%] overflow-hidden text-center">
-              <span className="inline-block w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold-400 animate-pulse flex-shrink-0 mr-2"></span>
-              <div className="text-xs sm:text-sm font-medium truncate">
+            <div className="flex items-center justify-center max-w-[85%] sm:max-w-[90%] text-center">
+              <div className="text-xs sm:text-sm md:text-base font-semibold leading-relaxed" style={{ color: '#1F1F1F' }}>
                 {message}
                 {link && (
                   <a
                     href={link.href}
-                    className="ml-1 sm:ml-2 font-semibold hover:text-marine-800 transition-colors border-b border-gold-300 hover:border-gold-500 inline-block"
+                    className="ml-1 sm:ml-2 font-bold transition-colors border-b-2 border-white/50 hover:border-white inline-block"
+                    style={{ color: '#1F1F1F' }}
                   >
                     {link.text}
                   </a>
@@ -74,10 +75,11 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-1 sm:right-3 top-1/2 transform -translate-y-1/2 h-6 w-6 text-marine-900 hover:bg-gold-400 hover:text-marine-800 btn-gold-light flex-shrink-0 ml-2"
+              className="absolute right-1 sm:right-3 top-1/2 transform -translate-y-1/2 h-7 w-7 sm:h-8 sm:w-8 btn-gold-light flex-shrink-0 ml-2"
               onClick={onDismiss}
+              style={{ color: '#1F1F1F' }}
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
               <span className="sr-only">Fermer</span>
             </Button>
           </div>
