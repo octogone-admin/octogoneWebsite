@@ -35,9 +35,20 @@ export function ThemeProvider({
     const root = window.document.documentElement;
     
     console.log('🎨 Theme changed to:', theme);
+    
+    // Ajouter la classe pour désactiver les transitions
+    root.classList.add('theme-transitioning');
+    
+    // Changer le thème
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
+    
     console.log('✅ HTML classes:', root.className);
+    
+    // Retirer la classe après un court délai
+    setTimeout(() => {
+      root.classList.remove('theme-transitioning');
+    }, 50);
   }, [theme]);
 
   const value = {

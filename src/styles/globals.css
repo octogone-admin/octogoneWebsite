@@ -8,7 +8,11 @@
 
 body {
   min-height: 100vh;
-  padding-top: var(--banner-height);
+}
+
+/* Désactiver les transitions pendant le changement de thème */
+.theme-transitioning * {
+  transition: none !important;
 }
 
 /* Appliquer la couleur de texte principale seulement aux éléments sans classes Tailwind */

@@ -94,27 +94,21 @@ const Hero = () => {
   useEffect(() => {
     const calculateHeaderHeight = () => {
       const header = document.querySelector('header') as HTMLElement;
-      const banner = document.querySelector('.announcement-banner') as HTMLElement;
-      let totalHeight = 0;
       
       if (header) {
-        totalHeight += header.offsetHeight;
+        // Utiliser simplement offsetHeight du header
+        setHeaderHeight(header.offsetHeight);
       }
-      if (banner && window.getComputedStyle(banner).display !== 'none') {
-        totalHeight += banner.offsetHeight;
-      }
-      
-      setHeaderHeight(totalHeight);
     };
 
     calculateHeaderHeight();
     window.addEventListener('resize', calculateHeaderHeight);
     
-    // Observer pour détecter les changements de la bannière
+    // Observer pour détecter les changements
     const observer = new MutationObserver(calculateHeaderHeight);
-    const banner = document.querySelector('.announcement-banner');
-    if (banner) {
-      observer.observe(banner, { attributes: true, attributeFilter: ['style', 'class'] });
+    const header = document.querySelector('header');
+    if (header) {
+      observer.observe(header, { attributes: true, childList: true, subtree: true });
     }
 
     return () => {
@@ -481,8 +475,11 @@ const Hero = () => {
                     <>
                       La plateforme qui optimise <span className="text-gold-500">vraiment</span> la gestion de{" "}
                       <span 
-                        className="inline-block transition-opacity duration-300"
-                        style={{ opacity: isTextTransitioning ? 0 : 1 }}
+                        className="inline-block transition-all duration-300 font-bold"
+                        style={{ 
+                          opacity: isTextTransitioning ? 0 : 1,
+                          color: activeOctogone !== null ? getColorValue(octogones[activeOctogone].pastelColor) : 'var(--on-surface)'
+                        }}
                       >
                         {restaurantTexts.fr[currentRestaurantText]}
                       </span>
@@ -491,8 +488,11 @@ const Hero = () => {
                     <>
                       The platform that <span className="text-gold-500">truly</span> optimizes{" "}
                       <span 
-                        className="inline-block transition-opacity duration-300"
-                        style={{ opacity: isTextTransitioning ? 0 : 1 }}
+                        className="inline-block transition-all duration-300 font-bold"
+                        style={{ 
+                          opacity: isTextTransitioning ? 0 : 1,
+                          color: activeOctogone !== null ? getColorValue(octogones[activeOctogone].pastelColor) : 'var(--on-surface)'
+                        }}
                       >
                         {restaurantTexts.en[currentRestaurantText]}
                       </span>

@@ -94,9 +94,16 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                       className={`${navigationTriggerVariants({ active: isActive })} nav-item ${isActive ? "active-nav-item" : ""} rounded-md px-3 py-2`}
                     >
                       {route.label}
-                      <ChevronDown className="h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180" />
+                      <ChevronDown className="h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180" style={{ color: 'var(--on-background)' }} />
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className="bg-white/95 backdrop-blur-sm p-6 rounded-lg shadow-lg flex justify-center items-center absolute left-1/2 transform -translate-x-1/2 mt-8">
+                    <NavigationMenuContent 
+                      className="backdrop-blur-sm p-6 rounded-lg shadow-lg flex justify-center items-center absolute left-1/2 transform -translate-x-1/2 mt-8 border"
+                      style={{
+                        backgroundColor: 'var(--surface)',
+                        borderColor: 'var(--outline)',
+                        opacity: 0.98
+                      }}
+                    >
                       {(() => {
                         const itemCount = route.children?.length || 0;
                         const itemWidth = 220; // Largeur d'un item en pixels
@@ -115,7 +122,10 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                               <Link
                                 key={item.path}
                                 href={item.path}
-                                className={`block p-4 rounded-md transition-colors nav-item ${pathname.includes(item.path) ? "active-nav-item" : ""}`}
+                                className={`block p-4 rounded-md transition-all nav-item ${pathname.includes(item.path) ? "active-nav-item" : ""}`}
+                                style={{
+                                  backgroundColor: pathname.includes(item.path) ? 'var(--secondary)' : 'transparent'
+                                }}
                               >
                                 <div className="text-lg font-medium mb-2" style={{ color: 'var(--on-background)' }}>
                                   {item.label}

@@ -122,11 +122,11 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
 
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
+          "fixed left-0 right-0 z-50 transition-all duration-300 ease-in-out",
           isScrolled
             ? "backdrop-blur-md shadow-lg border-b"
             : "bg-transparent",
-          isAnnouncementVisible ? "mt-10" : "mt-0",
+          isAnnouncementVisible ? "top-10" : "top-0",
           {
             "with-announcement":
               SHOW_ANNOUNCEMENT_BANNER && isAnnouncementVisible,

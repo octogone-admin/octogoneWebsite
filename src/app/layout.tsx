@@ -77,7 +77,7 @@ export default function RootLayout({
           <meta name="theme-color" content="#002236" />
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         </head>
-        <body className="antialiased transition-colors" style={{
+        <body className="antialiased" style={{
           backgroundColor: 'var(--background)',
           color: 'var(--on-background)'
         }}>
