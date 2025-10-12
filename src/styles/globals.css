@@ -15,6 +15,21 @@ body {
   transition: none !important;
 }
 
+/* Animation du contour lumineux de l'octogone avec effet d'opacité */
+@keyframes dashAnimation {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -1070;
+    opacity: 0.3;
+  }
+}
+
 /* Appliquer la couleur de texte principale seulement aux éléments sans classes Tailwind */
 p:not([class*="text-"]), 
 h1:not([class*="text-"]), 

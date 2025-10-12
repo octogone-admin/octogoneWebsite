@@ -284,14 +284,46 @@ const Hero = () => {
               <div className="relative w-[450px] h-[450px] flex justify-center items-center">
                 {/* Octogone central avec image dynamique */}
                 <div 
-                  className="absolute w-[300px] h-[300px] overflow-hidden"
-                  style={{
-                    clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-                    zIndex: 1,
-                    backgroundColor: 'var(--surface)',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                  }}
+                  className="absolute w-[300px] h-[300px]"
+                  style={{ zIndex: 1 }}
                 >
+                  {/* SVG pour l'animation du contour - Octogone extérieur plus grand */}
+                  <svg 
+                    className="absolute pointer-events-none" 
+                    width="420"
+                    height="420"
+                    viewBox="0 0 200 200"
+                    style={{ 
+                      zIndex: 10,
+                      left: '-60px',
+                      top: '-60px'
+                    }}
+                  >
+                    <path
+                      d="M 60,20 L 140,20 L 180,60 L 180,140 L 140,180 L 60,180 L 20,140 L 20,60 Z"
+                      fill="none"
+                      stroke={activeOctogone !== null ? getColorValue(octogones[activeOctogone].pastelColor) : "#DCB26B"}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="bevel"
+                      strokeDasharray="70 1000"
+                      strokeDashoffset="0"
+                      style={{
+                        animation: 'dashAnimation 4s ease-out infinite',
+                        transition: 'stroke 0.5s ease-out'
+                      }}
+                    />
+                  </svg>
+                  
+                  {/* Octogone avec image */}
+                  <div 
+                    className="absolute inset-0 overflow-hidden"
+                    style={{
+                      clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
+                      backgroundColor: 'var(--surface)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                  >
                   {/* Images correspondant aux 4 octogones */}
                   {octogones.map((oct) => {
                     const isCurrentActive = activeOctogone === oct.id;
@@ -315,6 +347,7 @@ const Hero = () => {
                       />
                     );
                   })}
+                  </div>
                 </div>
                 
                 {/* 4 petits octogones superposés */}
@@ -406,15 +439,51 @@ const Hero = () => {
                   ref={octogoneRef}
                   className="absolute w-[140px] xs:w-[180px] sm:w-[220px] md:w-[260px] lg:w-[320px] xl:w-[380px] h-[140px] xs:h-[180px] sm:h-[220px] md:h-[260px] lg:h-[320px] xl:h-[380px]"
                   style={{
-                    clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
                     zIndex: 5,
                     transformOrigin: "center center",
                     transform: `scale(${octogoneScale}) rotate(${rotationDegrees}deg)`,
                     transition: 'transform 0.5s ease-out',
-                    backgroundColor: 'var(--surface)',
                     position: 'relative'
                   }}
                 >
+                  {/* SVG pour l'animation du contour - Desktop */}
+                  <svg 
+                    className="absolute pointer-events-none" 
+                    viewBox="0 0 140 140"
+                    style={{ 
+                      zIndex: 10,
+                      width: '140%',
+                      height: '140%',
+                      left: '-20%',
+                      top: '-20%'
+                    }}
+                  >
+                    <path
+                      d="M 44,6 L 96,6 L 134,44 L 134,96 L 96,134 L 44,134 L 6,96 L 6,44 Z"
+                      fill="none"
+                      stroke={activeOctogone !== null ? getColorValue(octogones[activeOctogone].pastelColor) : "#DCB26B"}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="bevel"
+                      strokeDasharray="70 1000"
+                      strokeDashoffset="0"
+                      style={{
+                        animation: 'dashAnimation 4s ease-out infinite',
+                        transition: 'stroke 0.5s ease-out'
+                      }}
+                    />
+                  </svg>
+                  
+                  {/* Contenu de l'octogone avec clip-path */}
+                  <div
+                    style={{
+                      clipPath: "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
+                      backgroundColor: 'var(--surface)',
+                      width: '100%',
+                      height: '100%',
+                      position: 'relative'
+                    }}
+                  >
                   <div style={{
                     width: '100%',
                     height: '100%',
@@ -471,6 +540,7 @@ const Hero = () => {
                       }
                     }
                   `}</style>
+                  </div>
                 </div>
 
                 {/* Octogones satellites avec interaction */}
