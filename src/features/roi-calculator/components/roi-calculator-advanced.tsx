@@ -294,17 +294,19 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                           {Icon && <Icon className="w-4 h-4" style={{ color: isSelected ? 'var(--on-surface)' : 'var(--on-secondary-container)' }} />}
                         </div>
                         <div className="flex-1 text-left">
-                          <span className="font-semibold text-sm" style={{ 
-                            color: isSelected && module.id === 'pro' ? '#1F1F1F' : 'var(--on-surface)'
-                          }}>
-                            {locale === "fr" ? module.nameFr : module.nameEn}
-                          </span>
-                          {module.id === 'pro' && isSelected && (
-                            <p className="text-xs mt-0.5" style={{ color: '#1F1F1F', opacity: 0.8 }}>
-                              {locale === "fr" ? "✓ Le meilleur choix" : "✓ Best choice"}
-                            </p>
-                          )}
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-sm" style={{ 
+                              color: isSelected && module.id === 'pro' ? '#1F1F1F' : 'var(--on-surface)'
+                            }}>
+                              {locale === "fr" ? module.nameFr : module.nameEn}
+                            </span>
+                          </div>
                         </div>
+                        {module.id === 'pro' && isSelected && (
+                          <span className="text-xs mr-2" style={{ color: '#1F1F1F', opacity: 0.8 }}>
+                            {locale === "fr" ? "✓ Le meilleur choix" : "✓ Best choice"}
+                          </span>
+                        )}
                         {isSelected && (
                           <Check className="w-5 h-5 flex-shrink-0" style={{ 
                             color: module.id === 'pro' ? '#1F1F1F' : 'var(--on-secondary-container)' 
@@ -467,11 +469,79 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
             {selectedModules.length > 0 && (
               <div className="text-center pt-2">
                 <OctogoneButton
-                  href={`/${locale}/contact`}
+                  href={`/${locale}/contact?message=${encodeURIComponent(
+                    locale === "fr" 
+                      ? `Bonjour,
+
+Je suis intéressé par Octogone et j'ai utilisé votre calculateur ROI. Voici mes résultats :
+
+RÉSULTATS DU CALCULATEUR ROI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Nombre d'établissements : ${numberOfLocations}
+Forfait sélectionné : ${selectedModules.includes('pro') ? 'PRO (tous les modules)' : selectedModules.map(id => {
+  const module = AVAILABLE_MODULES.find(m => m.id === id);
+  return module?.nameFr || id;
+}).join(', ')}
+
+RÉSULTATS FINANCIERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Coût mensuel : ${formatCurrency(roiResult.monthlySubscriptionCost, locale)}
+• Gains nets annuels : ${formatCurrency(roiResult.netYearlySavings, locale)}
+• ROI : ${Math.round(roiResult.roiPercentage)}%
+• Période de retour : ${Math.ceil(roiResult.paybackPeriodMonths)} mois
+
+ÉCONOMIES DE TEMPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Temps économisé par an : ${formatHours(roiResult.yearlyTimeSavings, locale)}
+• Valeur du temps économisé : ${formatCurrency(roiResult.timeSavingsValue, locale)}
+
+J'aimerais discuter de la mise en place d'Octogone pour mon/mes établissement(s).
+
+Merci !`
+                      : `Hello,
+
+I'm interested in Octogone and used your ROI calculator. Here are my results:
+
+ROI CALCULATOR RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Number of locations: ${numberOfLocations}
+Selected plan: ${selectedModules.includes('pro') ? 'PRO (all modules)' : selectedModules.map(id => {
+  const module = AVAILABLE_MODULES.find(m => m.id === id);
+  return module?.nameEn || id;
+}).join(', ')}
+
+FINANCIAL RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Monthly cost: ${formatCurrency(roiResult.monthlySubscriptionCost, locale)}
+• Net annual savings: ${formatCurrency(roiResult.netYearlySavings, locale)}
+• ROI: ${Math.round(roiResult.roiPercentage)}%
+• Payback period: ${Math.ceil(roiResult.paybackPeriodMonths)} months
+
+TIME SAVINGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Time saved per year: ${formatHours(roiResult.yearlyTimeSavings, locale)}
+• Value of time saved: ${formatCurrency(roiResult.timeSavingsValue, locale)}
+
+I would like to discuss implementing Octogone for my location(s).
+
+Thank you!`
+                  )}`}
                   variant="primary"
                   size="md"
+                  onClick={() => {
+                    // Fermer le popup si on est dans un modal
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('closeROIModal'));
+                    }
+                  }}
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  }
                 >
-                  <MessageCircle className="w-5 h-5" />
                   {locale === "fr" ? "Discuter de mon projet" : "Discuss my project"}
                 </OctogoneButton>
               </div>

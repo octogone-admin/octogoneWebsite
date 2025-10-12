@@ -29,6 +29,16 @@ export default function FloatingROIWidget({ onSavingsCalculated }: FloatingROIWi
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  // Écouter l'événement de fermeture depuis le calculateur
+  React.useEffect(() => {
+    const handleClose = () => {
+      setIsModalOpen(false);
+    };
+    
+    window.addEventListener('closeROIModal', handleClose);
+    return () => window.removeEventListener('closeROIModal', handleClose);
+  }, []);
   
   const handleSavingsUpdate = (savings: number) => {
     setCalculatedSavings(savings);

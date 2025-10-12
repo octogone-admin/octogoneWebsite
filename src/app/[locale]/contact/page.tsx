@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { 
@@ -19,6 +19,7 @@ import {
 
 export default function ContactPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   
   const [formData, setFormData] = useState({
@@ -36,6 +37,22 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Pré-remplir le message depuis l'URL (venant du calculateur ROI)
+  useEffect(() => {
+    const messageFromUrl = searchParams?.get('message');
+    if (messageFromUrl) {
+      try {
+        setFormData(prev => ({
+          ...prev,
+          message: messageFromUrl, // searchParams.get() décode déjà automatiquement
+          subject: 'demo' // Pré-sélectionner "Demande de démonstration"
+        }));
+      } catch (error) {
+        console.error('Erreur lors du décodage du message:', error);
+      }
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -542,7 +559,11 @@ Date : ${new Date().toLocaleString('fr-CA', { timeZone: 'America/Toronto' })}
                     required
                     checked={formData.consent}
                     onChange={handleInputChange}
-                    className="mt-1 w-5 h-5 text-primary_color border-marine-300 rounded focus:ring-primary_color"
+                    className="mt-1 w-5 h-5 rounded focus:ring-2"
+                    style={{
+                      accentColor: '#DCB26B',
+                      borderColor: '#E5E5E5'
+                    }}
                   />
                   <label className="text-sm text-marine-700">
                     {locale === "fr" ? (
