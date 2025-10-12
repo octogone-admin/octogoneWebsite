@@ -243,7 +243,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
             <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
               <div className="flex items-start justify-between mb-3">
                 <h3 className="text-lg font-bold" style={{ color: 'var(--on-surface)' }}>
-                  {locale === "fr" ? "Forfaits" : "Plans"}
+                  {locale === "fr" ? "Choisir votre forfait" : "Choose your plan"}
                 </h3>
                 {selectedModules.length > 0 && !selectedModules.includes('pro') && (
                   <div className="text-right">
@@ -288,8 +288,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                           : 'var(--surface)',
                         borderColor: isSelected 
                           ? (isPro ? '#BFD495' : 'var(--secondary-container)')
-                          : 'var(--outline)',
-                        pointerEvents: isIncludedInPro ? 'none' : 'auto'
+                          : 'var(--outline)'
                       }}
                     >
                       <div className="flex items-center gap-2 w-full">
@@ -331,6 +330,68 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
 
           {/* Colonne droite - Résultats */}
           <div className="space-y-4">
+            {/* Inclus dans votre forfait */}
+            {selectedModules.length > 0 && (
+              <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
+                <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--on-surface)' }}>
+                  {locale === "fr" ? "Inclus dans votre forfait" : "Included in your plan"}
+                </h3>
+                <div className="space-y-4 overflow-y-auto" style={{ maxHeight: '400px' }}>
+                  {selectedModules.includes('pro') ? (
+                    // Si PRO est sélectionné, afficher tous les modules avec détails
+                    AVAILABLE_MODULES.filter(m => m.id !== 'pro').map(module => {
+                      const Icon = ICON_MAP[module.icon];
+                      const features = locale === "fr" ? module.featuresFr : module.featuresEn;
+                      return (
+                        <div key={module.id} className="pb-3 border-b" style={{ borderColor: 'var(--outline)' }}>
+                          <div className="flex items-center gap-2 mb-2">
+                            {Icon && <Icon className="w-5 h-5" style={{ color: 'var(--on-surface)' }} />}
+                            <span className="font-bold text-sm" style={{ color: 'var(--on-surface)' }}>
+                              {locale === "fr" ? module.nameFr : module.nameEn}
+                            </span>
+                          </div>
+                          <ul className="space-y-1 ml-7">
+                            {features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-xs" style={{ color: 'var(--on-surface-variant)' }}>
+                                <Check className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: '#BFD495' }} />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    // Sinon, afficher les modules sélectionnés avec détails
+                    selectedModules.map(moduleId => {
+                      const module = AVAILABLE_MODULES.find(m => m.id === moduleId);
+                      if (!module) return null;
+                      const Icon = ICON_MAP[module.icon];
+                      const features = locale === "fr" ? module.featuresFr : module.featuresEn;
+                      return (
+                        <div key={moduleId} className="pb-3 border-b" style={{ borderColor: 'var(--outline)' }}>
+                          <div className="flex items-center gap-2 mb-2">
+                            {Icon && <Icon className="w-5 h-5" style={{ color: 'var(--on-surface)' }} />}
+                            <span className="font-bold text-sm" style={{ color: 'var(--on-surface)' }}>
+                              {locale === "fr" ? module.nameFr : module.nameEn}
+                            </span>
+                          </div>
+                          <ul className="space-y-1 ml-7">
+                            {features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-xs" style={{ color: 'var(--on-surface-variant)' }}>
+                                <Check className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: 'var(--secondary)' }} />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Résumé des gains */}
             <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
               <div className="flex items-center justify-between mb-4">

@@ -15,6 +15,8 @@ export interface Module {
   nameEn: string;
   descriptionFr: string;
   descriptionEn: string;
+  featuresFr: string[]; // Liste détaillée des fonctionnalités
+  featuresEn: string[];
   // Gains estimés par établissement par mois
   monthlySavingsPerLocation: number; // En dollars
   timesSavedPerWeekPerLocation: number; // En heures
@@ -29,6 +31,22 @@ export const AVAILABLE_MODULES: Module[] = [
     nameEn: 'Inventory',
     descriptionFr: 'Éliminez la double saisie et les erreurs de calcul',
     descriptionEn: 'Eliminate double entry and calculation errors',
+    featuresFr: [
+      'Prise d\'inventaire mobile intuitive',
+      'Gestion des produits partiels',
+      'Coordination multi-zones en temps réel',
+      'Élimination de la double saisie',
+      'Calculs automatiques sans erreur',
+      'Historique et rapports détaillés'
+    ],
+    featuresEn: [
+      'Intuitive mobile inventory taking',
+      'Partial product management',
+      'Real-time multi-zone coordination',
+      'Elimination of double entry',
+      'Automatic error-free calculations',
+      'History and detailed reports'
+    ],
     // Gains basés sur étude "Prise d'inventaire en restauration" :
     // - Élimination double saisie (papier → Excel) : ~3h/semaine économisées
     // - Réduction erreurs de calcul et ratures : ~500$/mois en pertes évitées
@@ -46,6 +64,22 @@ export const AVAILABLE_MODULES: Module[] = [
     nameEn: 'Foodcost',
     descriptionFr: 'Standardisation des recettes et Food Cost en temps réel',
     descriptionEn: 'Recipe standardization and real-time Food Cost',
+    featuresFr: [
+      'Fiches techniques détaillées',
+      'Calcul automatique du coût des recettes',
+      'Food Cost en temps réel',
+      'Analyse de rentabilité par plat',
+      'Gestion des portions standardisées',
+      'Suivi des variations de prix'
+    ],
+    featuresEn: [
+      'Detailed technical sheets',
+      'Automatic recipe cost calculation',
+      'Real-time Food Cost',
+      'Profitability analysis per dish',
+      'Standardized portion management',
+      'Price variation tracking'
+    ],
     // Gains basés sur :
     // - Standardisation recettes : réduction gaspillage ~600$/mois
     // - Food Cost en temps réel : meilleure marge ~400$/mois
@@ -60,6 +94,22 @@ export const AVAILABLE_MODULES: Module[] = [
     nameEn: 'Thermometer',
     descriptionFr: 'Surveillance active en temps réel et alertes personnalisées',
     descriptionEn: 'Active real-time monitoring and personalized alerts',
+    featuresFr: [
+      'Surveillance température en temps réel',
+      'Alertes personnalisées instantanées',
+      'Conformité HACCP automatique',
+      'Historique des températures',
+      'Rapports de conformité',
+      'Prévention des pertes alimentaires'
+    ],
+    featuresEn: [
+      'Real-time temperature monitoring',
+      'Instant personalized alerts',
+      'Automatic HACCP compliance',
+      'Temperature history',
+      'Compliance reports',
+      'Food loss prevention'
+    ],
     // Gains basés sur :
     // - Réduction pertes alimentaires (alertes précoces) : ~400$/mois
     // - Conformité HACCP automatisée : ~2h/semaine
@@ -74,6 +124,22 @@ export const AVAILABLE_MODULES: Module[] = [
     nameEn: 'Tips',
     descriptionFr: 'Répartition automatique et gestion des exceptions',
     descriptionEn: 'Automatic distribution and exception management',
+    featuresFr: [
+      'Répartition automatique des pourboires',
+      'Gestion des exceptions et ajustements',
+      'Conformité légale garantie',
+      'Historique complet des distributions',
+      'Rapports détaillés par employé',
+      'Intégration avec la paie'
+    ],
+    featuresEn: [
+      'Automatic tip distribution',
+      'Exception and adjustment management',
+      'Guaranteed legal compliance',
+      'Complete distribution history',
+      'Detailed reports per employee',
+      'Payroll integration'
+    ],
     // Gains basés sur :
     // - Élimination calculs manuels : ~3h/semaine
     // - Réduction erreurs de répartition : ~200$/mois
@@ -88,6 +154,20 @@ export const AVAILABLE_MODULES: Module[] = [
     nameEn: 'PRO',
     descriptionFr: 'Tous les modules inclus',
     descriptionEn: 'All modules included',
+    featuresFr: [
+      'Tous les modules Octogone',
+      'Support prioritaire',
+      'Formation complète incluse',
+      'Mises à jour illimitées',
+      'Accès à toutes les nouvelles fonctionnalités'
+    ],
+    featuresEn: [
+      'All Octogone modules',
+      'Priority support',
+      'Complete training included',
+      'Unlimited updates',
+      'Access to all new features'
+    ],
     // Forfait PRO = Tous les modules combinés
     // Total des gains : 1200 + 1000 + 700 + 300 = 3200$/mois
     // Total temps : 8 + 4 + 2 + 3 = 17h/semaine
