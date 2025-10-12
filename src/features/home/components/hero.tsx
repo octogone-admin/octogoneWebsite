@@ -11,6 +11,9 @@ import { OctogoneButton } from "@/components/ui/octogone-button";
 import { useScaleIn } from "@/hooks/use-scroll-scale";
 import { useParams } from "next/navigation";
 
+// ⚙️ CONFIGURATION - Ligne animée autour de l'octogone
+const ENABLE_ANIMATED_LINE = true; // Mettre à false pour désactiver l'animation de la ligne
+
 // Définition du type pour les logos des clients
 interface ClientLogo {
   id: number;
@@ -265,10 +268,11 @@ const Hero = () => {
 
   return (
     <section 
-      className="relative overflow-hidden flex items-center min-h-0 lg:min-h-screen"
+      className="relative overflow-hidden flex items-center min-h-0"
       aria-labelledby="hero-title"
       style={{ 
-        backgroundColor: 'var(--background)'
+        backgroundColor: 'var(--background)',
+        minHeight: 'calc(100vh - 128px)' // 80px nav + 48px banner en desktop
       }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full">
@@ -288,6 +292,7 @@ const Hero = () => {
                   style={{ zIndex: 1 }}
                 >
                   {/* SVG pour l'animation du contour - Octogone extérieur plus grand */}
+                  {ENABLE_ANIMATED_LINE && (
                   <svg 
                     className="absolute pointer-events-none" 
                     width="420"
@@ -314,6 +319,7 @@ const Hero = () => {
                       }}
                     />
                   </svg>
+                  )}
                   
                   {/* Octogone avec image */}
                   <div 
@@ -447,6 +453,7 @@ const Hero = () => {
                   }}
                 >
                   {/* SVG pour l'animation du contour - Desktop */}
+                  {ENABLE_ANIMATED_LINE && (
                   <svg 
                     className="absolute pointer-events-none" 
                     viewBox="0 0 140 140"
@@ -473,6 +480,7 @@ const Hero = () => {
                       }}
                     />
                   </svg>
+                  )}
                   
                   {/* Contenu de l'octogone avec clip-path */}
                   <div
