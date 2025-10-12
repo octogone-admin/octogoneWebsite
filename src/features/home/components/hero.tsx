@@ -271,9 +271,12 @@ const Hero = () => {
 
   return (
     <section 
-      className="relative bg-white overflow-hidden flex items-center"
+      className="relative overflow-hidden flex items-center"
       aria-labelledby="hero-title"
-      style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
+      style={{ 
+        minHeight: `calc(100vh - ${headerHeight}px)`,
+        backgroundColor: 'var(--background)'
+      }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full">
         {/* Fond décoratif */}
@@ -334,7 +337,7 @@ const Hero = () => {
                     transformOrigin: "center center",
                     transform: `scale(${octogoneScale}) rotate(${rotationDegrees}deg)`,
                     transition: 'transform 0.5s ease-out',
-                    backgroundColor: '#ffffff',
+                    backgroundColor: 'var(--surface)',
                     position: 'relative'
                   }}
                 >
@@ -416,21 +419,29 @@ const Hero = () => {
                         zIndex: 3,
                         transform: isActive ? 'scale(1.1)' : 'scale(1)',
                         boxShadow: isActive ? '0 10px 30px rgba(0,0,0,0.3)' : '0 4px 6px rgba(0,0,0,0.1)',
-                        backgroundColor: isActive ? getColorValue(oct.pastelColor) : '#ffffff',
+                        backgroundColor: isActive ? getColorValue(oct.pastelColor) : 'var(--surface)',
                         transition: 'all 0.5s linear'
                       }}
                       onMouseEnter={() => setHoveredOctogone(oct.id)}
                       onMouseLeave={() => setHoveredOctogone(null)}
                     >
                       <oct.LucideIcon 
-                        className={`w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 ${oct.color}`}
-                        style={{ transition: 'all 0.5s linear' }}
+                        className={`w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 ${isActive ? oct.color : ''}`}
+                        style={{ 
+                          transition: 'all 0.5s linear',
+                          color: isActive ? undefined : 'var(--on-surface)'
+                        }}
                       />
-                      <span className="text-[7px] xs:text-[8px] sm:text-[9px] lg:text-xs font-semibold text-marine-900 mt-0.5 xs:mt-1 text-center px-0.5 xs:px-1">
+                      <span className={`text-[7px] xs:text-[8px] sm:text-[9px] lg:text-xs font-semibold mt-0.5 xs:mt-1 text-center px-0.5 xs:px-1 ${isActive ? oct.color : ''}`} style={{
+                        color: isActive ? undefined : 'var(--on-surface)'
+                      }}>
                         {locale === 'fr' ? oct.titleFr : oct.titleEn}
                       </span>
                       {oct.id === 3 && isActive && (
-                        <div className="bg-white text-black px-4 py-1 rounded-sm text-[8px] xs:text-[9px] sm:text-[10px] lg:text-xs font-medium mt-1 antialiased">
+                        <div className="px-4 py-1 rounded-sm text-[8px] xs:text-[9px] sm:text-[10px] lg:text-xs font-medium mt-1 antialiased" style={{
+                          backgroundColor: 'var(--surface)',
+                          color: 'var(--on-surface)'
+                        }}>
                           {locale === 'fr' ? 'Bientôt' : 'Coming Soon'}
                         </div>
                       )}
@@ -447,7 +458,11 @@ const Hero = () => {
               <h1 
                 id="hero-title"
                 className="font-bold tracking-wide mb-2 xs:mb-3 lg:mb-4"
-                style={{ fontSize: 'clamp(1.5rem, 5vw, 4.5rem)', lineHeight: '1.1' }}
+                style={{ 
+                  color: 'var(--on-background)',
+                  fontSize: 'clamp(1.5rem, 5vw, 4.5rem)', 
+                  lineHeight: '1.1' 
+                }}
               >
                 {t('hero.title', { defaultValue: locale === 'fr' ? 'Opérer, automatiser, analyser, prédire' : 'Operate, automate, analyze, predict' })}
               </h1>
@@ -455,8 +470,12 @@ const Hero = () => {
               {/* Sous-titre - maintenant l'explication */}
               <div className="text-center lg:text-left">
                 <p 
-                  className="font-semibold text-marine-600 tracking-wide"
-                  style={{ fontSize: 'clamp(1.125rem, 3vw, 1.875rem)', lineHeight: '1.3' }}
+                  className="font-semibold tracking-wide"
+                  style={{ 
+                    color: 'var(--on-surface)',
+                    fontSize: 'clamp(1.125rem, 3vw, 1.875rem)', 
+                    lineHeight: '1.3' 
+                  }}
                 >
                   {locale === "fr" ? (
                     <>
@@ -486,7 +505,10 @@ const Hero = () => {
               {/* Description */}
               <p 
                 className="mt-0.5 xs:mt-1 lg:mt-2 max-w-2xl mx-auto lg:mx-0"
-                style={{ fontSize: 'clamp(0.875rem, 2vw, 1.25rem)' }}
+                style={{ 
+                  color: 'var(--on-surface)',
+                  fontSize: 'clamp(0.875rem, 2vw, 1.25rem)' 
+                }}
               >
                 {t('hero.description', { 
                   defaultValue: locale === 'fr' 

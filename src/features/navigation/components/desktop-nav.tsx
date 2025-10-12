@@ -117,11 +117,11 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                                 href={item.path}
                                 className={`block p-4 rounded-md transition-colors nav-item ${pathname.includes(item.path) ? "active-nav-item" : ""}`}
                               >
-                                <div className="text-lg font-medium text-marine-900 mb-2">
+                                <div className="text-lg font-medium mb-2" style={{ color: 'var(--on-background)' }}>
                                   {item.label}
                                 </div>
                                 {item.description && (
-                                  <p className="text-sm text-marine-500">
+                                  <p className="text-sm" style={{ color: 'var(--on-surface)' }}>
                                     {item.description}
                                   </p>
                                 )}

@@ -10,6 +10,7 @@ import { Route } from "@/types/routes";
 import { MobileDrawerProps } from "./types";
 import { Button } from "@/components/ui/button";
 import LanguageToggle from "./language-toggle";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
   Sheet,
   SheetContent,
@@ -157,12 +158,20 @@ export const ModernMobileNav: React.FC<MobileDrawerProps> = ({
 
         {/* Footer */}
         <SheetFooter className="flex flex-col gap-4">
-          {/* Language Toggle */}
-          <div className="flex items-center justify-center w-full">
-            <div className="flex items-center gap-2">
-              <Globe className="h-5 w-5 text-marine-500" />
-              <span className="text-marine-700">Changer de langue:</span>
-              <LanguageToggle currentLocale={locale} />
+          {/* Theme & Language Toggle */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-center w-full">
+              <div className="flex items-center gap-2">
+                <Globe className="h-5 w-5 text-marine-500 dark:text-dark-muted" />
+                <span className="text-marine-700 dark:text-dark-text">Changer de langue:</span>
+                <LanguageToggle currentLocale={locale} />
+              </div>
+            </div>
+            <div className="flex items-center justify-center w-full">
+              <div className="flex items-center gap-2">
+                <span className="text-marine-700 dark:text-dark-text">Thème:</span>
+                <ThemeToggle />
+              </div>
             </div>
           </div>
           

@@ -12,6 +12,7 @@ import { DesktopNav } from "./components/desktop-nav";
 import { ModernMobileNav } from "./components/modern-mobile-nav";
 import LanguageToggle from "./components/language-toggle";
 import AnnouncementBanner from "./components/announcement-banner";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NavigationProvider, useNavigation } from "./hooks/use-navigation";
 import type { DesktopNavProps } from "./types";
 import { useTranslation } from "../../../lib/i18n/client";
@@ -121,20 +122,23 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
 
       <header
         className={cn(
-          "fixed left-0 right-0 z-[60] transition-all duration-200 border-b",
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
+          isScrolled
+            ? "backdrop-blur-md shadow-lg border-b"
+            : "bg-transparent",
+          isAnnouncementVisible ? "mt-10" : "mt-0",
           {
-            "bg-white/80 backdrop-blur-lg shadow-sm border-gray-300":
-              isScrolled,
-            "bg-transparent border-gray-300":
-              !isScrolled && theme === "transparent",
-            "bg-white border-gray-300": !isScrolled && theme === "light",
-            "bg-marine-900 border-gray-700": !isScrolled && theme === "dark",
             "with-announcement":
               SHOW_ANNOUNCEMENT_BANNER && isAnnouncementVisible,
             "without-announcement":
               !SHOW_ANNOUNCEMENT_BANNER || !isAnnouncementVisible,
           },
         )}
+        style={isScrolled ? {
+          backgroundColor: 'var(--surface)',
+          opacity: 0.95,
+          borderColor: 'var(--outline)'
+        } : undefined}
       >
         {/* Progress bar */}
         <motion.div
@@ -172,21 +176,22 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="xl:hidden"
+                className="xl:hidden text-flutter_on_background dark:text-flutter_on_background_dark hover:bg-flutter_surface_variant dark:hover:bg-flutter_surface_variant_dark"
                 onClick={() => setIsOpen(true)}
               >
                 <Menu className="h-6 w-6" />
               </Button>
 
-              {/* Language Toggle */}
-              <div className="hidden xl:flex items-center mr-4">
+              {/* Theme Toggle & Language Toggle */}
+              <div className="hidden xl:flex items-center gap-2 mr-4">
+                <ThemeToggle />
                 <LanguageToggle currentLocale={locale} />
               </div>
 
               {/* CTA Button */}
               <Link
                 href={`/${locale}/contact`}
-                className="hidden xl:inline-flex items-center justify-center rounded-md px-3 py-2 text-base font-medium bg-gold-500 text-marine-900 hover:bg-gold-400 transition-colors btn-gold"
+                className="hidden xl:inline-flex items-center justify-center rounded-md px-3 py-2 text-base font-medium bg-gold-500 text-marine-900 hover:bg-gold-400 dark:bg-primary_color dark:text-marine-900 dark:hover:bg-gold-400 transition-colors btn-gold"
               >
                 {locale === "fr" ? "Réserver une démo" : "Book a demo"}
               </Link>

@@ -36,51 +36,82 @@
   }
 }
 
-/* Styles spécifiques pour le thème clair */
+/* Thème Light - Basé sur Flutter AppColors */
 :root {
-  /* Couleurs de marque */
-  --color-gold: #dcb26b;
-  --color-lightblue: #c7e6fa;
-  --color-marine: #002236;
+  /* Couleurs primaires (identiques en light/dark) */
+  --primary: #DCB26B;
+  --on-primary: #1F1F1F;
+  --primary-container: #DCB26B;
+  --on-primary-container: #1F1F1F;
 
-  /* Couleurs sémantiques */
-  --color-text-primary: var(--color-marine);
-  --color-text-secondary: #4a5568;
-  --color-text-muted: #718096;
+  /* Couleurs secondaires (identiques en light/dark) */
+  --secondary: #BADFF6;
+  --on-secondary: #1F1F1F;
+  --secondary-container: #BADFF6;
+  --on-secondary-container: #1F1F1F;
 
-  /* Arrière-plans */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: var(--color-lightblue);
-  --color-bg-accent: var(--color-marine);
+  /* Couleurs de fond - Light */
+  --background: #FAFAFA;
+  --on-background: #1F1F1F;
+  --surface: #FFFFFF;
+  --on-surface: #1F1F1F;
+  --surface-container: #FFFFFF;
+  --surface-variant: #FAF8F1;
+  --on-surface-variant: #1F1F1F;
 
-  /* Bordures */
-  --color-border-light: #e2e8f0;
-  --color-border-medium: #cbd5e0;
+  /* Couleurs de contour - Light */
+  --outline: #E5E5E5;
+  --outline-variant: #FFFFFF;
 
-  /* États */
-  --color-hover: color-mix(in srgb, var(--color-gold) 85%, black);
-  --color-focus: color-mix(in srgb, var(--color-lightblue) 85%, black);
-  --color-active: color-mix(in srgb, var(--color-marine) 85%, white);
+  /* Couleurs tertiaires - Light */
+  --tertiary: #FCF8F1;
+  --on-tertiary: #1F1F1F;
+
+  /* Couleurs d'erreur */
+  --error: #D32525;
+  --on-error: #FFFFFF;
+
+  /* Couleurs de succès */
+  --success: #BFD495;
+  --on-success: #1F1F1F;
 }
 
-/* Thème sombre */
+/* Thème Dark - Basé sur Flutter AppColors */
 .dark {
-  /* Couleurs sémantiques */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #e2e8f0;
-  --color-text-muted: #a0aec0;
+  /* Couleurs primaires (identiques en light/dark) */
+  --primary: #DCB26B;
+  --on-primary: #1F1F1F;
+  --primary-container: #DCB26B;
+  --on-primary-container: #1F1F1F;
 
-  /* Arrière-plans */
-  --color-bg-primary: var(--color-marine);
-  --color-bg-secondary: color-mix(in srgb, var(--color-marine) 85%, black);
-  --color-bg-accent: var(--color-gold);
+  /* Couleurs secondaires (identiques en light/dark) */
+  --secondary: #BADFF6;
+  --on-secondary: #1F1F1F;
+  --secondary-container: #BADFF6;
+  --on-secondary-container: #1F1F1F;
 
-  /* Bordures */
-  --color-border-light: #2d3748;
-  --color-border-medium: #4a5568;
+  /* Couleurs de fond - Dark */
+  --background: #1E1E1E;
+  --on-background: #E3E2E6;
+  --surface: #272525;
+  --on-surface: #E3E2E6;
+  --surface-container: #272525;
+  --surface-variant: #2D2A26;
+  --on-surface-variant: #E3E2E6;
 
-  /* États */
-  --color-hover: color-mix(in srgb, var(--color-gold) 85%, white);
-  --color-focus: color-mix(in srgb, var(--color-lightblue) 85%, white);
-  --color-active: color-mix(in srgb, var(--color-marine) 85%, black);
+  /* Couleurs de contour - Dark */
+  --outline: #404040;
+  --outline-variant: #FFFFFF;
+
+  /* Couleurs tertiaires - Dark */
+  --tertiary: #2D2A26;
+  --on-tertiary: #E3E2E6;
+
+  /* Couleurs d'erreur */
+  --error: #D32525;
+  --on-error: #E3E2E6;
+
+  /* Couleurs de succès */
+  --success: #BFD495;
+  --on-success: #1F1F1F;
 }

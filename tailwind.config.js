@@ -3,6 +3,7 @@ module.exports = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class', // Activation du dark mode par classe
   safelist: [
     // Couleurs marine
     'bg-marine-50', 'bg-marine-100', 'bg-marine-200', 'bg-marine-300', 'bg-marine-400', 'bg-marine-500', 'bg-marine-600', 'bg-marine-700', 'bg-marine-800', 'bg-marine-900',
@@ -34,6 +35,11 @@ module.exports = {
     'border-primary_color', 'border-secondary_color', 'border-outline_color',
     'hover:bg-primary_color', 'hover:bg-secondary_color', 'hover:bg-outline_color',
     'hover:text-primary_color', 'hover:text-secondary_color', 'hover:border-outline_color',
+    // Couleurs Flutter dark mode
+    'dark:bg-flutter_background_dark', 'dark:bg-flutter_surface_dark', 'dark:bg-flutter_surface_variant_dark',
+    'dark:text-flutter_on_background_dark', 'dark:text-flutter_on_surface_dark', 'dark:border-flutter_outline_dark',
+    'bg-flutter_background', 'bg-flutter_surface', 'bg-flutter_surface_variant', 'bg-flutter_tertiary',
+    'text-flutter_on_background', 'text-flutter_on_surface', 'border-flutter_outline_dark',
   ],
   theme: {
     screens: {
@@ -78,10 +84,29 @@ module.exports = {
         blue_pastel: '#B4D4FF',  // Bleu ciel pastel - Automatiser
         yellow_pastel: '#FFE5B4', // Jaune pastel - Analyser
         purple_pastel: '#C8B6FF', // Mauve pastel - Prédire (Cortex)
-        // Couleurs principales simplifiées
-        primary_color: '#dcb26b', // Couleur principale (gold-500)
-        secondary_color: '#BADFF6', // Couleur secondaire (bleu Cortex)
-        outline_color: '#E5E5E5', // Couleur des bordures
+        // Couleurs principales (identiques light/dark comme Flutter)
+        primary_color: '#DCB26B', // Primary Flutter
+        secondary_color: '#BADFF6', // Secondary Flutter
+        outline_color: '#E5E5E5', // Outline light
+        
+        // Couleurs Flutter Light
+        flutter_background: '#FAFAFA',
+        flutter_surface: '#FFFFFF',
+        flutter_surface_variant: '#FAF8F1',
+        flutter_tertiary: '#FCF8F1',
+        flutter_error: '#D32525',
+        flutter_success: '#BFD495',
+        flutter_on_background: '#1F1F1F',
+        flutter_on_surface: '#E3E2E6',
+        
+        // Couleurs Flutter Dark
+        flutter_background_dark: '#1E1E1E',
+        flutter_surface_dark: '#272525',
+        flutter_surface_variant_dark: '#2D2A26',
+        flutter_tertiary_dark: '#2D2A26',
+        flutter_outline_dark: '#404040',
+        flutter_on_background_dark: '#E3E2E6',
+        flutter_on_surface_dark: '#E3E2E6',
       },
       backgroundImage: {
         'gradient-cortex': 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)',
