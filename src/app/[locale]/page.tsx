@@ -5,6 +5,7 @@ import Hero from "@/features/home/components/hero";
 import PartnersSection from "@/features/home/components/partners-section";
 import TargetSectors from "@/features/secteurs/components/target-sectors";
 import HowItWorks from "@/features/secteurs/components/how-it-works";
+import ROICalculatorAdvanced from "@/features/roi-calculator/components/roi-calculator-advanced";
 import FeaturesSection from "@/features/home/components/features-section";
 import { DashboardSection } from "@/features/home/components/dashboard-section";
 import ModulesSection from "@/features/home/components/modules-section-flip-fixed";
@@ -76,6 +77,9 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
         
         {/* Section Comment ça marche */}
         <HowItWorks />
+        
+        {/* Section ROI Calculator */}
+        <ROICalculatorAdvanced />
         
         {/* Section 1 - Fonctionnalités principales */}
         <FeaturesSection />
