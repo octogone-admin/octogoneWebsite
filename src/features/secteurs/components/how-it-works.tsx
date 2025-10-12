@@ -55,13 +55,13 @@ const HowItWorks = () => {
     <ResponsiveSection
       as="section"
       spacing="xxl"
-      className="bg-white"
+      style={{ backgroundColor: 'var(--background)' }}
     >
       <div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-marine-900 mb-6">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--on-secondary-container)' }}>
           {locale === "fr" ? "Comment ça marche ?" : "How does it work?"}
         </h2>
-        <p className="text-xl text-marine-700 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--on-surface-variant)' }}>
           {locale === "fr" 
             ? "Un processus simple en 4 étapes pour transformer la gestion de vos restaurants"
             : "A simple 4-step process to transform your restaurant management"
@@ -75,35 +75,35 @@ const HowItWorks = () => {
           {steps.map((step, index) => (
             <div key={step.id} className="relative">
               {/* Numéro en badge */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg z-20"
-                   style={{ backgroundColor: '#dcb26b' }}>
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-lg z-20"
+                   style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)' }}>
                 {step.id}
               </div>
               
               {/* Carte principale */}
-              <div className="relative h-96 rounded-xl shadow-lg bg-white border-2"
-                   style={{ borderColor: '#E5E5E5' }}>
+              <div className="relative h-96 rounded-xl shadow-lg border-2"
+                   style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
                 
                 {/* Contenu de la carte */}
                 <div className="relative z-10 p-8 text-center h-full flex flex-col">
                   {/* Icône - position fixe */}
                   <div className="flex justify-center mt-4 mb-6">
                     <div className="w-20 h-20 rounded-full flex items-center justify-center"
-                         style={{ backgroundColor: '#BADFF6' }}>
-                      <step.icon className="w-10 h-10 text-marine-900" />
+                         style={{ backgroundColor: 'var(--secondary-container)' }}>
+                      <step.icon className="w-10 h-10" style={{ color: 'var(--on-secondary-container)' }} />
                     </div>
                   </div>
                   
                   {/* Titre - hauteur fixe */}
                   <div className="h-16 flex items-center justify-center mb-4">
-                    <h3 className="text-xl font-bold text-marine-900 text-center leading-tight">
+                    <h3 className="text-xl font-bold text-center leading-tight" style={{ color: 'var(--on-surface)' }}>
                       {locale === "fr" ? step.titleFr : step.titleEn}
                     </h3>
                   </div>
                   
                   {/* Description - avec flex-1 pour occuper l'espace restant */}
                   <div className="flex-1 flex items-start justify-center">
-                    <p className="text-marine-700 leading-relaxed text-center px-2">
+                    <p className="leading-relaxed text-center px-2" style={{ color: 'var(--on-surface-variant)' }}>
                       {locale === "fr" ? step.descFr : step.descEn}
                     </p>
                   </div>
@@ -116,22 +116,22 @@ const HowItWorks = () => {
 
       {/* Service de conciergerie */}
       <div className="mt-8 max-w-7xl mx-auto">
-        <div className="bg-white rounded-2xl p-8 border-2 flex items-center space-x-8 shadow-lg" 
-             style={{ borderColor: '#E5E5E5' }}>
+        <div className="rounded-2xl p-8 border-2 flex items-center space-x-8 shadow-lg" 
+             style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
           
           {/* Icône à gauche */}
           <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0"
-               style={{ backgroundColor: '#BADFF6' }}>
-            <Headphones className="w-12 h-12 text-marine-900" />
+               style={{ backgroundColor: 'var(--secondary-container)' }}>
+            <Headphones className="w-12 h-12" style={{ color: 'var(--on-secondary-container)' }} />
           </div>
           
           {/* Contenu */}
           <div className="flex-1">
-            <h3 className="text-2xl font-bold text-marine-900 mb-4">
+            <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--on-surface)' }}>
               {locale === "fr" ? "Service de conciergerie disponible" : "Concierge service available"}
             </h3>
             
-            <p className="text-lg text-marine-700 leading-relaxed">
+            <p className="text-lg leading-relaxed" style={{ color: 'var(--on-surface-variant)' }}>
               {locale === "fr" 
                 ? "Besoin d'un accompagnement personnalisé ? Notre service de conciergerie avec banque de temps dédiée est disponible sur demande. Contactez-nous pour en savoir plus."
                 : "Need personalized support? Our concierge service with dedicated time bank is available on request. Contact us to learn more."
