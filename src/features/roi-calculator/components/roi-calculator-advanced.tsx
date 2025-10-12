@@ -12,17 +12,20 @@ import {
   TrendingUp,
   Clock,
   Check,
-  Info
+  Info,
+  MessageCircle,
+  Package
 } from 'lucide-react';
 import { AVAILABLE_MODULES, LOCATION_RANGES, CALCULATION_CONFIG, INVENTORY_SAVINGS } from '../config/calculator-config';
 import { calculateROI, formatCurrency, formatHours } from '../utils/roi-calculations';
 
-// Map des icônes (seulement les 4 forfaits réels)
+// Map des icônes (5 forfaits)
 const ICON_MAP: Record<string, any> = {
   Warehouse,    // Inventaire
   ChefHat,      // Foodcost
   Thermometer,  // Thermomètre
-  DollarSign    // Pourboire
+  DollarSign,   // Pourboire
+  Package       // PRO (tous les modules)
 };
 
 interface ROICalculatorAdvancedProps {
@@ -39,6 +42,7 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
   const [hourlyCost, setHourlyCost] = useState(CALCULATION_CONFIG.defaultHourlyCost);
   const [inventoriesPerMonth, setInventoriesPerMonth] = useState(INVENTORY_SAVINGS.defaultInventoriesPerMonth);
   const [employeesPerInventory, setEmployeesPerInventory] = useState(INVENTORY_SAVINGS.defaultEmployeesPerInventory);
+  const [periodView, setPeriodView] = useState<'month' | 'year'>('year'); // Toggle mois/année
   const [roiResult, setRoiResult] = useState(calculateROI(1, [], CALCULATION_CONFIG.defaultHourlyCost, INVENTORY_SAVINGS.defaultInventoriesPerMonth));
   
   // Recalculer le ROI quand les paramètres changent
@@ -52,17 +56,54 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
     }
   }, [numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory, onSavingsCalculated]);
   
-  // Toggle module
+  // Toggle module avec logique exclusive pour PRO
   const toggleModule = (moduleId: string) => {
-    setSelectedModules(prev => 
-      prev.includes(moduleId)
-        ? prev.filter(id => id !== moduleId)
-        : [...prev, moduleId]
-    );
+    setSelectedModules(prev => {
+      // Si on clique sur PRO
+      if (moduleId === 'pro') {
+        // Si PRO est déjà sélectionné, on le désélectionne
+        if (prev.includes('pro')) {
+          return [];
+        }
+        // Sinon, on sélectionne uniquement PRO (désélectionne tout le reste)
+        return ['pro'];
+      }
+      
+      // Si on clique sur un module individuel
+      // On retire PRO si présent, puis on toggle le module
+      const withoutPro = prev.filter(id => id !== 'pro');
+      
+      if (withoutPro.includes(moduleId)) {
+        // Désélectionner le module
+        return withoutPro.filter(id => id !== moduleId);
+      } else {
+        // Ajouter le module
+        return [...withoutPro, moduleId];
+      }
+    });
   };
   
-  // Vérifier si le module Inventaire est sélectionné
-  const isInventorySelected = selectedModules.includes('inventory');
+  // Vérifier si le module Inventaire est sélectionné (ou PRO qui inclut tout)
+  const isInventorySelected = selectedModules.includes('inventory') || selectedModules.includes('pro');
+  
+  // Calculer le prix à la carte (somme des modules individuels)
+  const calculateIndividualPrice = () => {
+    const prices: Record<string, number> = {
+      'inventory': 69,
+      'foodcost': 79,
+      'thermometer': 59,
+      'tips': 89
+    };
+    
+    let total = 0;
+    selectedModules.forEach(moduleId => {
+      if (moduleId !== 'pro' && prices[moduleId]) {
+        total += prices[moduleId];
+      }
+    });
+    
+    return total * numberOfLocations;
+  };
   
   return (
     <div className="py-4" style={{ backgroundColor: 'var(--background)' }}>
@@ -198,11 +239,35 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
               </div>
             </div>
 
-            {/* Sélection des modules */}
+            {/* Sélection des forfaits */}
             <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
-              <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--on-surface)' }}>
-                {locale === "fr" ? "Modules à utiliser" : "Modules to use"}
-              </h3>
+              <div className="flex items-start justify-between mb-3">
+                <h3 className="text-lg font-bold" style={{ color: 'var(--on-surface)' }}>
+                  {locale === "fr" ? "Forfaits" : "Plans"}
+                </h3>
+                {selectedModules.length > 0 && !selectedModules.includes('pro') && (
+                  <div className="text-right">
+                    <span className="px-3 py-1 rounded-lg text-sm font-bold" style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)' }}>
+                      {formatCurrency(calculateIndividualPrice(), locale)}/
+                      {locale === "fr" ? "mois" : "mo"}
+                    </span>
+                    <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
+                      {locale === "fr" ? "À la carte" : "Individual"}
+                    </p>
+                  </div>
+                )}
+                {selectedModules.includes('pro') && (
+                  <div className="text-right">
+                    <span className="px-3 py-1 rounded-lg text-sm font-bold" style={{ backgroundColor: '#BFD495', color: '#1F1F1F' }}>
+                      {formatCurrency(roiResult.monthlySubscriptionCost, locale)}/
+                      {locale === "fr" ? "mois" : "mo"}
+                    </span>
+                    <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
+                      {locale === "fr" ? "Forfait PRO" : "PRO Plan"}
+                    </p>
+                  </div>
+                )}
+              </div>
               
               <div className="grid grid-cols-1 gap-2">
                 {AVAILABLE_MODULES.map((module) => {
@@ -215,8 +280,12 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                       onClick={() => toggleModule(module.id)}
                       className="p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer hover:scale-[1.02]"
                       style={{
-                        backgroundColor: isSelected ? 'var(--secondary-container)' : 'var(--surface)',
-                        borderColor: isSelected ? 'var(--secondary-container)' : 'var(--outline)'
+                        backgroundColor: isSelected 
+                          ? (module.id === 'pro' ? '#BFD495' : 'var(--secondary-container)')
+                          : 'var(--surface)',
+                        borderColor: isSelected 
+                          ? (module.id === 'pro' ? '#BFD495' : 'var(--secondary-container)')
+                          : 'var(--outline)'
                       }}
                     >
                       <div className="flex items-center gap-2 w-full">
@@ -225,12 +294,21 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                           {Icon && <Icon className="w-4 h-4" style={{ color: isSelected ? 'var(--on-surface)' : 'var(--on-secondary-container)' }} />}
                         </div>
                         <div className="flex-1 text-left">
-                          <span className="font-semibold text-sm">
+                          <span className="font-semibold text-sm" style={{ 
+                            color: isSelected && module.id === 'pro' ? '#1F1F1F' : 'var(--on-surface)'
+                          }}>
                             {locale === "fr" ? module.nameFr : module.nameEn}
                           </span>
+                          {module.id === 'pro' && isSelected && (
+                            <p className="text-xs mt-0.5" style={{ color: '#1F1F1F', opacity: 0.8 }}>
+                              {locale === "fr" ? "✓ Le meilleur choix" : "✓ Best choice"}
+                            </p>
+                          )}
                         </div>
                         {isSelected && (
-                          <Check className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--on-secondary-container)' }} />
+                          <Check className="w-5 h-5 flex-shrink-0" style={{ 
+                            color: module.id === 'pro' ? '#1F1F1F' : 'var(--on-secondary-container)' 
+                          }} />
                         )}
                       </div>
                     </div>
@@ -244,9 +322,35 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
           <div className="space-y-4">
             {/* Résumé des gains */}
             <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
-              <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--on-surface)' }}>
-                {locale === "fr" ? "Vos gains estimés (1ère année)" : "Your estimated savings (1st year)"}
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold" style={{ color: 'var(--on-surface)' }}>
+                  {locale === "fr" ? "Vos gains estimés" : "Your estimated savings"}
+                </h3>
+                
+                {/* Toggle Mois/Année */}
+                <div className="flex items-center gap-1 p-1 rounded-lg" style={{ backgroundColor: 'var(--surface-variant)' }}>
+                  <button
+                    onClick={() => setPeriodView('month')}
+                    className="px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                    style={{
+                      backgroundColor: periodView === 'month' ? 'var(--secondary-container)' : 'transparent',
+                      color: periodView === 'month' ? 'var(--on-secondary-container)' : 'var(--on-surface-variant)'
+                    }}
+                  >
+                    {locale === "fr" ? "Mois" : "Month"}
+                  </button>
+                  <button
+                    onClick={() => setPeriodView('year')}
+                    className="px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                    style={{
+                      backgroundColor: periodView === 'year' ? 'var(--secondary-container)' : 'transparent',
+                      color: periodView === 'year' ? 'var(--on-secondary-container)' : 'var(--on-surface-variant)'
+                    }}
+                  >
+                    {locale === "fr" ? "Année" : "Year"}
+                  </button>
+                </div>
+              </div>
               
               {selectedModules.length === 0 ? (
                 <p className="text-center py-6 text-sm" style={{ color: 'var(--on-surface-variant)' }}>
@@ -257,77 +361,94 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                 </p>
               ) : (
                 <div className="space-y-3">
-                  {/* Gains monétaires */}
-                  <div className="flex items-center gap-3 p-3 rounded-lg border-2" style={{ borderColor: 'var(--outline)' }}>
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                         style={{ backgroundColor: 'var(--secondary-container)' }}>
-                      <DollarSign className="w-5 h-5" style={{ color: 'var(--on-secondary-container)' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs mb-0.5" style={{ color: 'var(--on-surface-variant)' }}>
-                        {locale === "fr" ? "Économies monétaires" : "Money savings"}
-                      </p>
-                      <p className="text-xl font-bold" style={{ color: 'var(--on-surface)' }}>
-                        {formatCurrency(roiResult.yearlyMoneySavings, locale)}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Gains de temps */}
-                  <div className="flex items-center gap-3 p-3 rounded-lg border-2" style={{ borderColor: 'var(--outline)' }}>
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                         style={{ backgroundColor: 'var(--secondary-container)' }}>
-                      <Clock className="w-5 h-5" style={{ color: 'var(--on-secondary-container)' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs mb-0.5" style={{ color: 'var(--on-surface-variant)' }}>
-                        {locale === "fr" ? "Temps économisé" : "Time saved"}
-                      </p>
-                      <p className="text-xl font-bold" style={{ color: 'var(--on-surface)' }}>
-                        {formatHours(roiResult.yearlyTimeSavings, locale)}
-                      </p>
-                      <p className="text-xs mt-0.5" style={{ color: 'var(--on-surface-variant)' }}>
-                        {locale === "fr" ? "Valeur : " : "Value: "}
-                        {formatCurrency(roiResult.timeSavingsValue, locale)}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* ROI */}
-                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--secondary-container)' }}>
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                         style={{ backgroundColor: 'var(--surface)' }}>
-                      <TrendingUp className="w-5 h-5" style={{ color: 'var(--inverse-surface)' }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs mb-0.5" style={{ color: 'var(--on-secondary-container)' }}>
-                        {locale === "fr" ? "Retour sur investissement" : "Return on investment"}
-                      </p>
-                      <p className="text-2xl font-bold" style={{ color: 'var(--on-secondary-container)' }}>
-                        {Math.round(roiResult.roiPercentage)}%
-                      </p>
-                      <p className="text-xs mt-0.5" style={{ color: 'var(--on-secondary-container)' }}>
-                        {locale === "fr" ? "Rentabilisé en " : "Payback in "}
-                        {Math.ceil(roiResult.paybackPeriodMonths)}
-                        {locale === "fr" ? " mois" : " months"}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Détails des coûts */}
-                  <div className="pt-3 border-t" style={{ borderColor: 'var(--outline)' }}>
-                    <p className="text-xs mb-1.5" style={{ color: 'var(--on-surface-variant)' }}>
-                      {locale === "fr" ? "Coût mensuel : " : "Monthly cost: "}
-                      <span className="font-semibold" style={{ color: 'var(--on-surface)' }}>
-                        {formatCurrency(roiResult.monthlySubscriptionCost, locale)}
-                      </span>
+                  {/* Détails du calcul - EN PREMIER */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium mb-3" style={{ color: 'var(--on-surface-variant)' }}>
+                      {locale === "fr" ? "Détail du calcul :" : "Calculation details:"}
                     </p>
-                    <p className="text-xs mb-2" style={{ color: 'var(--on-surface-variant)' }}>
-                      {locale === "fr" ? "Gains nets annuels : " : "Net annual savings: "}
-                      <span className="font-semibold" style={{ color: 'var(--on-surface)' }}>
-                        {formatCurrency(roiResult.netYearlySavings, locale)}
+                    
+                    {/* Ligne 1 : Gains totaux */}
+                    <div className="flex items-center justify-between p-2 rounded" style={{ backgroundColor: 'var(--surface-variant)' }}>
+                      <span className="text-sm" style={{ color: 'var(--on-surface-variant)' }}>
+                        {locale === "fr" ? "Gains totaux" : "Total savings"}
                       </span>
+                      <span className="text-base font-bold" style={{ color: 'var(--on-surface)' }}>
+                        + {formatCurrency(
+                          periodView === 'month' 
+                            ? (roiResult.monthlyMoneySavings + roiResult.monthlyTimeSavings * hourlyCost)
+                            : (roiResult.yearlyMoneySavings + roiResult.timeSavingsValue), 
+                          locale
+                        )}
+                      </span>
+                    </div>
+
+                    {/* Ligne 2 : Coût */}
+                    <div className="flex items-center justify-between p-2 rounded" style={{ backgroundColor: 'var(--surface-variant)' }}>
+                      <span className="text-sm" style={{ color: 'var(--on-surface-variant)' }}>
+                        {locale === "fr" ? "Coût Octogone" : "Octogone cost"}
+                      </span>
+                      <span className="text-base font-bold" style={{ color: 'var(--on-surface)' }}>
+                        - {formatCurrency(periodView === 'month' ? roiResult.monthlySubscriptionCost : roiResult.yearlySubscriptionCost, locale)}
+                      </span>
+                    </div>
+
+                    {/* Ligne séparatrice */}
+                    <div className="border-t-2 my-2" style={{ borderColor: 'var(--outline)' }}></div>
+                  </div>
+
+                  {/* RÉSULTATS FINAUX - EN DERNIER */}
+                  <div className="space-y-3 pt-4">
+                    <p className="text-sm font-bold" style={{ color: 'var(--on-surface)' }}>
+                      {locale === "fr" ? "Vos résultats :" : "Your results:"}
                     </p>
+
+                    {/* ROI et Gains nets - Côte à côte */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* ROI % */}
+                      <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--secondary-container)' }}>
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                               style={{ backgroundColor: 'var(--surface)' }}>
+                            <TrendingUp className="w-4 h-4" style={{ color: 'var(--inverse-surface)' }} />
+                          </div>
+                          <p className="text-xs font-medium" style={{ color: 'var(--on-secondary-container)' }}>
+                            {locale === "fr" ? "ROI" : "ROI"}
+                          </p>
+                        </div>
+                        <p className="text-3xl font-bold mb-1" style={{ color: 'var(--on-secondary-container)' }}>
+                          {Math.round(roiResult.roiPercentage)}%
+                        </p>
+                        <p className="text-xs" style={{ color: 'var(--on-secondary-container)', opacity: 0.8 }}>
+                          {locale === "fr" ? "Rentabilisé en " : "Payback in "}
+                          {Math.ceil(roiResult.paybackPeriodMonths)}
+                          {locale === "fr" ? " mois" : " months"}
+                        </p>
+                      </div>
+
+                      {/* Gains nets */}
+                      <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--secondary-container)' }}>
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                               style={{ backgroundColor: 'var(--surface)' }}>
+                            <DollarSign className="w-4 h-4" style={{ color: 'var(--inverse-surface)' }} />
+                          </div>
+                          <p className="text-xs font-medium" style={{ color: 'var(--on-secondary-container)' }}>
+                            {locale === "fr" ? "Gains nets" : "Net profit"}
+                          </p>
+                        </div>
+                        <p className="text-3xl font-bold mb-1" style={{ color: 'var(--on-secondary-container)' }}>
+                          {formatCurrency(periodView === 'month' ? roiResult.netYearlySavings / 12 : roiResult.netYearlySavings, locale).replace(/\s/g, '')}
+                        </p>
+                        <p className="text-xs" style={{ color: 'var(--on-secondary-container)', opacity: 0.8 }}>
+                          {locale === "fr" 
+                            ? (periodView === 'month' ? "par mois" : "par année")
+                            : (periodView === 'month' ? "per month" : "per year")
+                          }
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Note frais de démarrage */}
                     <div className="flex items-start gap-2 p-2 rounded-lg" style={{ backgroundColor: 'var(--surface-variant)' }}>
                       <Info className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: 'var(--on-surface-variant)' }} />
                       <p className="text-xs" style={{ color: 'var(--on-surface-variant)' }}>
@@ -347,9 +468,10 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
               <div className="text-center pt-2">
                 <OctogoneButton
                   href={`/${locale}/contact`}
-                  variant="secondary"
+                  variant="primary"
                   size="md"
                 >
+                  <MessageCircle className="w-5 h-5" />
                   {locale === "fr" ? "Discuter de mon projet" : "Discuss my project"}
                 </OctogoneButton>
               </div>

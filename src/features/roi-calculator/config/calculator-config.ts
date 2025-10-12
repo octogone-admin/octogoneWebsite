@@ -81,6 +81,19 @@ export const AVAILABLE_MODULES: Module[] = [
     monthlySavingsPerLocation: 300,
     timesSavedPerWeekPerLocation: 3,
     icon: 'DollarSign'
+  },
+  {
+    id: 'pro',
+    nameFr: 'PRO',
+    nameEn: 'PRO',
+    descriptionFr: 'Tous les modules inclus',
+    descriptionEn: 'All modules included',
+    // Forfait PRO = Tous les modules combinés
+    // Total des gains : 1200 + 1000 + 700 + 300 = 3200$/mois
+    // Total temps : 8 + 4 + 2 + 3 = 17h/semaine
+    monthlySavingsPerLocation: 3200,
+    timesSavedPerWeekPerLocation: 17,
+    icon: 'Package'
   }
 ];
 

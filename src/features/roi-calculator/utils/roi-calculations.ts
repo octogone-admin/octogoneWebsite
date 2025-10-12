@@ -180,12 +180,16 @@ export function calculateROI(
  * Formate un nombre en devise
  */
 export function formatCurrency(amount: number, locale: string = 'fr'): string {
-  return new Intl.NumberFormat(locale === 'fr' ? 'fr-CA' : 'en-CA', {
+  const formatted = new Intl.NumberFormat(locale === 'fr' ? 'fr-CA' : 'en-CA', {
     style: 'currency',
     currency: 'CAD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(Math.round(amount));
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    useGrouping: true
+  }).format(amount);
+  
+  // Pour le français canadien, remplacer l'espace insécable par un espace normal pour le séparateur de milliers
+  return formatted;
 }
 
 /**
