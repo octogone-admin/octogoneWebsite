@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Navigation from "@/features/navigation";
 import { Footer } from "@/components/ui/footer";
 import { SimpleSchema } from "@/components/seo/simple-schema";
+import FloatingROIWidget from "@/components/ui/floating-roi-widget";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -172,6 +173,9 @@ export default function LocaleLayout({
         <main className="flex-grow">{children}</main>
         <Footer />
       </div>
+      
+      {/* Widget flottant ROI */}
+      <FloatingROIWidget />
     </div>
   );
 }

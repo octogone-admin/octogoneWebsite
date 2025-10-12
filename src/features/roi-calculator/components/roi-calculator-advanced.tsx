@@ -25,7 +25,11 @@ const ICON_MAP: Record<string, any> = {
   DollarSign    // Pourboire
 };
 
-export default function ROICalculatorAdvanced() {
+interface ROICalculatorAdvancedProps {
+  onSavingsCalculated?: (savings: number) => void;
+}
+
+export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalculatorAdvancedProps) {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   
@@ -41,7 +45,12 @@ export default function ROICalculatorAdvanced() {
   useEffect(() => {
     const result = calculateROI(numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory);
     setRoiResult(result);
-  }, [numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory]);
+    
+    // Notifier le parent si callback fourni
+    if (onSavingsCalculated && selectedModules.length > 0) {
+      onSavingsCalculated(result.netYearlySavings);
+    }
+  }, [numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory, onSavingsCalculated]);
   
   // Toggle module
   const toggleModule = (moduleId: string) => {
