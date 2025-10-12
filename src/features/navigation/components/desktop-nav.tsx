@@ -138,18 +138,26 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                                   }}
                                   onMouseEnter={(e) => {
                                     e.currentTarget.style.backgroundColor = 'var(--secondary-container)';
+                                    const title = e.currentTarget.querySelector('.item-title') as HTMLElement;
+                                    const desc = e.currentTarget.querySelector('.item-description') as HTMLElement;
+                                    if (title) title.style.color = 'var(--on-secondary-container)';
+                                    if (desc) desc.style.color = 'var(--on-secondary-container)';
                                   }}
                                   onMouseLeave={(e) => {
                                     if (!isActive) {
                                       e.currentTarget.style.backgroundColor = 'transparent';
+                                      const title = e.currentTarget.querySelector('.item-title') as HTMLElement;
+                                      const desc = e.currentTarget.querySelector('.item-description') as HTMLElement;
+                                      if (title) title.style.color = 'var(--on-background)';
+                                      if (desc) desc.style.color = 'var(--on-surface-variant)';
                                     }
                                   }}
                                 >
-                                  <div className="text-lg font-medium mb-2" style={{ color: 'var(--on-background)' }}>
+                                  <div className="item-title text-lg font-medium mb-2" style={{ color: isActive ? 'var(--on-secondary-container)' : 'var(--on-background)' }}>
                                     {item.label}
                                   </div>
                                   {item.description && (
-                                    <p className="text-sm" style={{ color: 'var(--on-surface-variant)' }}>
+                                    <p className="item-description text-sm" style={{ color: isActive ? 'var(--on-secondary-container)' : 'var(--on-surface-variant)' }}>
                                       {item.description}
                                     </p>
                                   )}
