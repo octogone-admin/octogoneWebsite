@@ -273,6 +273,9 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                 {AVAILABLE_MODULES.map((module) => {
                   const Icon = ICON_MAP[module.icon];
                   const isSelected = selectedModules.includes(module.id);
+                  const isPro = module.id === 'pro';
+                  const isProSelected = selectedModules.includes('pro');
+                  const isIncludedInPro = isProSelected && !isPro; // Modules inclus dans PRO
                   
                   return (
                     <div
@@ -281,11 +284,12 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                       className="p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer hover:scale-[1.02]"
                       style={{
                         backgroundColor: isSelected 
-                          ? (module.id === 'pro' ? '#BFD495' : 'var(--secondary-container)')
+                          ? (isPro ? '#BFD495' : 'var(--secondary-container)')
                           : 'var(--surface)',
                         borderColor: isSelected 
-                          ? (module.id === 'pro' ? '#BFD495' : 'var(--secondary-container)')
-                          : 'var(--outline)'
+                          ? (isPro ? '#BFD495' : 'var(--secondary-container)')
+                          : 'var(--outline)',
+                        pointerEvents: isIncludedInPro ? 'none' : 'auto'
                       }}
                     >
                       <div className="flex items-center gap-2 w-full">
@@ -296,20 +300,25 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                         <div className="flex-1 text-left">
                           <div className="flex items-center gap-2">
                             <span className="font-semibold text-sm" style={{ 
-                              color: isSelected && module.id === 'pro' ? '#1F1F1F' : 'var(--on-surface)'
+                              color: isSelected && isPro ? '#1F1F1F' : 'var(--on-surface)'
                             }}>
                               {locale === "fr" ? module.nameFr : module.nameEn}
                             </span>
+                            {isIncludedInPro && (
+                              <span className="text-xs" style={{ color: 'var(--on-surface-variant)', opacity: 0.8 }}>
+                                {locale === "fr" ? "(inclus)" : "(included)"}
+                              </span>
+                            )}
                           </div>
                         </div>
-                        {module.id === 'pro' && isSelected && (
+                        {isPro && isSelected && (
                           <span className="text-xs mr-2" style={{ color: '#1F1F1F', opacity: 0.8 }}>
                             {locale === "fr" ? "✓ Le meilleur choix" : "✓ Best choice"}
                           </span>
                         )}
-                        {isSelected && (
+                        {(isSelected || isIncludedInPro) && (
                           <Check className="w-5 h-5 flex-shrink-0" style={{ 
-                            color: module.id === 'pro' ? '#1F1F1F' : 'var(--on-secondary-container)' 
+                            color: isPro ? '#1F1F1F' : 'var(--on-surface-variant)' 
                           }} />
                         )}
                       </div>
