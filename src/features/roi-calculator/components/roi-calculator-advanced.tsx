@@ -112,12 +112,36 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
         <h2 className="text-2xl sm:text-3xl font-bold mb-2" style={{ color: 'var(--on-background)' }}>
           {locale === "fr" ? "Calculez votre retour sur investissement" : "Calculate your return on investment"}
         </h2>
-        <p className="text-sm sm:text-base" style={{ color: 'var(--on-surface-variant)' }}>
+        <p className="text-sm sm:text-base mb-4" style={{ color: 'var(--on-surface-variant)' }}>
           {locale === "fr" 
             ? "Découvrez combien vous pourriez économiser avec Octogone"
             : "Discover how much you could save with Octogone"
           }
         </p>
+        
+        {/* Toggle Mois/Année */}
+        <div className="flex items-center justify-center gap-1 p-1 rounded-lg inline-flex" style={{ backgroundColor: 'var(--surface-variant)' }}>
+          <button
+            onClick={() => setPeriodView('month')}
+            className="px-4 py-2 rounded text-sm font-semibold transition-all duration-200"
+            style={{
+              backgroundColor: periodView === 'month' ? 'var(--secondary-container)' : 'transparent',
+              color: periodView === 'month' ? 'var(--on-secondary-container)' : 'var(--on-surface-variant)'
+            }}
+          >
+            {locale === "fr" ? "Mois" : "Month"}
+          </button>
+          <button
+            onClick={() => setPeriodView('year')}
+            className="px-4 py-2 rounded text-sm font-semibold transition-all duration-200"
+            style={{
+              backgroundColor: periodView === 'year' ? 'var(--secondary-container)' : 'transparent',
+              color: periodView === 'year' ? 'var(--on-secondary-container)' : 'var(--on-surface-variant)'
+            }}
+          >
+            {locale === "fr" ? "Année" : "Year"}
+          </button>
+        </div>
       </div>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -175,20 +199,26 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                   </div>
                 </div>
 
-                {/* Inventaires par mois (seulement si module Inventaire sélectionné) */}
+                {/* Inventaires (seulement si module Inventaire sélectionné) */}
                 {isInventorySelected && (
                   <>
                     <div>
                       <label className="block text-sm font-medium mb-2" style={{ color: 'var(--on-surface)' }}>
-                        {locale === "fr" ? "Nombre d'inventaires par mois" : "Number of inventories per month"}
+                        {locale === "fr" 
+                          ? (periodView === 'month' ? "Nombre d'inventaires par mois" : "Nombre d'inventaires par année")
+                          : (periodView === 'month' ? "Number of inventories per month" : "Number of inventories per year")
+                        }
                       </label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
                           min="1"
-                          max="30"
-                          value={inventoriesPerMonth}
-                          onChange={(e) => setInventoriesPerMonth(Number(e.target.value))}
+                          max={periodView === 'month' ? 30 : 360}
+                          value={periodView === 'month' ? inventoriesPerMonth : inventoriesPerMonth * 12}
+                          onChange={(e) => {
+                            const value = Number(e.target.value);
+                            setInventoriesPerMonth(periodView === 'month' ? value : Math.round(value / 12));
+                          }}
                           className="flex-1 px-4 py-2 rounded-lg border-2"
                           style={{
                             backgroundColor: 'var(--surface-variant)',
@@ -197,7 +227,10 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                           }}
                         />
                         <span className="text-sm font-medium" style={{ color: 'var(--on-surface)' }}>
-                          {locale === "fr" ? "/mois" : "/month"}
+                          {periodView === 'month' 
+                            ? (locale === "fr" ? "/mois" : "/mo")
+                            : (locale === "fr" ? "/an" : "/yr")
+                          }
                         </span>
                       </div>
                     </div>
@@ -248,8 +281,8 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                 {selectedModules.length > 0 && !selectedModules.includes('pro') && (
                   <div className="text-right">
                     <span className="px-3 py-1 rounded-lg text-sm font-bold" style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)' }}>
-                      {formatCurrency(calculateIndividualPrice(), locale)}/
-                      {locale === "fr" ? "mois" : "mo"}
+                      {formatCurrency(periodView === 'month' ? calculateIndividualPrice() : calculateIndividualPrice() * 12, locale)}/
+                      {locale === "fr" ? (periodView === 'month' ? "mois" : "an") : (periodView === 'month' ? "mo" : "yr")}
                     </span>
                     <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
                       {locale === "fr" ? "À la carte" : "Individual"}
@@ -259,8 +292,8 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                 {selectedModules.includes('pro') && (
                   <div className="text-right">
                     <span className="px-3 py-1 rounded-lg text-sm font-bold" style={{ backgroundColor: '#BFD495', color: '#1F1F1F' }}>
-                      {formatCurrency(roiResult.monthlySubscriptionCost, locale)}/
-                      {locale === "fr" ? "mois" : "mo"}
+                      {formatCurrency(periodView === 'month' ? roiResult.monthlySubscriptionCost : roiResult.monthlySubscriptionCost * 12, locale)}/
+                      {locale === "fr" ? (periodView === 'month' ? "mois" : "an") : (periodView === 'month' ? "mo" : "yr")}
                     </span>
                     <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
                       {locale === "fr" ? "Forfait PRO" : "PRO Plan"}
@@ -394,35 +427,9 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
 
             {/* Résumé des gains */}
             <div className="rounded-xl p-4 border-2" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold" style={{ color: 'var(--on-surface)' }}>
-                  {locale === "fr" ? "Vos gains estimés" : "Your estimated savings"}
-                </h3>
-                
-                {/* Toggle Mois/Année */}
-                <div className="flex items-center gap-1 p-1 rounded-lg" style={{ backgroundColor: 'var(--surface-variant)' }}>
-                  <button
-                    onClick={() => setPeriodView('month')}
-                    className="px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
-                    style={{
-                      backgroundColor: periodView === 'month' ? 'var(--secondary-container)' : 'transparent',
-                      color: periodView === 'month' ? 'var(--on-secondary-container)' : 'var(--on-surface-variant)'
-                    }}
-                  >
-                    {locale === "fr" ? "Mois" : "Month"}
-                  </button>
-                  <button
-                    onClick={() => setPeriodView('year')}
-                    className="px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
-                    style={{
-                      backgroundColor: periodView === 'year' ? 'var(--secondary-container)' : 'transparent',
-                      color: periodView === 'year' ? 'var(--on-secondary-container)' : 'var(--on-surface-variant)'
-                    }}
-                  >
-                    {locale === "fr" ? "Année" : "Year"}
-                  </button>
-                </div>
-              </div>
+              <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--on-surface)' }}>
+                {locale === "fr" ? "Vos gains estimés" : "Your estimated savings"}
+              </h3>
               
               {selectedModules.length === 0 ? (
                 <p className="text-center py-6 text-sm" style={{ color: 'var(--on-surface-variant)' }}>
