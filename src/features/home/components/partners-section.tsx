@@ -44,19 +44,21 @@ export default function PartnersSection() {
   };
 
   return (
-    <ResponsiveSection
-      as="section"
-      bgColor="bg-white"
-      spacing="lg"
-      className="relative"
-    >
-      <div className="w-full" role="region" aria-label={locale === 'fr' ? 'Nos clients partenaires' : 'Our partner clients'}>
-        <LogoMarquee
-          logos={clientLogos}
-          title={t('hero.clients.title', { defaultValue: locale === "fr" ? "Partenaire de leur succès" : "Partner in their success" })}
-          titleClassName="text-sm lg:text-lg"
-        />
-      </div>
-    </ResponsiveSection>
+    <div className="px-4 sm:px-8 py-4 sm:py-8" style={{ backgroundColor: 'var(--background)' }}>
+      <ResponsiveSection
+        as="section"
+        bgColor="bg-white"
+        spacing="lg"
+        className="relative rounded-2xl"
+      >
+        <div className="w-full" role="region" aria-label={locale === 'fr' ? 'Nos clients partenaires' : 'Our partner clients'}>
+          <LogoMarquee
+            logos={clientLogos}
+            title={t('hero.clients.title', { defaultValue: locale === "fr" ? "Partenaire de leur succès" : "Partner in their success" })}
+            titleClassName="text-sm lg:text-lg"
+          />
+        </div>
+      </ResponsiveSection>
+    </div>
   );
 }

@@ -80,13 +80,13 @@ export function LogoMarquee({
             {partnerLogos.map((logo) => (
               <div
                 key={logo.id}
-                className="flex-shrink-0 mx-8 h-24 w-40 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
+                className="flex-shrink-0 mx-8 h-32 w-52 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
               >
                 <Image
                   src={logo.logo}
                   alt={logo.alt}
-                  width={140}
-                  height={90}
+                  width={180}
+                  height={120}
                   className="object-contain max-h-full"
                 />
               </div>
@@ -96,13 +96,13 @@ export function LogoMarquee({
             {partnerLogos.map((logo) => (
               <div
                 key={`duplicate-${logo.id}`}
-                className="flex-shrink-0 mx-8 h-24 w-40 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
+                className="flex-shrink-0 mx-8 h-32 w-52 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
               >
                 <Image
                   src={logo.logo}
                   alt={logo.alt}
-                  width={140}
-                  height={90}
+                  width={180}
+                  height={120}
                   className="object-contain max-h-full"
                 />
               </div>

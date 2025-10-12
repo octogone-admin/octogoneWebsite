@@ -114,7 +114,7 @@ const TargetSectors = () => {
   };
 
   return (
-    <div className="px-4 sm:px-8">
+    <div className="px-4 sm:px-8 py-4 sm:py-8" style={{ backgroundColor: 'var(--background)' }}>
       <ResponsiveSection
         as="section"
         spacing="xxl"
@@ -142,7 +142,7 @@ const TargetSectors = () => {
       <div className="relative z-10">
         {/* En-tête de section */}
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-marine-900 mb-8">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8" style={{ color: 'var(--on-secondary-container)' }}>
             {locale === "fr" ? "Connecté à votre modèle d'affaires" : "Connected to your business model"}
           </h2>
 
@@ -348,22 +348,22 @@ const TargetSectors = () => {
               
               {/* Paragraphe d'encouragement pour Types et Styles */}
               <div className="mt-12 text-center max-w-3xl mx-auto">
-                <h3 className="text-2xl lg:text-3xl font-bold text-marine-900 mb-6">
+                <h3 className="text-2xl lg:text-3xl font-bold mb-6" style={{ color: 'var(--on-secondary-container)' }}>
                   {locale === "fr" ? "Est-ce qu'Octogone s'adresse à mon entreprise ?" : "Is Octogone right for my business?"}
                 </h3>
-                <p className="text-marine-700 text-lg leading-relaxed">
+                <p className="text-lg leading-relaxed" style={{ color: 'var(--on-secondary-container)' }}>
                   {locale === "fr" ? (
                     <>
                       Octogone s'adapte à tous les types d'établissements et de modèles d'affaires. 
                       Si vous pensez que notre solution pourrait vous être utile, 
-                      <span className="font-semibold text-marine-900"> n'hésitez pas à contacter notre service à la clientèle</span> 
+                      <span className="font-semibold"> n'hésitez pas à contacter notre service à la clientèle</span> 
                       {" "}pour discuter de vos besoins spécifiques.
                     </>
                   ) : (
                     <>
                       Octogone adapts to all types of establishments and business models. 
                       If you think our solution could be useful to you, 
-                      <span className="font-semibold text-marine-900"> don't hesitate to contact our customer service</span> 
+                      <span className="font-semibold"> don't hesitate to contact our customer service</span> 
                       {" "}to discuss your specific needs.
                     </>
                   )}

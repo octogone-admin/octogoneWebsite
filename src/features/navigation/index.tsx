@@ -128,7 +128,7 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
           "fixed left-0 right-0 z-50 transition-all duration-300 ease-in-out",
           isScrolled
             ? "backdrop-blur-md shadow-lg border-b"
-            : "bg-transparent",
+            : "",
           isAnnouncementVisible ? "top-14" : "top-0",
           {
             "with-announcement":
@@ -141,7 +141,9 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
           backgroundColor: 'var(--surface)',
           opacity: 0.95,
           borderColor: 'var(--outline)'
-        } : undefined}
+        } : {
+          backgroundColor: 'var(--background)'
+        }}
       >
         {/* Progress bar */}
         <motion.div
