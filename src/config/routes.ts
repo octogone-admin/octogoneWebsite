@@ -39,6 +39,11 @@ export const routes: Route[] = [
     ],
   },
   {
+    path: "/cortex",
+    label: "Cortex IA",
+    description: "Votre assistant IA qui transforme vos données en décisions",
+  },
+  {
     path: "/forfaits",
     label: "Tarifs",
     description: "Des forfaits adaptés à vos besoins",

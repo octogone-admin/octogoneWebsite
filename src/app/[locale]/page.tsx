@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Hero from "@/features/home/components/hero";
 import PartnersSection from "@/features/home/components/partners-section";
+import CortexIntro from "@/features/cortex/components/cortex-intro";
 import TargetSectors from "@/features/secteurs/components/target-sectors";
 import HowItWorks from "@/features/secteurs/components/how-it-works";
 import FeaturesSection from "@/features/home/components/features-section";
@@ -68,6 +69,9 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
 
       {/* Section Partenaires */}
       <PartnersSection />
+
+      {/* Section Cortex - IA d'Octogone */}
+      <CortexIntro locale={locale} />
 
       {/* Conteneur pour les autres sections qui viendront après le hero */}
       <div ref={sectionRef}>
