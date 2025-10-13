@@ -62,28 +62,33 @@ export default function CortexPage() {
   return (
     <main className="flex min-h-screen flex-col">
       {/* Hero Section */}
-      <ResponsiveSection
-        as="section"
-        bgColor=""
-        spacing="xl"
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)' }}
-      >
+      <div className="px-4 md:px-8 lg:px-12 py-8 md:py-12" style={{ backgroundColor: 'var(--background)' }}>
+        <motion.div 
+          className="rounded-3xl overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)' }}
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ 
+            duration: 0.8, 
+            ease: [0.22, 1, 0.36, 1],
+            scale: { duration: 0.6 }
+          }}
+        >
+          <ResponsiveSection
+            as="section"
+            bgColor=""
+            spacing="xl"
+            className="relative"
+          >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-              <div style={{ filter: 'brightness(0) saturate(100%)' }}>
-                <Image
-                  src="/cortex.svg"
-                  alt="Cortex"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                  style={{ color: 'var(--on-secondary-container)' }}
-                />
-              </div>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#BADFF6] to-[#E2CDED] px-4 py-2 rounded-full mb-6 border-2 border-white shadow-lg">
               <span className="text-sm font-semibold" style={{ color: 'var(--on-secondary-container)' }}>
-                {isEnglish ? 'AI-Powered Assistant' : 'Assistant IA'}
+                {isEnglish ? 'Beta Version' : 'Version Bêta'}
               </span>
             </div>
             
@@ -118,9 +123,14 @@ export default function CortexPage() {
                 {isEnglish ? "Contact us" : "Nous contacter"}
               </OctogoneButton>
             </div>
-          </div>
+          </motion.div>
 
           {/* Vidéo Cortex */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
           <div 
             className="relative rounded-2xl overflow-hidden shadow-2xl"
             style={{ 
@@ -137,8 +147,11 @@ export default function CortexPage() {
               title="Cortex Demo"
             />
           </div>
+          </motion.div>
         </div>
-      </ResponsiveSection>
+          </ResponsiveSection>
+        </motion.div>
+      </div>
 
       {/* Capabilities Section */}
       <ResponsiveSection
@@ -228,13 +241,18 @@ export default function CortexPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#BADFF6] to-[#E2CDED] px-4 py-2 rounded-full mb-4">
+            <span className="text-sm font-semibold" style={{ color: 'var(--on-secondary-container)' }}>
+              {isEnglish ? 'Beta Version' : 'Version Bêta'}
+            </span>
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--on-background)' }}>
-            {isEnglish ? 'Cortex in Action' : 'Cortex en action'}
+            {isEnglish ? 'The Future of Cortex' : 'L\'avenir de Cortex'}
           </h2>
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--on-surface-variant)' }}>
+          <p className="text-lg max-w-3xl mx-auto" style={{ color: 'var(--on-surface-variant)' }}>
             {isEnglish
-              ? 'See how Cortex answers your everyday questions'
-              : 'Voyez comment Cortex répond à vos questions quotidiennes'}
+              ? 'Discover where Cortex is heading. These advanced capabilities represent our vision for the ultimate AI assistant. Some features are already live, others are coming soon.'
+              : 'Découvrez vers où se dirige Cortex. Ces capacités avancées représentent notre vision de l\'assistant IA ultime. Certaines fonctionnalités sont déjà disponibles, d\'autres arrivent bientôt.'}
           </p>
         </motion.div>
 

@@ -44,13 +44,27 @@ export default function DocumentBadge({ document, locale }: DocumentBadgeProps) 
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -20, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-      transition={{ duration: 0.4, type: 'spring', stiffness: 300 }}
+      initial={{ opacity: 0, scale: 0, y: 20 }}
+      animate={{ 
+        opacity: 1, 
+        scale: 1, 
+        y: 0,
+        transition: {
+          type: 'spring',
+          stiffness: 400,
+          damping: 15,
+          mass: 0.8
+        }
+      }}
+      exit={{ 
+        opacity: 0, 
+        scale: 0.8, 
+        y: -10,
+        transition: { duration: 0.2 }
+      }}
       className="inline-flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer hover:scale-105 transition-transform shadow-md"
       style={{ 
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'var(--surface)',
         border: `2px dashed ${borderColor}`,
         outline: `1px solid ${borderColor}`,
         outlineOffset: '2px'
@@ -60,7 +74,7 @@ export default function DocumentBadge({ document, locale }: DocumentBadgeProps) 
       {/* Icône du document - la couleur indique le type de fichier */}
       <div 
         className="flex items-center justify-center w-10 h-10 rounded-lg"
-        style={{ backgroundColor: '#F3F4F6' }}
+        style={{ backgroundColor: 'var(--surface-variant)' }}
       >
         {getFileIcon()}
       </div>
@@ -70,7 +84,7 @@ export default function DocumentBadge({ document, locale }: DocumentBadgeProps) 
         <span className="text-xs font-medium" style={{ color: borderColor }}>
           {isEnglish ? 'Generated document' : 'Document généré'}
         </span>
-        <span className="text-sm font-semibold" style={{ color: 'var(--on-background)' }}>
+        <span className="text-sm font-semibold" style={{ color: 'var(--on-surface)' }}>
           {document.name}
         </span>
       </div>

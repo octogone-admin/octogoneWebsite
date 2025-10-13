@@ -58,27 +58,38 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
   const estimatedHeight = maxMessages * 120 + 100; // +100px de marge
 
   // Récupérer tous les documents générés dans les messages visibles
-  const generatedDocuments = visibleMessages
-    .filter(msg => msg.document)
-    .map(msg => msg.document!);
+  // en tenant compte des suppressions
+  const generatedDocuments = visibleMessages.reduce((docs, msg) => {
+    if (msg.document) {
+      // Ajouter le document
+      docs.push(msg.document);
+    }
+    if (msg.removeDocument) {
+      // Retirer le document avec cet ID
+      return docs.filter(doc => doc.id !== msg.removeDocument);
+    }
+    return docs;
+  }, [] as GeneratedDocument[]);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6" style={{ minHeight: `${estimatedHeight}px` }}>
-      {/* Zone des documents générés en haut */}
-      <AnimatePresence>
-        {generatedDocuments.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="flex flex-wrap gap-3 mb-4"
-          >
-            {generatedDocuments.map((doc) => (
-              <DocumentBadge key={doc.id} document={doc} locale={locale} />
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Zone réservée pour les documents générés - hauteur fixe pour éviter les sauts */}
+      <div className="min-h-[80px] flex items-start">
+        <AnimatePresence>
+          {generatedDocuments.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="flex flex-wrap gap-3 w-full"
+            >
+              {generatedDocuments.map((doc) => (
+                <DocumentBadge key={doc.id} document={doc} locale={locale} />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Zone des messages */}
       <AnimatePresence mode="wait">

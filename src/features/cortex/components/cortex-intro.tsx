@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import OctogoneButton from "@/components/ui/octogone-button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 
 interface CortexIntroProps {
   locale?: string;
@@ -45,7 +45,7 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
           </p>
 
           {/* Questions que Cortex peut répondre */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto mb-16">
             {[
               {
                 fr: "Cortex, quelles sont mes ventes cette semaine ?",
@@ -106,7 +106,7 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
 
         {/* Vidéo Cortex depuis Vimeo */}
         <div 
-          className="relative rounded-2xl overflow-hidden shadow-2xl"
+          className="relative rounded-2xl overflow-hidden shadow-2xl mt-32 mb-32"
           style={{ 
             aspectRatio: '16/9',
             backgroundColor: 'var(--surface-variant)'
@@ -123,7 +123,7 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
         </div>
 
         {/* Texte percutant sous la vidéo */}
-        <div className="text-center mt-8">
+        <div className="text-center">
           <p 
             className="text-lg font-medium mb-6"
             style={{ color: 'var(--on-background)' }}
@@ -134,15 +134,15 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
           </p>
           
           {/* CTA pour ajouter Cortex */}
-          <div className="flex flex-col items-center gap-3 mt-4">
-            <p 
-              className="text-base font-medium"
-              style={{ color: 'var(--on-background)' }}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
+            <OctogoneButton
+              href={`/${locale}/cortex`}
+              variant="secondary"
+              size="lg"
+              icon={<ArrowRight className="w-5 h-5" />}
             >
-              {isEnglish 
-                ? "Ready to add Cortex to your platform?" 
-                : "Prêt à ajouter Cortex à votre plateforme ?"}
-            </p>
+              {isEnglish ? "Learn more" : "En savoir plus"}
+            </OctogoneButton>
             <OctogoneButton
               href={`/${locale}/contact`}
               variant="primary"
