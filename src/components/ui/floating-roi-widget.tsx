@@ -8,15 +8,26 @@ import ROICalculatorAdvanced from '@/features/roi-calculator/components/roi-calc
 
 interface FloatingROIWidgetProps {
   onSavingsCalculated?: (savings: number) => void;
+  isMinimized?: boolean;
+  onMinimize?: () => void;
+  onExpand?: () => void;
 }
 
-export default function FloatingROIWidget({ onSavingsCalculated }: FloatingROIWidgetProps) {
+export default function FloatingROIWidget({ 
+  onSavingsCalculated, 
+  isMinimized: externalIsMinimized,
+  onMinimize,
+  onExpand
+}: FloatingROIWidgetProps) {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [internalIsMinimized, setInternalIsMinimized] = useState(true);
   const [calculatedSavings, setCalculatedSavings] = useState<number | null>(null);
+  
+  // Utiliser l'état externe si fourni, sinon l'état interne
+  const isMinimized = externalIsMinimized !== undefined ? externalIsMinimized : internalIsMinimized;
   
   // Valeur par défaut si pas encore calculé
   const defaultSavings = 35000; // Valeur moyenne estimée
@@ -28,6 +39,22 @@ export default function FloatingROIWidget({ onSavingsCalculated }: FloatingROIWi
   
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleMinimize = () => {
+    if (onMinimize) {
+      onMinimize();
+    } else {
+      setInternalIsMinimized(true);
+    }
+  };
+
+  const handleExpand = () => {
+    if (onExpand) {
+      onExpand();
+    } else {
+      setInternalIsMinimized(false);
+    }
   };
 
   // Écouter l'événement de fermeture depuis le calculateur
@@ -59,7 +86,7 @@ export default function FloatingROIWidget({ onSavingsCalculated }: FloatingROIWi
               background: 'linear-gradient(135deg, #BADFF6 0%, #A7D6F3 50%, #94CDF0 100%)',
               boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)'
             }}
-            onClick={() => setIsMinimized(false)}
+            onClick={handleExpand}
           >
             <DollarSign className="w-7 h-7 md:w-8 md:h-8" style={{ color: 'var(--on-secondary-container)' }} />
           </div>
@@ -70,7 +97,7 @@ export default function FloatingROIWidget({ onSavingsCalculated }: FloatingROIWi
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setIsMinimized(true);
+                handleMinimize();
               }}
               className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 z-10"
               style={{

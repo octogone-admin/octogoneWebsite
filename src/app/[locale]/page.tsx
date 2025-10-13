@@ -6,7 +6,7 @@ import PartnersSection from "@/features/home/components/partners-section";
 import CortexIntro from "@/features/cortex/components/cortex-intro";
 import TargetSectors from "@/features/secteurs/components/target-sectors";
 import HowItWorks from "@/features/secteurs/components/how-it-works";
-import FeaturesSection from "@/features/home/components/features-section";
+import SuppliersSection from "@/features/home/components/suppliers-section";
 import { DashboardSection } from "@/features/home/components/dashboard-section";
 import ModulesSection from "@/features/home/components/modules-section-flip-fixed";
 import PremiumSection from "@/features/home/components/premium-section";
@@ -24,12 +24,14 @@ import PremiumSection from "@/features/home/components/premium-section";
 // } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import * as React from "react";
+import { useCalculator } from "@/contexts/calculator-context";
 
 export default function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   // Utiliser React.use pour accéder aux paramètres de route
   const { locale } = React.use(params);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [hasBanner, setHasBanner] = useState(true);
+  const { expandCalculator } = useCalculator();
 
   // Détecter la présence de la bannière
   useEffect(() => {
@@ -79,10 +81,10 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
         <TargetSectors />
         
         {/* Section Comment ça marche */}
-        <HowItWorks />
+        <HowItWorks onOpenCalculator={expandCalculator} />
         
-        {/* Section 1 - Fonctionnalités principales */}
-        <FeaturesSection />
+        {/* Section 1 - Connexion avec les fournisseurs */}
+        <SuppliersSection />
 
         {/* Section 2 - Dashboard */}
         <DashboardSection locale={locale} />

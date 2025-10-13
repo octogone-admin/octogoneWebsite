@@ -3,13 +3,17 @@
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ResponsiveSection } from '@/components/ui/responsive-section';
-import { Heart, MonitorSpeaker, Settings, TrendingUp, ArrowRight, Headphones, CreditCard, Phone, Clock } from 'lucide-react';
+import { Heart, MonitorSpeaker, Settings, TrendingUp, ArrowRight, Headphones, CreditCard, Phone, Clock, ClipboardList, ChefHat, BarChart3, Lightbulb, DollarSign, Play, Zap, LineChart, Brain } from 'lucide-react';
 import { OctogoneButton } from '@/components/ui/octogone-button';
+import { LogoCard } from '@/components/widgets/logo-card';
 import { motion } from 'framer-motion';
 
-const HowItWorks = () => {
+interface HowItWorksProps {
+  onOpenCalculator?: () => void;
+}
+
+const HowItWorks = ({ onOpenCalculator }: HowItWorksProps) => {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
@@ -20,8 +24,8 @@ const HowItWorks = () => {
       icon: Heart,
       titleFr: "Choisissez votre forfait",
       titleEn: "Choose your plan",
-      descFr: "Sélectionnez le forfait qui correspond à vos besoins et à la taille de votre entreprise",
-      descEn: "Select the plan that fits your needs and business size",
+      descFr: "Sélectionnez le forfait qui correspond à vos besoins et à la taille de votre entreprise.",
+      descEn: "Select the plan that fits your needs and business size.",
       link: `/${locale}/forfaits`
     },
     {
@@ -44,12 +48,48 @@ const HowItWorks = () => {
     },
     {
       id: 4,
+      icon: Play,
+      titleFr: "Opérez",
+      titleEn: "Operate",
+      descFr: "Gérez vos inventaires, recettes et commandes en temps réel.",
+      descEn: "Manage your inventories, recipes and orders in real-time.",
+      link: `/${locale}/operer`
+    },
+    {
+      id: 5,
+      icon: Zap,
+      titleFr: "Automatisez",
+      titleEn: "Automate",
+      descFr: "Automatisez vos factures, catalogues et calculs de coûts.",
+      descEn: "Automate your invoices, catalogs and cost calculations.",
+      link: `/${locale}/automatiser`
+    },
+    {
+      id: 6,
+      icon: LineChart,
+      titleFr: "Analysez",
+      titleEn: "Analyze",
+      descFr: "Visualisez vos performances et maîtrisez votre Food Cost.",
+      descEn: "Visualize your performance and master your Food Cost.",
+      link: `/${locale}/analyser`
+    },
+    {
+      id: 7,
+      icon: Brain,
+      titleFr: "Prédisez",
+      titleEn: "Predict",
+      descFr: "Anticipez les tendances et prenez de meilleures décisions.",
+      descEn: "Anticipate trends and make better decisions.",
+      link: `/${locale}/predire`
+    },
+    {
+      id: 9,
       icon: TrendingUp,
-      titleFr: "Boostez vos performances",
-      titleEn: "Boost your performance",
-      descFr: "Profitez de tous les outils Octogone pour optimiser vos opérations et maximiser vos profits.",
-      descEn: "Take advantage of all Octogone tools to optimize your operations and maximize your profits.",
-      link: `/${locale}/fonctionnalites`
+      titleFr: "Maximisez vos profits",
+      titleEn: "Maximize your profits",
+      descFr: "Profitez pleinement de tous les outils Octogone pour atteindre vos objectifs de rentabilité.",
+      descEn: "Take full advantage of all Octogone tools to achieve your profitability goals.",
+      link: `/${locale}/profits`
     }
   ];
 
@@ -71,16 +111,17 @@ const HowItWorks = () => {
         </h2>
         <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--on-surface-variant)' }}>
           {locale === "fr" 
-            ? "Un processus simple en 4 étapes pour transformer la gestion de vos restaurants"
-            : "A simple 4-step process to transform your restaurant management"
+            ? "Un processus simple en 8 étapes pour transformer la gestion de vos restaurants"
+            : "A simple 8-step process to transform your restaurant management"
           }
         </p>
       </motion.div>
 
-      {/* 4 étapes en cartes */}
+      {/* 8 étapes en cartes */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {steps.map((step, index) => (
+        {/* Première ligne - 3 cartes */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {steps.slice(0, 3).map((step, index) => (
             <motion.div 
               key={step.id} 
               className="relative"
@@ -90,7 +131,7 @@ const HowItWorks = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               {/* Numéro en badge */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-lg z-20"
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg z-20"
                    style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)' }}>
                 {step.id}
               </div>
@@ -103,8 +144,11 @@ const HowItWorks = () => {
                 <div className="relative z-10 p-8 text-center h-full flex flex-col">
                   {/* Icône - position fixe */}
                   <div className="flex justify-center mt-4 mb-6">
-                    <div className="w-20 h-20 rounded-full flex items-center justify-center"
-                         style={{ backgroundColor: 'var(--secondary-container)' }}>
+                    <div className="w-20 h-20 flex items-center justify-center"
+                         style={{ 
+                           backgroundColor: 'var(--secondary-container)',
+                           clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
+                         }}>
                       <step.icon className="w-10 h-10" style={{ color: 'var(--on-secondary-container)' }} />
                     </div>
                   </div>
@@ -127,6 +171,108 @@ const HowItWorks = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Deuxième ligne - 4 cartes (Les 4 piliers) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.slice(3, 7).map((step, index) => (
+            <motion.div 
+              key={step.id} 
+              className="relative"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: (index + 3) * 0.1 }}
+            >
+              {/* Numéro en badge */}
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg z-20"
+                   style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)' }}>
+                {step.id}
+              </div>
+              
+              {/* Carte principale */}
+              <div className="relative h-96 rounded-xl shadow-lg border-2"
+                   style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
+                
+                {/* Contenu de la carte */}
+                <div className="relative z-10 p-8 text-center h-full flex flex-col">
+                  {/* Icône - position fixe */}
+                  <div className="flex justify-center mt-4 mb-6">
+                    <div className="w-20 h-20 flex items-center justify-center"
+                         style={{ 
+                           backgroundColor: 'var(--secondary-container)',
+                           clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
+                         }}>
+                      <step.icon className="w-10 h-10" style={{ color: 'var(--on-secondary-container)' }} />
+                    </div>
+                  </div>
+                  
+                  {/* Titre - hauteur fixe */}
+                  <div className="h-16 flex items-center justify-center mb-4">
+                    <h3 className="text-xl font-bold text-center leading-tight" style={{ color: 'var(--on-surface)' }}>
+                      {locale === "fr" ? step.titleFr : step.titleEn}
+                    </h3>
+                  </div>
+                  
+                  {/* Description - avec flex-1 pour occuper l'espace restant */}
+                  <div className="flex-1 flex items-start justify-center">
+                    <p className="leading-relaxed text-center px-2" style={{ color: 'var(--on-surface-variant)' }}>
+                      {locale === "fr" ? step.descFr : step.descEn}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Troisième ligne - Gros texte final */}
+        <motion.div 
+          className="mt-24 mb-24 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+        >
+          {/* Numéro 9 */}
+          <div className="flex justify-center mb-8">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg"
+                 style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)' }}>
+              9
+            </div>
+          </div>
+
+          <h3 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" 
+              style={{ 
+                background: 'linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 25%, #3a7fa9 50%, #5fa3c8 75%, #badff6 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+            {locale === "fr" ? "Maximisez vos profits" : "Maximize your profits"}
+          </h3>
+          <p className="text-xl sm:text-2xl max-w-3xl mx-auto mb-8" 
+             style={{ 
+               background: 'linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 25%, #3a7fa9 50%, #5fa3c8 75%, #badff6 100%)',
+               WebkitBackgroundClip: 'text',
+               WebkitTextFillColor: 'transparent',
+               backgroundClip: 'text'
+             }}>
+            {locale === "fr" 
+              ? "Profitez pleinement de tous les outils Octogone pour atteindre vos objectifs de rentabilité."
+              : "Take full advantage of all Octogone tools to achieve your profitability goals."}
+          </p>
+
+          {/* Bouton Calculez mes profits */}
+          <div className="flex justify-center">
+            <OctogoneButton
+              onClick={onOpenCalculator}
+              size="lg"
+              className="text-lg px-8 py-4"
+            >
+              {locale === "fr" ? "Calculez mes profits !" : "Calculate my profits!"}
+            </OctogoneButton>
+          </div>
+        </motion.div>
       </div>
 
       {/* Service de conciergerie */}
@@ -183,31 +329,13 @@ const HowItWorks = () => {
             { name: 'Best', logo: '/images/pos/best.png' },
             { name: 'Oracle', logo: '/images/pos/oracle.png' }
           ].map((pos, index) => (
-            <motion.div
+            <LogoCard
               key={pos.name}
-              className="flex items-center justify-center p-6 rounded-xl border-2 bg-white shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ borderColor: 'var(--outline)', minHeight: '100px' }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="text-center">
-                {/* Logo POS */}
-                <div className="w-20 h-20 mx-auto mb-2 relative">
-                  <Image
-                    src={pos.logo}
-                    alt={pos.name}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-sm font-semibold" style={{ color: 'var(--on-primary-container)' }}>
-                  {pos.name}
-                </span>
-              </div>
-            </motion.div>
+              name={pos.name}
+              logo={pos.logo}
+              index={index}
+              delay={0.05}
+            />
           ))}
         </div>
       </motion.div>
@@ -230,31 +358,13 @@ const HowItWorks = () => {
             { name: 'Agendrix', logo: '/images/punch/agendrix.png' },
             { name: 'Emprez', logo: '/images/punch/emprez.png' }
           ].map((scheduler, index) => (
-            <motion.div
+            <LogoCard
               key={scheduler.name}
-              className="flex items-center justify-center p-6 rounded-xl border-2 bg-white shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ borderColor: 'var(--outline)', minHeight: '100px' }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="text-center">
-                {/* Logo gestionnaire d'horaire */}
-                <div className="w-20 h-20 mx-auto mb-2 relative">
-                  <Image
-                    src={scheduler.logo}
-                    alt={scheduler.name}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-sm font-semibold" style={{ color: 'var(--on-primary-container)' }}>
-                  {scheduler.name}
-                </span>
-              </div>
-            </motion.div>
+              name={scheduler.name}
+              logo={scheduler.logo}
+              index={index}
+              delay={0.1}
+            />
           ))}
         </div>
       </motion.div>

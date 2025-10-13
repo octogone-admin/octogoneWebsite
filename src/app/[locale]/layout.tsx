@@ -9,6 +9,7 @@ import FloatingROIWidget from "@/components/ui/floating-roi-widget";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
 import { SimpleSchema } from "@/components/seo/simple-schema";
 import { routes } from "@/config/routes";
+import { CalculatorProvider, useCalculator } from "@/contexts/calculator-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,17 +43,43 @@ export default function LocaleLayout({
 
   return (
     <AnalyticsProvider>
-      <div lang={locale} className={inter.className}>
-        {/* Schema.org simple et fiable pour SEO IA */}
-        <SimpleSchema locale={locale} />
-        
-        <Navigation routes={localizedRoutes} activeRoute={activeRoute} theme="light" locale={locale} />
-        <main className="min-h-screen pt-32">{children}</main>
-        <Footer />
-        
-        {/* Widget flottant ROI */}
-        <FloatingROIWidget />
-      </div>
+      <CalculatorProvider>
+        <LayoutContent locale={locale} localizedRoutes={localizedRoutes} activeRoute={activeRoute}>
+          {children}
+        </LayoutContent>
+      </CalculatorProvider>
     </AnalyticsProvider>
+  );
+}
+
+function LayoutContent({ 
+  locale, 
+  localizedRoutes, 
+  activeRoute, 
+  children 
+}: { 
+  locale: string; 
+  localizedRoutes: any[]; 
+  activeRoute: string; 
+  children: React.ReactNode;
+}) {
+  const { isCalculatorMinimized, expandCalculator, minimizeCalculator } = useCalculator();
+  
+  return (
+    <div lang={locale} className={inter.className}>
+      {/* Schema.org simple et fiable pour SEO IA */}
+      <SimpleSchema locale={locale} />
+      
+      <Navigation routes={localizedRoutes} activeRoute={activeRoute} theme="light" locale={locale} />
+      <main className="min-h-screen pt-32">{children}</main>
+      <Footer />
+      
+      {/* Widget flottant ROI */}
+      <FloatingROIWidget 
+        isMinimized={isCalculatorMinimized} 
+        onExpand={expandCalculator}
+        onMinimize={minimizeCalculator}
+      />
+    </div>
   );
 }
