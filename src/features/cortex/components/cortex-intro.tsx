@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import OctogoneButton from "@/components/ui/octogone-button";
 import { Sparkles, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface CortexIntroProps {
   locale?: string;
@@ -18,7 +19,13 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
       <ResponsiveSection spacing="xxl" bgColor="">
         <div className="max-w-6xl mx-auto">
         {/* Logo et titre */}
-        <div className="text-center mb-12">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="flex items-center justify-center gap-3 mb-6">
             <Image
               src="/cortex.svg"
@@ -72,9 +79,14 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
                 en: "Cortex, which items are below minimum!"
               }
             ].map((feature, index) => (
-              <div 
+              <motion.div 
                 key={index}
                 className="relative p-4 rounded-lg h-20 flex items-center justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
                 style={{ 
                   background: 'transparent'
                 }}
@@ -99,12 +111,18 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
                 >
                   {isEnglish ? feature.en : feature.fr}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Vidéo Cortex depuis Vimeo */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
         <div 
           className="relative rounded-2xl overflow-hidden shadow-2xl mt-32 mb-32"
           style={{ 
@@ -121,9 +139,16 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
             title="Cortex Demo"
           />
         </div>
+        </motion.div>
 
         {/* Texte percutant sous la vidéo */}
-        <div className="text-center">
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <p 
             className="text-lg font-medium mb-6"
             style={{ color: 'var(--on-background)' }}
@@ -152,7 +177,7 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
               {isEnglish ? "Contact us" : "Nous contacter"}
             </OctogoneButton>
           </div>
-        </div>
+        </motion.div>
         </div>
       </ResponsiveSection>
     </div>

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { targetSectors, restaurantStyles, type TargetSector } from "@/data/sectors-data";
 import { testimonials, type Testimonial } from "@/data/testimonials-data";
 import TestimonialWidget from "@/components/widgets/testimonial-widget";
+import { motion, AnimatePresence } from "framer-motion";
 /**
  * Fonction pour obtenir l'icône SVG de chaque secteur
  */
@@ -141,7 +142,13 @@ const TargetSectors = () => {
 
       <div className="relative z-10">
         {/* En-tête de section */}
-        <div className="text-center mb-12 lg:mb-16">
+        <motion.div 
+          className="text-center mb-12 lg:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8" style={{ color: 'var(--on-secondary-container)' }}>
             {locale === "fr" ? "Connecté à votre modèle d'affaires" : "Connected to your business model"}
           </h2>
@@ -209,7 +216,7 @@ const TargetSectors = () => {
               {locale === "fr" ? "Témoignages" : "Testimonials"}
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Conteneur avec hauteur fixe basée sur la section témoignages */}
         <div className="relative min-h-[650px] lg:min-h-[770px]">
@@ -217,11 +224,11 @@ const TargetSectors = () => {
           {activeTab === 'testimonials' ? (
             /* Carrousel de cartes de témoignages */
             <div className="relative h-full flex flex-col justify-center">
-            {/* Contrôle gauche */}
-            <button
-              onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
-            >
+              {/* Contrôle gauche */}
+              <button
+                onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
+              >
               <svg className="w-6 h-6 text-marine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
@@ -274,7 +281,14 @@ const TargetSectors = () => {
             /* Grille des secteurs */
             <div className="h-full flex flex-col justify-center">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {currentData.map((sector) => (
+            {currentData.map((sector, index) => (
+              <motion.div
+                key={sector.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
               <Link
                 key={sector.id}
                 href={`/${locale}/secteurs/${sector.id}`}
@@ -343,6 +357,7 @@ const TargetSectors = () => {
                   style={{ backgroundColor: '#dcb26b' }}
                 ></div>
               </Link>
+              </motion.div>
             ))}
               </div>
               
