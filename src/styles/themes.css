@@ -50,6 +50,10 @@
   --secondary-container: #BADFF6;
   --on-secondary-container: #1F1F1F;
 
+  /* Couleurs Cortex */
+  --purple_cortex: #E2CDED;
+  --on-purple_cortex: #1F1F1F;
+
   /* Couleurs de fond - Light */
   --background: #FAFAFA;
   --on-background: #1F1F1F;
@@ -89,6 +93,10 @@
   --on-secondary: #1F1F1F;
   --secondary-container: #BADFF6;
   --on-secondary-container: #1F1F1F;
+
+  /* Couleurs Cortex */
+  --purple_cortex: #E2CDED;
+  --on-purple_cortex: #1F1F1F;
 
   /* Couleurs de fond - Dark */
   --background: #1E1E1E;

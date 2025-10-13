@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { Sparkles, Brain, Zap, MessageSquare, TrendingUp, Clock } from "lucide-react";
 import Image from "next/image";
 import OctogoneButton from "@/components/ui/octogone-button";
+import { motion, AnimatePresence } from "framer-motion";
+import AnimatedChat from "@/features/cortex/components/animated-chat";
 
 export default function CortexPage() {
   const params = useParams();
@@ -54,71 +56,6 @@ export default function CortexPage() {
       titleEn: "Continuous Learning",
       descFr: "Plus vous utilisez Cortex, plus il comprend votre établissement",
       descEn: "The more you use Cortex, the better it understands your establishment"
-    }
-  ];
-
-  const useCases = [
-    {
-      questionFr: "Cortex, quelles sont mes ventes cette semaine ?",
-      questionEn: "Cortex, what are my sales this week?",
-      answerFr: `Sur la base des données du tableau de bord, voici l'analyse des ventes de la dernière semaine :
-
-📊 PERFORMANCES DE LA DERNIÈRE SEMAINE :
-- Nombre de commandes : 230
-- Chiffre d'affaires total : 6,994.50 $
-- Moyenne quotidienne : environ 999 $ par jour
-
-💡 ANALYSE :
-- Cela représente environ 26% des ventes mensuelles (26,692.50 $) réalisées en une seule semaine
-- La dernière journée a été particulièrement forte avec 45 commandes et 1,315.50 $ de revenus
-- Le panier moyen de la semaine est d'environ 30.40 $ par commande
-
-📈 POINTS POSITIFS :
-- Bon volume de commandes (environ 33 commandes/jour)
-- Panier moyen satisfaisant
-- La dernière journée montre une tendance à la hausse
-
-🎯 RECOMMANDATIONS :
-1. Capitaliser sur les plats les plus vendus (Carpaccio, Escargots, Salade César)
-2. Maintenir le niveau de service élevé reflété par les bonnes notes des desserts
-3. Analyser les facteurs de succès de la dernière journée pour les reproduire
-
-Souhaitez-vous une analyse plus détaillée d'un aspect particulier de ces performances ?`,
-      answerEn: `Based on dashboard data, here's the analysis of last week's sales:
-
-📊 LAST WEEK'S PERFORMANCE:
-- Number of orders: 230
-- Total revenue: $6,994.50
-- Daily average: approximately $999 per day
-
-💡 ANALYSIS:
-- This represents about 26% of monthly sales ($26,692.50) achieved in a single week
-- The last day was particularly strong with 45 orders and $1,315.50 in revenue
-- Average basket for the week is approximately $30.40 per order
-
-📈 POSITIVE POINTS:
-- Good order volume (approximately 33 orders/day)
-- Satisfactory average basket
-- The last day shows an upward trend
-
-🎯 RECOMMENDATIONS:
-1. Capitalize on best-selling dishes (Carpaccio, Escargots, Caesar Salad)
-2. Maintain the high level of service reflected by good dessert ratings
-3. Analyze success factors from the last day to reproduce them
-
-Would you like a more detailed analysis of a particular aspect of these performances?`
-    },
-    {
-      questionFr: "Quel est mon meilleur vendeur ?",
-      questionEn: "What's my best seller?",
-      answerFr: "Votre burger signature est votre meilleur vendeur avec 234 unités vendues cette semaine.",
-      answerEn: "Your signature burger is your best seller with 234 units sold this week."
-    },
-    {
-      questionFr: "Combien de pommes en inventaire ?",
-      questionEn: "How many apples in inventory?",
-      answerFr: "Vous avez 15 kg de pommes en stock. Attention, vous êtes sous le seuil minimum de 20 kg.",
-      answerEn: "You have 15 kg of apples in stock. Warning, you are below the minimum threshold of 20 kg."
     }
   ];
 
@@ -210,7 +147,13 @@ Would you like a more detailed analysis of a particular aspect of these performa
         spacing="xxl"
         style={{ backgroundColor: 'var(--background)' }}
       >
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--on-background)' }}>
             {isEnglish ? 'What Cortex Can Do' : 'Ce que Cortex peut faire'}
           </h2>
@@ -219,15 +162,20 @@ Would you like a more detailed analysis of a particular aspect of these performa
               ? 'Cortex is your intelligent assistant that helps you make better decisions faster'
               : 'Cortex est votre assistant intelligent qui vous aide à prendre de meilleures décisions plus rapidement'}
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {capabilities.map((capability, index) => {
             const Icon = capability.icon;
             return (
-              <div
+              <motion.div
                 key={index}
-                className="relative rounded-2xl p-8 transition-all duration-300"
+                className="relative rounded-2xl p-8"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
               >
                 {/* Bordure en dégradé Cortex avec halo */}
                 <div 
@@ -260,7 +208,7 @@ Would you like a more detailed analysis of a particular aspect of these performa
                     {isEnglish ? capability.descEn : capability.descFr}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -273,7 +221,13 @@ Would you like a more detailed analysis of a particular aspect of these performa
         spacing="xxl"
         style={{ backgroundColor: 'var(--background)' }}
       >
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--on-background)' }}>
             {isEnglish ? 'Cortex in Action' : 'Cortex en action'}
           </h2>
@@ -282,59 +236,9 @@ Would you like a more detailed analysis of a particular aspect of these performa
               ? 'See how Cortex answers your everyday questions'
               : 'Voyez comment Cortex répond à vos questions quotidiennes'}
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-4xl mx-auto space-y-6">
-          {useCases.map((useCase, index) => (
-            <div
-              key={index}
-              className="rounded-2xl p-6 space-y-4"
-              style={{ backgroundColor: 'var(--surface)' }}
-            >
-              {/* Question */}
-              <div className="flex items-start gap-3">
-                <div 
-                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: 'var(--primary-container)' }}
-                >
-                  <MessageSquare className="w-5 h-5" style={{ color: 'var(--on-primary-container)' }} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium" style={{ color: 'var(--on-surface)' }}>
-                    {isEnglish ? useCase.questionEn : useCase.questionFr}
-                  </p>
-                </div>
-              </div>
-
-              {/* Answer */}
-              <div className="flex items-start gap-3 ml-13">
-                <div 
-                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)' }}
-                >
-                  <div style={{ filter: 'brightness(0) saturate(100%)' }}>
-                    <Image
-                      src="/cortex.svg"
-                      alt="Cortex"
-                      width={20}
-                      height={20}
-                      className="w-5 h-5"
-                      style={{ color: 'var(--on-secondary-container)' }}
-                    />
-                  </div>
-                </div>
-                <div 
-                  className="flex-1 rounded-xl p-4"
-                  style={{ backgroundColor: 'var(--secondary-container)' }}
-                >
-                  <p style={{ color: 'var(--on-secondary-container)', whiteSpace: 'pre-line' }}>
-                    {isEnglish ? useCase.answerEn : useCase.answerFr}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <AnimatedChat locale={locale} />
       </ResponsiveSection>
 
       {/* CTA Section */}
