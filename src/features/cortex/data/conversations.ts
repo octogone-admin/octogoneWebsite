@@ -26,11 +26,11 @@ export const conversations: Record<string, Conversation[]> = {
       id: 1,
       messages: [
         { type: 'user', text: 'Cortex, comment vont mes ventes cette semaine ?', delay: 0 },
-        { type: 'cortex', text: 'Très bonne semaine 👏\n\nChiffre d\'affaires : 6 994,50 $ • 230 commandes\nMoyenne/jour : 999 $\nProgression : +26 % vs. objectif mensuel\n\n📈 Pic vendredi : 45 commandes pour 1 315 $', delay: 1500 },
+        { type: 'cortex', text: 'Très bonne semaine Vincent 👏\n\nChiffre d\'affaires : 6 994,50 $ • 230 commandes\nMoyenne/jour : 999 $\nProgression : +26 % vs. objectif mensuel\n\n📈 Pic vendredi : 45 commandes pour 1 315 $', delay: 1500 },
         { type: 'user', text: 'Quels sont mes meilleurs vendeurs ?', delay: 5000 },
         { type: 'cortex', text: 'Top 3 cette semaine :\n\n🥇 Carpaccio de bœuf — 89 portions • Marge 75 % • 1 245 $\n🥈 Escargots à l\'ail — 67 portions • Marge 82 % • 892 $\n🥉 Salade César — 78 portions • Marge 68 % • 780 $\n\n📊 Le Carpaccio fait +23 % par rapport à la semaine dernière.', delay: 6200 },
         { type: 'user', text: 'Parfait, merci Cortex !', delay: 10500 },
-        { type: 'cortex', text: 'Avec plaisir 😄 Vos chiffres parlent d\'eux-mêmes.', delay: 11200 }
+        { type: 'cortex', text: 'Avec plaisir Vincent 😄 Vos chiffres parlent d\'eux-mêmes.', delay: 11200 }
       ]
     },
     {
@@ -41,7 +41,7 @@ export const conversations: Record<string, Conversation[]> = {
         { type: 'user', text: 'Quel est le food cost du Carpaccio ?', delay: 5500 },
         { type: 'cortex', text: 'Carpaccio de bœuf 🧾\n\n💰 Prix vente : 18,50 $\n📊 Coût : 4,65 $\n📈 Food cost : 25,1 %\n💵 Marge : 13,85 $ (75 %)\n\nDétail ingrédients :\n• Bavette AAA 150 g (3,80 $)\n• Roquette 30 g (0,35 $)\n• Parmesan 20 g (0,40 $)\n• Autres (0,10 $)', delay: 6500 },
         { type: 'user', text: 'Excellent, merci !', delay: 11000 },
-        { type: 'cortex', text: 'Toujours un plaisir 😎 Votre Carpaccio reste une valeur sûre.', delay: 11600 }
+        { type: 'cortex', text: 'Toujours un plaisir Vincent 😎 Votre Carpaccio reste une valeur sûre.', delay: 11600 }
       ]
     },
     {
@@ -68,11 +68,13 @@ export const conversations: Record<string, Conversation[]> = {
     {
       id: 4,
       messages: [
-        { type: 'user', text: 'Crée un bon de production : 12 L de sauce bolognaise et 8 kg de pâte à pizza', delay: 0 },
+        { type: 'user', text: 'Qu\'est-ce qu\'on prépare demain ?', delay: 0 },
+        { type: 'cortex', text: 'Demain au menu Vincent 📋\n\n🍝 Service du midi : 45 couverts prévus\n• Sauce bolognaise : besoin de 12 L\n• Pizzas : besoin de 8 kg de pâte\n\n💡 Je peux créer un bon de production si vous voulez.', delay: 1500 },
+        { type: 'user', text: 'Oui, génère le bon de production', delay: 5500 },
         { 
           type: 'cortex', 
           text: '✅ Bon de production créé\n\n📋 BP-2024-0856\n📅 Préparation : aujourd\'hui\n\n🍝 Sauce bolognaise (12 L)\n• Bœuf haché : 6 kg\n• Tomates concassées : 8 L\n• Oignons : 1,2 kg\n• Carottes : 800 g\n• Vin rouge : 600 ml\n\n🍕 Pâte à pizza (8 kg)\n• Farine 00 : 5,2 kg\n• Eau : 3,2 L\n• Levure : 80 g\n• Huile d\'olive : 240 ml\n\nTout est prêt pour la cuisine.', 
-          delay: 1500,
+          delay: 6700,
           document: {
             id: 'BP-2024-0856',
             type: 'production_order',
@@ -80,8 +82,8 @@ export const conversations: Record<string, Conversation[]> = {
             icon: 'excel'
           }
         },
-        { type: 'user', text: 'Parfait, envoie-le !', delay: 6000 },
-        { type: 'cortex', text: '✅ Envoyé en cuisine. Production planifiée 👨‍🍳', delay: 6700 }
+        { type: 'user', text: 'Parfait, envoie-le !', delay: 11500 },
+        { type: 'cortex', text: '✅ Envoyé en cuisine. Production planifiée 👨‍🍳', delay: 12200 }
       ]
     },
     {
@@ -102,7 +104,7 @@ export const conversations: Record<string, Conversation[]> = {
           }
         },
         { type: 'user', text: 'Impeccable, merci Cortex', delay: 12000 },
-        { type: 'cortex', text: 'Avec plaisir 😌 Je veille 24/7 sur vos frigos.', delay: 12700 }
+        { type: 'cortex', text: 'Avec plaisir Vincent 😌 Je veille 24/7 sur vos frigos.', delay: 12700 }
       ]
     }
   ],
@@ -111,7 +113,7 @@ export const conversations: Record<string, Conversation[]> = {
       id: 1,
       messages: [
         { type: 'user', text: 'Cortex, how are my sales this week?', delay: 0 },
-        { type: 'cortex', text: 'Strong week overall 💪\n\nRevenue: $6,994.50 • 230 orders\nDaily average: $999\nProgress: +26% toward monthly goal\n\n📈 Friday peak: 45 orders for $1,315', delay: 1500 },
+        { type: 'cortex', text: 'Strong week overall Vincent 💪\n\nRevenue: $6,994.50 • 230 orders\nDaily average: $999\nProgress: +26% toward monthly goal\n\n📈 Friday peak: 45 orders for $1,315', delay: 1500 },
         { type: 'user', text: 'What are my best sellers?', delay: 5000 },
         { type: 'cortex', text: 'Top 3 this week:\n\n🥇 Beef Carpaccio — 89 portions • 75% margin • $1,245\n🥈 Garlic Escargots — 67 portions • 82% margin • $892\n🥉 Caesar Salad — 78 portions • 68% margin • $780\n\n📊 Carpaccio up 23% vs last week.', delay: 6200 },
         { type: 'user', text: 'Perfect, thanks Cortex!', delay: 10500 },
@@ -126,7 +128,7 @@ export const conversations: Record<string, Conversation[]> = {
         { type: 'user', text: 'What\'s the food cost of the Carpaccio?', delay: 5500 },
         { type: 'cortex', text: 'Beef Carpaccio 🧾\n\n💰 Sale price: $18.50\n📊 Cost: $4.65\n📈 Food cost: 25.1%\n💵 Margin: $13.85 (75%)\n\nIngredients:\n• AAA bavette 150 g ($3.80)\n• Arugula 30 g ($0.35)\n• Parmesan 20 g ($0.40)\n• Other ($0.10)', delay: 6500 },
         { type: 'user', text: 'Excellent, thanks!', delay: 11000 },
-        { type: 'cortex', text: 'Glad to help 😎 Carpaccio remains your top performer.', delay: 11600 }
+        { type: 'cortex', text: 'Glad to help Vincent 😎 Carpaccio remains your top performer.', delay: 11600 }
       ]
     },
     {
@@ -153,11 +155,13 @@ export const conversations: Record<string, Conversation[]> = {
     {
       id: 4,
       messages: [
-        { type: 'user', text: 'Create a production order: 12 L of bolognese sauce and 8 kg of pizza dough', delay: 0 },
+        { type: 'user', text: 'What are we preparing tomorrow?', delay: 0 },
+        { type: 'cortex', text: 'Tomorrow\'s menu Vincent 📋\n\n🍝 Lunch service: 45 covers expected\n• Bolognese sauce: need 12 L\n• Pizzas: need 8 kg dough\n\n💡 I can create a production order if you want.', delay: 1500 },
+        { type: 'user', text: 'Yes, generate the production order', delay: 5500 },
         { 
           type: 'cortex', 
           text: '✅ Production order created\n\n📋 PO-2024-0856\n📅 Prep: Today\n\n🍝 Bolognese sauce (12 L)\n• Ground beef 6 kg\n• Crushed tomatoes 8 L\n• Onions 1.2 kg\n• Carrots 800 g\n• Red wine 600 ml\n\n🍕 Pizza dough (8 kg)\n• 00 Flour 5.2 kg\n• Water 3.2 L\n• Yeast 80 g\n• Olive oil 240 ml\n\nOrder ready for the kitchen.', 
-          delay: 1500,
+          delay: 6700,
           document: {
             id: 'PO-2024-0856',
             type: 'production_order',
@@ -165,8 +169,8 @@ export const conversations: Record<string, Conversation[]> = {
             icon: 'excel'
           }
         },
-        { type: 'user', text: 'Perfect, send it!', delay: 6000 },
-        { type: 'cortex', text: '✅ Sent to kitchen. Production scheduled 👨‍🍳', delay: 6700 }
+        { type: 'user', text: 'Perfect, send it!', delay: 11500 },
+        { type: 'cortex', text: '✅ Sent to kitchen. Production scheduled 👨‍🍳', delay: 12200 }
       ]
     },
     {
@@ -187,7 +191,7 @@ export const conversations: Record<string, Conversation[]> = {
           }
         },
         { type: 'user', text: 'Perfect, thanks Cortex', delay: 12000 },
-        { type: 'cortex', text: 'My pleasure 😌 Monitoring 24/7 so you don\'t have to.', delay: 12700 }
+        { type: 'cortex', text: 'My pleasure Vincent 😌 Monitoring 24/7 so you don\'t have to.', delay: 12700 }
       ]
     }
   ]
