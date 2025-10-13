@@ -10,6 +10,7 @@ import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { OctogoneButton } from "@/components/ui/octogone-button";
 import { useScaleIn } from "@/hooks/use-scroll-scale";
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 
 // ⚙️ CONFIGURATION - Ligne animée autour de l'octogone
 const ENABLE_ANIMATED_LINE = true; // Mettre à false pour désactiver l'animation de la ligne
@@ -607,7 +608,7 @@ const Hero = () => {
             {/* Contenu textuel - En bas sur mobile */}
             <div className="flex flex-col space-y-4 sm:space-y-5 lg:space-y-6 text-center lg:text-left order-last lg:order-first">
               {/* Titre principal - maintenant le slogan */}
-              <h1 
+              <motion.h1 
                 id="hero-title"
                 className="font-bold tracking-wide"
                 style={{ 
@@ -615,12 +616,20 @@ const Hero = () => {
                   fontSize: 'clamp(2rem, 6vw, 4.5rem)', 
                   lineHeight: '1.1' 
                 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
                 {t('hero.title', { defaultValue: locale === 'fr' ? 'Opérer, automatiser, analyser, prédire' : 'Operate, automate, analyze, predict' })}
-              </h1>
+              </motion.h1>
 
               {/* Sous-titre - maintenant l'explication */}
-              <div className="text-center lg:text-left">
+              <motion.div 
+                className="text-center lg:text-left"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <p 
                   className="font-semibold tracking-wide"
                   style={{ 
@@ -658,25 +667,35 @@ const Hero = () => {
                     </>
                   )}
                 </p>
-              </div>
+              </motion.div>
 
               {/* Description */}
-              <p 
+              <motion.p 
                 className="mt-0.5 xs:mt-1 lg:mt-2 max-w-2xl mx-auto lg:mx-0"
                 style={{ 
                   color: 'var(--on-surface)',
                   fontSize: 'clamp(0.875rem, 2vw, 1.25rem)' 
                 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 {t('hero.description', { 
                   defaultValue: locale === 'fr' 
                     ? "Maximisez vos profits et marges en gérant tous vos établissements depuis une seule plateforme. Comparez les performances de vos succursales, optimisez vos inventaires et augmentez votre rentabilité opérationnelle." 
                     : "Maximize your profits and margins by managing all your locations from one platform. Compare branch performance, optimize inventory, and increase your operational profitability."
                 })}
-              </p>
+              </motion.p>
 
               {/* Boutons d'action */}
-              <div className="mt-2 xs:mt-4 lg:mt-6 flex justify-center lg:justify-start" role="group" aria-label={locale === 'fr' ? 'Actions principales' : 'Main actions'}>
+              <motion.div 
+                className="mt-2 xs:mt-4 lg:mt-6 flex justify-center lg:justify-start" 
+                role="group" 
+                aria-label={locale === 'fr' ? 'Actions principales' : 'Main actions'}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <OctogoneButton
                   href={`/${locale}/demo`}
                   variant="primary"
@@ -685,7 +704,7 @@ const Hero = () => {
                 >
                   {t('hero.cta.primary', { defaultValue: locale === "fr" ? "Voir la plateforme en action" : "See the platform in action" })}
                 </OctogoneButton>
-              </div>
+              </motion.div>
           </div>
         </div>
       </div>
