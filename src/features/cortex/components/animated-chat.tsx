@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { conversations, TIMING, type Message } from "../data/conversations";
+import { conversations, TIMING, type Message, type GeneratedDocument } from "../data/conversations";
+import DocumentBadge from "./document-badge";
 
 interface AnimatedChatProps {
   locale: string;
@@ -56,10 +57,32 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
   const maxMessages = Math.max(...currentConversations.map(conv => conv.messages.length));
   const estimatedHeight = maxMessages * 120 + 100; // +100px de marge
 
+  // Récupérer tous les documents générés dans les messages visibles
+  const generatedDocuments = visibleMessages
+    .filter(msg => msg.document)
+    .map(msg => msg.document!);
+
   return (
-    <div className="max-w-4xl mx-auto space-y-4" style={{ minHeight: `${estimatedHeight}px` }}>
+    <div className="max-w-4xl mx-auto space-y-6" style={{ minHeight: `${estimatedHeight}px` }}>
+      {/* Zone des documents générés en haut */}
+      <AnimatePresence>
+        {generatedDocuments.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="flex flex-wrap gap-3 mb-4"
+          >
+            {generatedDocuments.map((doc) => (
+              <DocumentBadge key={doc.id} document={doc} locale={locale} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Zone des messages */}
       <AnimatePresence mode="wait">
-        <div key={currentConversation.id}>
+        <div key={currentConversation.id} className="space-y-4">
           {visibleMessages.map((message, index) => (
           <motion.div
             key={`conv-${currentConversation.id}-msg-${index}`}
