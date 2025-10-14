@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getBlogPostBySlugServer, getRelatedPostsServer } from '@/lib/blog/server-actions';
+import { getBlogPostBySlugServer, getRelatedPostsServer, getAllBlogPostsServer } from '@/lib/blog/server-actions';
 import { generateBlogPostSEO } from '@/lib/blog/blog-utils';
 import { BlogContent } from '@/components/blog/blog-content';
 import { BlogRelatedPosts } from '@/components/blog/blog-related-posts';
@@ -17,6 +17,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     notFound();
   }
 
+  // Récupérer tous les articles pour la navigation
+  const allPosts = await getAllBlogPostsServer({
+    locale: typedLocale,
+    publishedOnly: true
+  });
+
+  // Trouver l'index de l'article actuel
+  const currentIndex = allPosts.findIndex(p => p.slug === slug);
+  
+  // Navigation en boucle
+  const previousPost = currentIndex > 0 
+    ? allPosts[currentIndex - 1] 
+    : allPosts[allPosts.length - 1]; // Dernier article si on est au premier
+  
+  const nextPost = currentIndex < allPosts.length - 1 
+    ? allPosts[currentIndex + 1] 
+    : allPosts[0]; // Premier article si on est au dernier
+
   // Récupérer les articles liés
   const relatedPosts = await getRelatedPostsServer(slug, 3);
 
@@ -26,6 +44,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
       <BlogContent 
         post={post} 
         locale={typedLocale}
+        previousPost={previousPost}
+        nextPost={nextPost}
       />
 
       {/* Articles liés */}

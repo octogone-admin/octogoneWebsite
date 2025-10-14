@@ -10,9 +10,11 @@ import { Calendar, Clock, User, Tag, ArrowLeft } from 'lucide-react';
 interface BlogContentProps {
   post: BlogPost;
   locale: 'fr' | 'en';
+  previousPost?: BlogPost | null;
+  nextPost?: BlogPost | null;
 }
 
-export const BlogContent: React.FC<BlogContentProps> = ({ post, locale }) => {
+export const BlogContent: React.FC<BlogContentProps> = ({ post, locale, previousPost, nextPost }) => {
   const categoryInfo = getCategoryInfo(post.category, locale);
   const authorInfo = getAuthorInfo(post.author, locale);
 
@@ -54,8 +56,26 @@ export const BlogContent: React.FC<BlogContentProps> = ({ post, locale }) => {
             </div>
           </div>
 
-          {/* Navigation - Retour au blog */}
-          <div className="flex justify-center">
+          {/* Navigation - Articles */}
+          <div className="flex flex-wrap justify-center items-center gap-3">
+            {/* Article précédent */}
+            {previousPost && (
+              <Link 
+                href={`/${locale}/blog/${previousPost.slug}`}
+                className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all duration-200"
+                style={{ backgroundColor: '#dcb26b' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#BADFF6'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#dcb26b'}
+                title={previousPost.title}
+              >
+                <ArrowLeft className="w-5 h-5" style={{ color: 'var(--on-secondary-container)' }} />
+                <span className="font-medium" style={{ color: 'var(--on-secondary-container)' }}>
+                  {locale === 'fr' ? 'Précédent' : 'Previous'}
+                </span>
+              </Link>
+            )}
+
+            {/* Retour au blog */}
             <Link 
               href={`/${locale}/blog`}
               className="flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200"
@@ -63,11 +83,27 @@ export const BlogContent: React.FC<BlogContentProps> = ({ post, locale }) => {
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#BADFF6'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#dcb26b'}
             >
-              <ArrowLeft className="w-5 h-5" style={{ color: 'var(--on-surface)' }} />
-              <span className="font-medium" style={{ color: 'var(--on-surface)' }}>
+              <span className="font-medium" style={{ color: 'var(--on-secondary-container)' }}>
                 {locale === 'fr' ? 'Retour au blog' : 'Back to blog'}
               </span>
             </Link>
+
+            {/* Article suivant */}
+            {nextPost && (
+              <Link 
+                href={`/${locale}/blog/${nextPost.slug}`}
+                className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all duration-200"
+                style={{ backgroundColor: '#dcb26b' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#BADFF6'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#dcb26b'}
+                title={nextPost.title}
+              >
+                <span className="font-medium" style={{ color: 'var(--on-secondary-container)' }}>
+                  {locale === 'fr' ? 'Suivant' : 'Next'}
+                </span>
+                <ArrowLeft className="w-5 h-5 rotate-180" style={{ color: 'var(--on-secondary-container)' }} />
+              </Link>
+            )}
           </div>
         </div>
       </article>
@@ -77,10 +113,50 @@ export const BlogContent: React.FC<BlogContentProps> = ({ post, locale }) => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div 
-              className="prose prose-lg max-w-none"
-              style={{ color: 'var(--on-background)' }}
+              className="prose prose-lg max-w-none blog-content"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+            <style jsx>{`
+              .blog-content {
+                color: var(--on-background);
+              }
+              .blog-content :global(h1),
+              .blog-content :global(h2),
+              .blog-content :global(h3),
+              .blog-content :global(h4),
+              .blog-content :global(h5),
+              .blog-content :global(h6) {
+                color: var(--on-background);
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+              }
+              .blog-content :global(p) {
+                color: var(--on-background);
+                margin-bottom: 1.5rem;
+                line-height: 1.8;
+              }
+              .blog-content :global(li),
+              .blog-content :global(span) {
+                color: var(--on-background);
+              }
+              .blog-content :global(ul),
+              .blog-content :global(ol) {
+                margin-bottom: 1.5rem;
+              }
+              .blog-content :global(a) {
+                color: var(--primary);
+              }
+              .blog-content :global(strong) {
+                color: var(--on-background);
+                font-weight: 600;
+              }
+              .blog-content :global(blockquote) {
+                color: var(--on-background);
+                border-left-color: var(--primary);
+                padding-left: 1.5rem;
+                margin: 1.5rem 0;
+              }
+            `}</style>
 
             {/* Tags */}
             {post.tags.length > 0 && (
@@ -100,6 +176,51 @@ export const BlogContent: React.FC<BlogContentProps> = ({ post, locale }) => {
                     </span>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* Navigation entre articles */}
+            {(previousPost || nextPost) && (
+              <div className="mt-16 pt-8 grid grid-cols-1 md:grid-cols-2 gap-6" style={{ borderTop: '1px solid var(--outline)' }}>
+                {/* Article précédent */}
+                {previousPost ? (
+                  <Link 
+                    href={`/${locale}/blog/${previousPost.slug}`}
+                    className="group p-6 rounded-xl transition-all hover:shadow-lg"
+                    style={{ backgroundColor: 'var(--surface-variant)' }}
+                  >
+                    <div className="flex items-center gap-2 mb-2" style={{ color: 'var(--on-surface-variant)' }}>
+                      <ArrowLeft className="w-4 h-4" />
+                      <span className="text-sm font-medium">
+                        {locale === 'fr' ? 'Article précédent' : 'Previous article'}
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-lg group-hover:underline" style={{ color: 'var(--on-surface)' }}>
+                      {previousPost.title}
+                    </h3>
+                  </Link>
+                ) : (
+                  <div></div>
+                )}
+
+                {/* Article suivant */}
+                {nextPost && (
+                  <Link 
+                    href={`/${locale}/blog/${nextPost.slug}`}
+                    className="group p-6 rounded-xl transition-all hover:shadow-lg text-right"
+                    style={{ backgroundColor: 'var(--surface-variant)' }}
+                  >
+                    <div className="flex items-center justify-end gap-2 mb-2" style={{ color: 'var(--on-surface-variant)' }}>
+                      <span className="text-sm font-medium">
+                        {locale === 'fr' ? 'Article suivant' : 'Next article'}
+                      </span>
+                      <ArrowLeft className="w-4 h-4 rotate-180" />
+                    </div>
+                    <h3 className="font-bold text-lg group-hover:underline" style={{ color: 'var(--on-surface)' }}>
+                      {nextPost.title}
+                    </h3>
+                  </Link>
+                )}
               </div>
             )}
           </div>

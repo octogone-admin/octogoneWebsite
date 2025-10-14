@@ -3,13 +3,13 @@
  * 
  * Fonctions côté serveur pour accéder aux fichiers Markdown
  */
-
 import 'server-only';
 
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { BlogPost, BlogMetadata } from './types';
+import { marked } from 'marked';
+import { BlogPost } from './types';
 
 const BLOG_CONTENT_PATH = path.join(process.cwd(), 'content', 'blog');
 
@@ -40,15 +40,28 @@ export async function getBlogPostBySlugServer(slug: string): Promise<BlogPost | 
 
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(fileContent);
-
     // Validation des métadonnées requises
     if (!data.title || !data.date || !data.locale || data.published === false) {
       return null;
     }
 
-    // Calcul du temps de lecture et nombre de mots
+    // Calculer le temps de lecture
     const wordCount = content.split(/\s+/).length;
     const readingTime = Math.ceil(wordCount / 200); // 200 mots par minute
+
+    // Configurer marked pour bien gérer les paragraphes
+    marked.setOptions({
+      breaks: true, // Convertir les sauts de ligne en <br>
+      gfm: true, // GitHub Flavored Markdown
+    });
+    
+    // Convertir le Markdown en HTML
+    const htmlContent = await marked(content);
+    
+    // Debug: vérifier la conversion
+    console.log('Markdown length:', content.length);
+    console.log('HTML length:', htmlContent.length);
+    console.log('First 200 chars of HTML:', htmlContent.substring(0, 200));
 
     return {
       slug,
@@ -61,7 +74,7 @@ export async function getBlogPostBySlugServer(slug: string): Promise<BlogPost | 
       image: data.image || '/images/blog/default.jpg',
       locale: data.locale,
       published: data.published !== false,
-      content,
+      content: htmlContent,
       readingTime,
       wordCount,
       seo: {

@@ -2,6 +2,7 @@ import { getAllBlogPostsServer } from '@/lib/blog/server-actions';
 import { generateBlogPageSEO } from '@/lib/blog/blog-utils';
 import { BlogList } from '@/components/blog/blog-list';
 import { ResponsiveSection } from '@/components/ui/responsive-section';
+import Image from 'next/image';
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -15,19 +16,34 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 
   return (
     <main className="min-h-screen">
-      {/* Hero Section Blog */}
+      {/* Hero Section Blog - Style secteur */}
       <ResponsiveSection 
-        bgColor="bg-gradient-to-br from-marine-50 to-gold-50" 
-        spacing="xl"
+        spacing="xl" 
+        className="relative overflow-hidden"
       >
-        <div className="text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-marine-900 mb-6">
+        {/* Image de fond */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/blog/blog_header.jpg"
+            alt="Blog Octogone"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+
+        <div className="relative z-10 text-center">
+          {/* Titre */}
+          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
             {typedLocale === 'fr' 
               ? 'Blog Octogone' 
               : 'Octogone Blog'
             }
           </h1>
-          <p className="text-lg md:text-xl text-marine-700 max-w-3xl mx-auto mb-8">
+          
+          {/* Description */}
+          <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8">
             {typedLocale === 'fr'
               ? 'Conseils d\'experts, actualités et études de cas pour optimiser la gestion de votre restaurant.'
               : 'Expert tips, news and case studies to optimize your restaurant management.'
@@ -35,19 +51,19 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
           </p>
           
           {/* Statistiques */}
-          <div className="flex justify-center items-center gap-8 text-sm text-marine-600">
+          <div className="flex justify-center items-center gap-8 text-sm text-white/80">
             <div>
-              <span className="font-bold text-gold-600">{posts.length}</span>
+              <span className="font-bold text-white">{posts.length}</span>
               {' '}
               {typedLocale === 'fr' ? 'articles' : 'articles'}
             </div>
             <div>
-              <span className="font-bold text-gold-600">4</span>
+              <span className="font-bold text-white">4</span>
               {' '}
               {typedLocale === 'fr' ? 'catégories' : 'categories'}
             </div>
             <div>
-              <span className="font-bold text-gold-600">5 min</span>
+              <span className="font-bold text-white">5 min</span>
               {' '}
               {typedLocale === 'fr' ? 'de lecture moyenne' : 'average read'}
             </div>
@@ -56,14 +72,16 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       </ResponsiveSection>
 
       {/* Liste des articles */}
-      <ResponsiveSection spacing="xl">
-        <BlogList 
-          posts={posts} 
-          locale={typedLocale}
-          showFilters={true}
-          showSearch={true}
-        />
-      </ResponsiveSection>
+      <section className="py-16 md:py-24" style={{ backgroundColor: 'var(--background)' }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <BlogList 
+            posts={posts} 
+            locale={typedLocale}
+            showFilters={true}
+            showSearch={true}
+          />
+        </div>
+      </section>
     </main>
   );
 }

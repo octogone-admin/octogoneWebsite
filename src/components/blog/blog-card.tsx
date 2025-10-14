@@ -48,7 +48,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             <div className="absolute top-4 left-4">
               <span 
                 className="px-3 py-1 rounded-full text-xs font-semibold"
-                style={{ backgroundColor: categoryInfo.color, color: '#FFFFFF' }}
+                style={{ backgroundColor: categoryInfo.color, color: 'var(--on-secondary-container)' }}
               >
                 {categoryInfo.name}
               </span>

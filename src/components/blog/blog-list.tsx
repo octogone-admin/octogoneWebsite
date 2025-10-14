@@ -61,27 +61,29 @@ export const BlogList: React.FC<BlogListProps> = ({
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setSelectedCategory(null)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  !selectedCategory
-                    ? 'bg-gold-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className="px-4 py-2 rounded-full text-sm font-medium transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: '#dcb26b',
+                  color: 'var(--on-secondary-container)',
+                  opacity: !selectedCategory ? 1 : 0.6,
+                  border: !selectedCategory ? '2px solid var(--on-secondary-container)' : '2px solid transparent'
+                }}
               >
                 {locale === 'fr' ? 'Tous' : 'All'}
               </button>
               {blogConfig.categories.map((category) => {
                 const categoryInfo = getCategoryInfo(category.id, locale);
+                const isSelected = selectedCategory === category.id;
                 return (
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                      selectedCategory === category.id
-                        ? 'text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                    className="px-4 py-2 rounded-full text-sm font-medium transition-all hover:opacity-90"
                     style={{
-                      backgroundColor: selectedCategory === category.id ? categoryInfo.color : undefined
+                      backgroundColor: categoryInfo.color,
+                      color: 'var(--on-secondary-container)',
+                      opacity: isSelected ? 1 : 0.6,
+                      border: isSelected ? '2px solid var(--on-secondary-container)' : '2px solid transparent'
                     }}
                   >
                     {categoryInfo.name}

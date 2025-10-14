@@ -7,7 +7,7 @@
       "nameEn": "News",
       "descriptionFr": "Dernières fonctionnalités et mises à jour d'Octogone",
       "descriptionEn": "Latest Octogone features and updates",
-      "color": "#D4AF37"
+      "color": "#C8B6FF"
     },
     {
       "id": "conseils",
@@ -15,7 +15,7 @@
       "nameEn": "Tips",
       "descriptionFr": "Conseils pratiques pour optimiser votre restaurant",
       "descriptionEn": "Practical tips to optimize your restaurant",
-      "color": "#2E5984"
+      "color": "#B4D4FF"
     },
     {
       "id": "etudes-cas",
@@ -23,7 +23,7 @@
       "nameEn": "Case Studies",
       "descriptionFr": "Histoires de succès de nos clients",
       "descriptionEn": "Success stories from our clients",
-      "color": "#16A085"
+      "color": "#B8E0D2"
     },
     {
       "id": "tendances",
@@ -31,7 +31,7 @@
       "nameEn": "Trends",
       "descriptionFr": "Tendances de l'industrie de la restauration",
       "descriptionEn": "Restaurant industry trends",
-      "color": "#E67E22"
+      "color": "#FFE5B4"
     }
   ],
   "authors": [
