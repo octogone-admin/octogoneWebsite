@@ -83,7 +83,7 @@ const HowItWorks = ({ onOpenCalculator }: HowItWorksProps) => {
       link: `/${locale}/predire`
     },
     {
-      id: 9,
+      id: 8,
       icon: TrendingUp,
       titleFr: "Maximisez vos profits",
       titleEn: "Maximize your profits",
@@ -233,11 +233,11 @@ const HowItWorks = ({ onOpenCalculator }: HowItWorksProps) => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.9 }}
         >
-          {/* Numéro 9 */}
+          {/* Numéro 8 */}
           <div className="flex justify-center mb-8">
             <div className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg"
                  style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)' }}>
-              9
+              8
             </div>
           </div>
 
