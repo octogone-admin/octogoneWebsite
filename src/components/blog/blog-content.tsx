@@ -24,7 +24,7 @@ export const BlogContent: React.FC<BlogContentProps> = ({ post, locale, previous
       <article className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-12" style={{ backgroundColor: 'var(--background)' }}>
         <div className="w-full rounded-3xl p-8 lg:p-12 shadow-xl text-center" style={{ backgroundColor: 'var(--secondary-container)' }}>
           {/* Badge catégorie */}
-          <div className="inline-block px-4 py-2 rounded-full font-semibold mb-6" style={{ backgroundColor: categoryInfo.color, color: '#FFFFFF' }}>
+          <div className="inline-block px-4 py-2 rounded-full font-semibold mb-6" style={{ backgroundColor: categoryInfo.color, color: 'var(--on-secondary-container)' }}>
             {categoryInfo.name}
           </div>
 
