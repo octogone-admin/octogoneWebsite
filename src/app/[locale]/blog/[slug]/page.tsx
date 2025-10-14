@@ -4,6 +4,7 @@ import { generateBlogPostSEO } from '@/lib/blog/blog-utils';
 import { BlogContent } from '@/components/blog/blog-content';
 import { BlogRelatedPosts } from '@/components/blog/blog-related-posts';
 import { ResponsiveSection } from '@/components/ui/responsive-section';
+import { BlogSchema } from '@/components/seo/blog-schema';
 
 export default async function BlogPostPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
@@ -39,29 +40,34 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const relatedPosts = await getRelatedPostsServer(slug, 3);
 
   return (
-    <main className="min-h-screen">
-      {/* Contenu de l'article */}
-      <BlogContent 
-        post={post} 
-        locale={typedLocale}
-        previousPost={previousPost}
-        nextPost={nextPost}
-      />
+    <>
+      {/* Schemas JSON-LD pour SEO AI */}
+      <BlogSchema post={post} locale={typedLocale} />
+      
+      <main className="min-h-screen">
+        {/* Contenu de l'article */}
+        <BlogContent 
+          post={post} 
+          locale={typedLocale}
+          previousPost={previousPost}
+          nextPost={nextPost}
+        />
 
-      {/* Articles liés */}
-      {relatedPosts.length > 0 && (
-        <ResponsiveSection 
-          bgColor="bg-gray-50" 
-          spacing="xl"
-        >
-          <BlogRelatedPosts 
-            posts={relatedPosts}
-            currentSlug={slug}
-            locale={typedLocale}
-          />
-        </ResponsiveSection>
-      )}
-    </main>
+        {/* Articles liés */}
+        {relatedPosts.length > 0 && (
+          <ResponsiveSection 
+            bgColor="bg-gray-50" 
+            spacing="xl"
+          >
+            <BlogRelatedPosts 
+              posts={relatedPosts}
+              currentSlug={slug}
+              locale={typedLocale}
+            />
+          </ResponsiveSection>
+        )}
+      </main>
+    </>
   );
 }
 

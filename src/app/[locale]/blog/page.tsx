@@ -2,6 +2,7 @@ import { getAllBlogPostsServer } from '@/lib/blog/server-actions';
 import { generateBlogPageSEO } from '@/lib/blog/blog-utils';
 import { BlogList } from '@/components/blog/blog-list';
 import { ResponsiveSection } from '@/components/ui/responsive-section';
+import { generateBlogSchema, generateBlogWebSiteSchema } from '@/lib/seo/blog-schema-generator';
 import Image from 'next/image';
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -16,8 +17,27 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 
   const displayPosts = posts;
 
+  // Générer les schemas pour la page blog
+  const blogSchema = generateBlogSchema(typedLocale);
+  const websiteSchema = generateBlogWebSiteSchema(typedLocale);
+
   return (
-    <main className="min-h-screen">
+    <>
+      {/* Schemas JSON-LD pour SEO AI */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(blogSchema, null, 2),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema, null, 2),
+        }}
+      />
+      
+      <main className="min-h-screen">
       {/* Hero Section Blog - Style secteur */}
       <ResponsiveSection 
         spacing="xl" 
@@ -95,6 +115,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
     </main>
+    </>
   );
 }
 

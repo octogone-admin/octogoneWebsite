@@ -13,25 +13,55 @@ interface ClientLogo {
   alt: string;
 }
 
-// Logos clients (exemples)
+// Logos clients
 const clientLogos: ClientLogo[] = [
   {
     id: 1,
-    name: "Restaurant A",
-    logo: "/images/clients/client1.svg",
-    alt: "Logo Restaurant A",
+    name: "Chez Boulay",
+    logo: "/images/partners/Chez_Boulay (1).png",
+    alt: "Logo Chez Boulay",
   },
   {
     id: 2,
-    name: "Restaurant B",
-    logo: "/images/clients/client2.svg",
-    alt: "Logo Restaurant B",
+    name: "Germain Hotels",
+    logo: "/images/partners/Logo_GermainHotels_FR (1).png",
+    alt: "Logo Germain Hotels",
   },
   {
     id: 3,
-    name: "Restaurant C",
-    logo: "/images/clients/client3.svg",
-    alt: "Logo Restaurant C",
+    name: "Restos Plaisir",
+    logo: "/images/partners/restos_plaisir (2).png",
+    alt: "Logo Restos Plaisir",
+  },
+  {
+    id: 4,
+    name: "Archibald",
+    logo: "/images/partners/archibald-logo.png",
+    alt: "Logo Archibald",
+  },
+  {
+    id: 5,
+    name: "Ashton",
+    logo: "/images/partners/ashton_logo_plein_rvb_ketchup.png",
+    alt: "Logo Ashton",
+  },
+  {
+    id: 6,
+    name: "Belle et Boeuf",
+    logo: "/images/partners/belle-et-boeuf-logo (1).png",
+    alt: "Logo Belle et Boeuf",
+  },
+  {
+    id: 7,
+    name: "Biceps BBQ",
+    logo: "/images/partners/biceps_bbq (1).png",
+    alt: "Logo Biceps BBQ",
+  },
+  {
+    id: 8,
+    name: "Les Botanistes",
+    logo: "/images/partners/logo_les-botanistes-768x768-1 (1).jpg",
+    alt: "Logo Les Botanistes",
   },
 ];
 

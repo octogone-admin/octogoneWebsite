@@ -107,11 +107,12 @@ export async function PUT(
     const existingContent = await readFile(filePath, 'utf8');
     const { data: existingData } = matter(existingContent);
 
-    // Générer le nouveau frontmatter
+    // Générer le nouveau frontmatter avec dateModified
     const frontmatter = `---
 title: "${sanitizedData.title}"
 slug: "${sanitizedData.slug}"
-date: "${existingData.date || new Date().toISOString().split('T')[0]}"
+date: "${existingData.date || new Date().toISOString()}"
+dateModified: "${new Date().toISOString()}"
 author: "${existingData.author || 'equipe-octogone'}"
 category: "${sanitizedData.category}"
 tags: [${sanitizedData.tags.map((tag: string) => `"${tag}"`).join(', ')}]
