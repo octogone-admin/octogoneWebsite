@@ -1,5 +1,5 @@
-import realTestimonialsData from './testimonials/real-testimonials.json';
-import demoTestimonialsData from './testimonials/demo-testimonials.json';
+import realTestimonialsData from './testimonials/clients-real.json';
+import demoTestimonialsData from './testimonials/clients-demo.json';
 
 // Types pour les témoignages
 export interface Testimonial {

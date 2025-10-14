@@ -13,7 +13,7 @@ import {
   Clock,
   Check
 } from 'lucide-react';
-import { AVAILABLE_MODULES, LOCATION_RANGES } from '../config/calculator-config';
+import { AVAILABLE_MODULES, LOCATION_RANGES } from '../config';
 import { calculateROI, formatCurrency, formatHours } from '../utils/roi-calculations';
 
 // Map des icônes (seulement les 4 forfaits réels)

@@ -16,7 +16,7 @@ import {
   MessageCircle,
   Package
 } from 'lucide-react';
-import { AVAILABLE_MODULES, LOCATION_RANGES, CALCULATION_CONFIG, INVENTORY_SAVINGS } from '../config/calculator-config';
+import { AVAILABLE_MODULES, LOCATION_RANGES, CALCULATION_CONFIG, INVENTORY_SAVINGS } from '../config';
 import { calculateROI, formatCurrency, formatHours } from '../utils/roi-calculations';
 
 // Map des icônes (5 forfaits)
@@ -42,19 +42,20 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
   const [hourlyCost, setHourlyCost] = useState(CALCULATION_CONFIG.defaultHourlyCost);
   const [inventoriesPerMonth, setInventoriesPerMonth] = useState(INVENTORY_SAVINGS.defaultInventoriesPerMonth);
   const [employeesPerInventory, setEmployeesPerInventory] = useState(INVENTORY_SAVINGS.defaultEmployeesPerInventory);
+  const [manualTasksHours, setManualTasksHours] = useState(CALCULATION_CONFIG.defaultManualTasksHoursPerWeek);
   const [periodView, setPeriodView] = useState<'month' | 'year'>('month'); // Toggle mois/année - Mois par défaut
-  const [roiResult, setRoiResult] = useState(calculateROI(1, [], CALCULATION_CONFIG.defaultHourlyCost, INVENTORY_SAVINGS.defaultInventoriesPerMonth));
+  const [roiResult, setRoiResult] = useState(calculateROI(1, [], CALCULATION_CONFIG.defaultHourlyCost, INVENTORY_SAVINGS.defaultInventoriesPerMonth, INVENTORY_SAVINGS.defaultEmployeesPerInventory, CALCULATION_CONFIG.defaultManualTasksHoursPerWeek));
   
   // Recalculer le ROI quand les paramètres changent
   useEffect(() => {
-    const result = calculateROI(numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory);
+    const result = calculateROI(numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory, manualTasksHours);
     setRoiResult(result);
     
     // Notifier le parent si callback fourni
     if (onSavingsCalculated && selectedModules.length > 0) {
       onSavingsCalculated(result.netYearlySavings);
     }
-  }, [numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory, onSavingsCalculated]);
+  }, [numberOfLocations, selectedModules, hourlyCost, inventoriesPerMonth, employeesPerInventory, manualTasksHours, onSavingsCalculated]);
   
   // Toggle module avec logique exclusive pour PRO
   const toggleModule = (moduleId: string) => {
@@ -197,6 +198,47 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                     />
                     <span className="text-sm font-medium" style={{ color: 'var(--on-surface)' }}>$/h</span>
                   </div>
+                </div>
+
+                {/* Heures de tâches manuelles */}
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--on-surface)' }}>
+                    {locale === "fr" 
+                      ? (periodView === 'month' ? "Heures par mois consacrées aux tâches manuelles et factures" : "Heures par an consacrées aux tâches manuelles et factures")
+                      : (periodView === 'month' ? "Hours per month spent on manual tasks and invoices" : "Hours per year spent on manual tasks and invoices")
+                    }
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      min={periodView === 'month' ? "4" : "50"}
+                      max={periodView === 'month' ? "175" : "2100"}
+                      value={periodView === 'month' ? Math.round(manualTasksHours * 4.33) : Math.round(manualTasksHours * 52)}
+                      onChange={(e) => {
+                        const inputValue = Number(e.target.value);
+                        const weeklyHours = periodView === 'month' ? inputValue / 4.33 : inputValue / 52;
+                        setManualTasksHours(Math.max(1, Math.round(weeklyHours * 10) / 10));
+                      }}
+                      className="flex-1 px-4 py-2 rounded-lg border-2"
+                      style={{
+                        backgroundColor: 'var(--surface-variant)',
+                        borderColor: 'var(--outline)',
+                        color: 'var(--on-surface)'
+                      }}
+                    />
+                    <span className="text-sm font-medium" style={{ color: 'var(--on-surface)' }}>
+                      {locale === "fr" 
+                        ? (periodView === 'month' ? "h/mois" : "h/an")
+                        : (periodView === 'month' ? "h/month" : "h/year")
+                      }
+                    </span>
+                  </div>
+                  <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
+                    {locale === "fr" 
+                      ? "Temps consacré aux inventaires, calculs manuels, gestion des pourboires, etc."
+                      : "Time spent on inventories, manual calculations, tip management, etc."
+                    }
+                  </p>
                 </div>
 
                 {/* Inventaires (seulement si module Inventaire sélectionné) */}
@@ -446,7 +488,32 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                       {locale === "fr" ? "Détail du calcul :" : "Calculation details:"}
                     </p>
                     
-                    {/* Ligne 1 : Gains totaux */}
+                    {/* Ligne 1 : Gains personnalisés (tâches manuelles) */}
+                    {roiResult.manualTasksValueSaved > 0 && (
+                      <div className="flex items-center justify-between p-2 rounded" style={{ backgroundColor: 'var(--primary-container)', opacity: 0.7 }}>
+                        <div className="flex flex-col">
+                          <span className="text-sm" style={{ color: 'var(--on-primary-container)' }}>
+                            {locale === "fr" ? "Gains tâches manuelles" : "Manual tasks savings"}
+                          </span>
+                          <span className="text-xs" style={{ color: 'var(--on-primary-container)', opacity: 0.8 }}>
+                            {locale === "fr" 
+                              ? `Basé sur ${periodView === 'month' ? Math.round(manualTasksHours * 4.33) : Math.round(manualTasksHours * 52)}h/${periodView === 'month' ? 'mois' : 'an'}`
+                              : `Based on ${periodView === 'month' ? Math.round(manualTasksHours * 4.33) : Math.round(manualTasksHours * 52)}h/${periodView === 'month' ? 'month' : 'year'}`
+                            }
+                          </span>
+                        </div>
+                        <span className="text-sm font-semibold" style={{ color: 'var(--on-primary-container)' }}>
+                          + {formatCurrency(
+                            periodView === 'month' 
+                              ? roiResult.manualTasksValueSaved / 12
+                              : roiResult.manualTasksValueSaved, 
+                            locale
+                          )}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Ligne 2 : Gains totaux */}
                     <div className="flex items-center justify-between p-2 rounded" style={{ backgroundColor: 'var(--surface-variant)' }}>
                       <span className="text-sm" style={{ color: 'var(--on-surface-variant)' }}>
                         {locale === "fr" ? "Gains totaux" : "Total savings"}
@@ -454,8 +521,8 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                       <span className="text-base font-bold" style={{ color: 'var(--on-surface)' }}>
                         + {formatCurrency(
                           periodView === 'month' 
-                            ? (roiResult.monthlyMoneySavings + roiResult.monthlyTimeSavings * hourlyCost)
-                            : (roiResult.yearlyMoneySavings + roiResult.timeSavingsValue), 
+                            ? (roiResult.monthlyMoneySavings + roiResult.monthlyTimeSavings * hourlyCost + roiResult.manualTasksValueSaved / 12)
+                            : (roiResult.yearlyMoneySavings + roiResult.timeSavingsValue + roiResult.manualTasksValueSaved), 
                           locale
                         )}
                       </span>
@@ -572,6 +639,7 @@ RÉSULTATS FINANCIERS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 • Temps économisé par an : ${formatHours(roiResult.yearlyTimeSavings, locale)}
 • Valeur du temps économisé : ${formatCurrency(roiResult.timeSavingsValue, locale)}
+${roiResult.manualTasksValueSaved > 0 ? `• Gains tâches manuelles : ${formatCurrency(roiResult.manualTasksValueSaved, locale)}` : ''}
 
 J'aimerais discuter de la mise en place d'Octogone pour mon/mes établissement(s).
 
@@ -600,6 +668,7 @@ TIME SAVINGS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 • Time saved per year: ${formatHours(roiResult.yearlyTimeSavings, locale)}
 • Value of time saved: ${formatCurrency(roiResult.timeSavingsValue, locale)}
+${roiResult.manualTasksValueSaved > 0 ? `• Manual tasks savings: ${formatCurrency(roiResult.manualTasksValueSaved, locale)}` : ''}
 
 I would like to discuss implementing Octogone for my location(s).
 

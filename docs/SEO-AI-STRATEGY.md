@@ -7,10 +7,13 @@ Ce document décrit la stratégie SEO et d'optimisation pour les AI crawlers (Ch
 ## ✅ Infrastructure actuelle (Solide et cohérente)
 
 ### 1. **Architecture centralisée**
-- ✅ **`/src/lib/seo/testimonial-schema-generator.ts`** : Générateur centralisé pour tous les schemas de témoignages
-- ✅ **`/src/components/seo/simple-schema.tsx`** : Schemas globaux (Organization, FAQ, Product)
+- ✅ **`/src/lib/seo/schema-generator.ts`** : Générateur centralisé pour tous les schemas de témoignages
+- ✅ **`/src/components/seo/global-schema.tsx`** : Schemas globaux (Organization, FAQ, Product)
 - ✅ **`/src/components/seo/dynamic-seo.tsx`** : Préparé pour l'évolution future
-- ✅ **`/src/data/testimonials/`** : Données JSON séparées (vrais vs fictifs)
+- ✅ **`/src/data/testimonials/`** : Données JSON séparées (clients réels vs démo)
+  - `clients-real.json` : Témoignages réels avec pages de détail
+  - `clients-demo.json` : Témoignages fictifs pour démonstration
+- ✅ **Fichiers `index.ts`** : Exports centralisés pour faciliter les imports
 
 ### 2. **Schemas implémentés**
 
@@ -102,7 +105,7 @@ Quand un utilisateur demande à ChatGPT/Perplexity :
 ## 📋 Checklist pour ajouter un nouveau témoignage
 
 ### **Témoignage réel (avec page de détail)**
-1. Ajouter dans `/src/data/testimonials/real-testimonials.json` :
+1. Ajouter dans `/src/data/testimonials/clients-real.json` :
 ```json
 {
   "id": "nouveau-client",
@@ -141,8 +144,23 @@ Quand un utilisateur demande à ChatGPT/Perplexity :
    - ✅ Microdata
 
 ### **Témoignage fictif (pour démonstration)**
-1. Ajouter dans `/src/data/testimonials/demo-testimonials.json`
+1. Ajouter dans `/src/data/testimonials/clients-demo.json`
 2. Même structure mais `"isReal": false`
+
+## 📁 Imports Simplifiés
+
+Grâce aux fichiers `index.ts`, les imports sont maintenant plus courts et clairs :
+
+```typescript
+// Générateurs SEO
+import { generateReviewSchema, generateTestimonialBreadcrumb } from '@/lib/seo';
+
+// Composants SEO
+import { SimpleSchema } from '@/components/seo';
+
+// Données témoignages
+import { clientsReal, clientsDemo } from '@/data/testimonials';
+```
 
 ## 🔮 Évolutions futures recommandées
 

@@ -4,7 +4,7 @@
  * Utilise le générateur centralisé pour les témoignages
  */
 
-import { generateProductSchema, generateOrganizationWithTestimonials } from '@/lib/seo/testimonial-schema-generator';
+import { generateProductSchema, generateOrganizationWithTestimonials } from '@/lib/seo/schema-generator';
 
 interface SimpleSchemaProps {
   locale: string;

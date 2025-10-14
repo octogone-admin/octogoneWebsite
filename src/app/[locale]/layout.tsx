@@ -7,7 +7,7 @@ import Navigation from "@/features/navigation";
 import { Footer } from "@/components/ui/footer";
 import FloatingROIWidget from "@/components/ui/floating-roi-widget";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
-import { SimpleSchema } from "@/components/seo/simple-schema";
+import { SimpleSchema } from "@/components/seo/global-schema";
 import { routes } from "@/config/routes";
 import { CalculatorProvider, useCalculator } from "@/contexts/calculator-context";
 

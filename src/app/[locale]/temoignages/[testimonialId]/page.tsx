@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { testimonials, type Testimonial } from "@/data/testimonials-data";
 import Image from "next/image";
-import { generateReviewSchema, generateTestimonialBreadcrumb } from "@/lib/seo/testimonial-schema-generator";
+import { generateReviewSchema, generateTestimonialBreadcrumb } from "@/lib/seo/schema-generator";
 
 // Données complètes des témoignages (pour ceux qui ont des détails - exemples fictifs)
 const demoTestimonialDetails = [

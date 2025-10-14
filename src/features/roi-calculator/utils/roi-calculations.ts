@@ -10,7 +10,7 @@ import {
   LOCATION_RANGES,
   CALCULATION_CONFIG,
   INVENTORY_SAVINGS
-} from '../config/calculator-config';
+} from '../config';
 
 export interface ROIResult {
   // Coûts
@@ -25,6 +25,10 @@ export interface ROIResult {
   monthlyTimeSavings: number; // En heures
   yearlyTimeSavings: number; // En heures
   timeSavingsValue: number; // Valeur monétaire du temps économisé
+  
+  // Gains personnalisés (tâches manuelles)
+  manualTasksTimeSaved: number; // Heures économisées sur tâches manuelles
+  manualTasksValueSaved: number; // Valeur monétaire des tâches manuelles économisées
   
   // ROI
   totalYearlySavings: number;
@@ -70,7 +74,8 @@ export function calculateROI(
   selectedModuleIds: string[],
   hourlyCost: number = CALCULATION_CONFIG.defaultHourlyCost,
   inventoriesPerMonth: number = INVENTORY_SAVINGS.defaultInventoriesPerMonth,
-  employeesPerInventory: number = INVENTORY_SAVINGS.defaultEmployeesPerInventory
+  employeesPerInventory: number = INVENTORY_SAVINGS.defaultEmployeesPerInventory,
+  manualTasksHoursPerWeek: number = CALCULATION_CONFIG.defaultManualTasksHoursPerWeek
 ): ROIResult {
   // Validation
   if (numberOfLocations < 1) numberOfLocations = 1;
@@ -86,6 +91,8 @@ export function calculateROI(
       monthlyTimeSavings: 0,
       yearlyTimeSavings: 0,
       timeSavingsValue: 0,
+      manualTasksTimeSaved: 0,
+      manualTasksValueSaved: 0,
       totalYearlySavings: 0,
       netYearlySavings: 0,
       roiPercentage: 0,
@@ -144,8 +151,32 @@ export function calculateROI(
   // Valeur monétaire du temps économisé
   const timeSavingsValue = yearlyTimeSavings * hourlyCost;
   
+  // === CALCUL DES GAINS TÂCHES MANUELLES ===
+  let manualTasksReductionTotal = 0;
+  let invoiceTasksReductionTotal = 0;
+  
+  selectedModules.forEach(module => {
+    manualTasksReductionTotal += module.manualTasksReduction || 0;
+    invoiceTasksReductionTotal += module.invoiceTasksReduction || 0;
+  });
+  
+  // Limiter à 100% maximum
+  manualTasksReductionTotal = Math.min(manualTasksReductionTotal, 1);
+  invoiceTasksReductionTotal = Math.min(invoiceTasksReductionTotal, 1);
+  
+  // Calcul des heures économisées sur tâches manuelles
+  const manualTasksTimeSaved = 
+    manualTasksHoursPerWeek * 
+    (manualTasksReductionTotal + invoiceTasksReductionTotal) * 
+    CALCULATION_CONFIG.weeksPerYear * 
+    numberOfLocations * 
+    efficiencyMultiplier * 
+    CALCULATION_CONFIG.conservativeFactor;
+  
+  const manualTasksValueSaved = manualTasksTimeSaved * hourlyCost;
+  
   // === CALCUL DU ROI ===
-  const totalYearlySavings = yearlyMoneySavings + timeSavingsValue;
+  const totalYearlySavings = yearlyMoneySavings + timeSavingsValue + manualTasksValueSaved;
   const netYearlySavings = totalYearlySavings - totalFirstYearCost;
   const roiPercentage = totalFirstYearCost > 0 
     ? (netYearlySavings / totalFirstYearCost) * 100 
@@ -166,6 +197,8 @@ export function calculateROI(
     monthlyTimeSavings,
     yearlyTimeSavings,
     timeSavingsValue,
+    manualTasksTimeSaved,
+    manualTasksValueSaved,
     totalYearlySavings,
     netYearlySavings,
     roiPercentage,

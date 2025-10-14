@@ -1,0 +1,140 @@
+[
+  {
+    "id": "inventory",
+    "nameFr": "Inventaire",
+    "nameEn": "Inventory",
+    "descriptionFr": "Éliminez la double saisie et les erreurs de calcul",
+    "descriptionEn": "Eliminate double entry and calculation errors",
+    "featuresFr": [
+      "Prise d'inventaire mobile intuitive",
+      "Gestion des produits partiels",
+      "Coordination multi-zones en temps réel",
+      "Élimination de la double saisie",
+      "Calculs automatiques sans erreur",
+      "Historique et rapports détaillés"
+    ],
+    "featuresEn": [
+      "Intuitive mobile inventory taking",
+      "Partial product management",
+      "Real-time multi-zone coordination",
+      "Elimination of double entry",
+      "Automatic error-free calculations",
+      "History and detailed reports"
+    ],
+    "monthlySavingsPerLocation": 1200,
+    "timesSavedPerWeekPerLocation": 8,
+    "manualTasksReduction": 0.7,
+    "invoiceTasksReduction": 0.2,
+    "icon": "Warehouse"
+  },
+  {
+    "id": "foodcost",
+    "nameFr": "Foodcost",
+    "nameEn": "Foodcost",
+    "descriptionFr": "Standardisation des recettes et Food Cost en temps réel",
+    "descriptionEn": "Recipe standardization and real-time Food Cost",
+    "featuresFr": [
+      "Fiches techniques détaillées",
+      "Calcul automatique du coût des recettes",
+      "Food Cost en temps réel",
+      "Analyse de rentabilité par plat",
+      "Gestion des portions standardisées",
+      "Suivi des variations de prix"
+    ],
+    "featuresEn": [
+      "Detailed technical sheets",
+      "Automatic recipe cost calculation",
+      "Real-time Food Cost",
+      "Profitability analysis per dish",
+      "Standardized portion management",
+      "Price variation tracking"
+    ],
+    "monthlySavingsPerLocation": 1000,
+    "timesSavedPerWeekPerLocation": 4,
+    "manualTasksReduction": 0.5,
+    "invoiceTasksReduction": 0.1,
+    "icon": "ChefHat"
+  },
+  {
+    "id": "thermometer",
+    "nameFr": "Thermomètre",
+    "nameEn": "Thermometer",
+    "descriptionFr": "Surveillance active en temps réel et alertes personnalisées",
+    "descriptionEn": "Active real-time monitoring and personalized alerts",
+    "featuresFr": [
+      "Surveillance température en temps réel",
+      "Alertes personnalisées instantanées",
+      "Conformité HACCP automatique",
+      "Historique des températures",
+      "Rapports de conformité",
+      "Prévention des pertes alimentaires"
+    ],
+    "featuresEn": [
+      "Real-time temperature monitoring",
+      "Instant personalized alerts",
+      "Automatic HACCP compliance",
+      "Temperature history",
+      "Compliance reports",
+      "Food loss prevention"
+    ],
+    "monthlySavingsPerLocation": 700,
+    "timesSavedPerWeekPerLocation": 2,
+    "manualTasksReduction": 0.3,
+    "invoiceTasksReduction": 0.0,
+    "icon": "Thermometer"
+  },
+  {
+    "id": "tips",
+    "nameFr": "Pourboire",
+    "nameEn": "Tips",
+    "descriptionFr": "Répartition automatique et gestion des exceptions",
+    "descriptionEn": "Automatic distribution and exception management",
+    "featuresFr": [
+      "Répartition automatique des pourboires",
+      "Gestion des exceptions et ajustements",
+      "Conformité légale garantie",
+      "Historique complet des distributions",
+      "Rapports détaillés par employé",
+      "Intégration avec la paie"
+    ],
+    "featuresEn": [
+      "Automatic tip distribution",
+      "Exception and adjustment management",
+      "Guaranteed legal compliance",
+      "Complete distribution history",
+      "Detailed reports per employee",
+      "Payroll integration"
+    ],
+    "monthlySavingsPerLocation": 300,
+    "timesSavedPerWeekPerLocation": 3,
+    "manualTasksReduction": 0.4,
+    "invoiceTasksReduction": 0.8,
+    "icon": "DollarSign"
+  },
+  {
+    "id": "pro",
+    "nameFr": "PRO",
+    "nameEn": "PRO",
+    "descriptionFr": "Tous les modules inclus",
+    "descriptionEn": "All modules included",
+    "featuresFr": [
+      "Tous les modules Octogone",
+      "Support prioritaire",
+      "Formation complète incluse",
+      "Mises à jour illimitées",
+      "Accès à toutes les nouvelles fonctionnalités"
+    ],
+    "featuresEn": [
+      "All Octogone modules",
+      "Priority support",
+      "Complete training included",
+      "Unlimited updates",
+      "Access to all new features"
+    ],
+    "monthlySavingsPerLocation": 3200,
+    "timesSavedPerWeekPerLocation": 17,
+    "manualTasksReduction": 0.8,
+    "invoiceTasksReduction": 0.9,
+    "icon": "Package"
+  }
+]
