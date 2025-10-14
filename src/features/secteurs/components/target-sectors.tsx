@@ -244,18 +244,18 @@ const TargetSectors = () => {
             /* Carrousel de cartes de témoignages */
             <div className="relative flex flex-col">
             {/* Conteneur du carrousel avec hauteur dynamique */}
-            <div className="overflow-hidden" style={{ height: `${carouselHeight}px` }}>
+            <div className="overflow-hidden" style={{ minHeight: `${carouselHeight}px` }}>
               <div 
-                className="flex transition-transform duration-800 ease-out h-full"
-                style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
+                className="flex transition-transform duration-800 ease-out"
+                style={{ transform: `translateX(-${currentTestimonial * 100}%)`, minHeight: `${carouselHeight}px` }}
               >
                 {testimonials.map((testimonial, index) => (
-                  <div key={testimonial.id} className="w-full flex-shrink-0 px-4 h-full flex items-stretch">
-                    <div className="w-full" data-testimonial-card>
+                  <div key={testimonial.id} className="w-full flex-shrink-0 px-4" style={{ minHeight: `${carouselHeight}px` }}>
+                    <div className="w-full h-full flex items-stretch" data-testimonial-card>
                       <TestimonialWidget
                         testimonial={testimonial}
                         locale={locale}
-                        className="h-full"
+                        className="w-full"
                         showTitle={false}
                       />
                     </div>

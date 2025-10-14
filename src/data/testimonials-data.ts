@@ -1,3 +1,6 @@
+import realTestimonialsData from './testimonials/real-testimonials.json';
+import demoTestimonialsData from './testimonials/demo-testimonials.json';
+
 // Types pour les témoignages
 export interface Testimonial {
   id: string;
@@ -13,127 +16,23 @@ export interface Testimonial {
   sectors: string[]; // IDs des secteurs associés
   isRestaurantStyle: boolean; // true pour styles de restaurants, false pour types d'entreprises
   isReal?: boolean; // true pour les vrais témoignages clients
+  // Champs optionnels pour les pages de détail
+  fullStoryFr?: string;
+  fullStoryEn?: string;
+  resultsFr?: string[];
+  resultsEn?: string[];
 }
 
 // ========================================
-// VRAIS TÉMOIGNAGES CLIENTS
+// VRAIS TÉMOIGNAGES CLIENTS (depuis JSON)
 // ========================================
-export const realTestimonials: Testimonial[] = [
-  {
-    id: "pauline-baroche-bromont",
-    nameFr: "Pauline Baroche",
-    nameEn: "Pauline Baroche",
-    businessFr: "Technicienne administrative - Restauration, Bromont",
-    businessEn: "Administrative Technician - Food Service, Bromont",
-    quoteFr: "La plateforme Octogone offre une merveilleuse opportunité de centralisation des données ainsi qu'un accès efficace à l'information. Le fait que les fournisseurs soient intégrés et que la facturation se fasse automatiquement engendre un gain de temps significatif.",
-    quoteEn: "The Octogone platform offers a wonderful opportunity for data centralization and efficient access to information. The fact that suppliers are integrated and billing is done automatically generates significant time savings.",
-    rating: 5,
-    image: "/images/testimonials/bromont.png",
-    sectors: ["tourism-industrial", "chains-groups"],
-    isRestaurantStyle: false,
-    isReal: true
-  },
-  {
-    id: "les-mordus-brasserie",
-    nameFr: "Équipe de gestion",
-    nameEn: "Management Team",
-    businessFr: "Brasserie Les Mordus - Vieux-Québec",
-    businessEn: "Les Mordus Brewery - Old Quebec",
-    quoteFr: "Octogone nous a permis d'automatiser notre inventaire mensuel et de gagner une clarté précieuse dans notre gestion. L'import automatique des factures avec les prix et food cost ont vraiment changé la donne. Nos recettes sont organisées et calculées en temps réel, et l'inventaire est parfaitement aligné avec les ventes grâce à l'intégration POS.",
-    quoteEn: "Octogone allowed us to automate our monthly inventory and gain precious clarity in our management. The automatic import of invoices with prices and food cost truly changed the game. Our recipes are organized and calculated in real-time, and inventory is perfectly aligned with sales thanks to POS integration.",
-    rating: 5,
-    image: "/images/testimonials/mordus.jpg",
-    sectors: ["pub-microbrewery", "independent-restaurants"],
-    isRestaurantStyle: true,
-    isReal: true
-  },
-  {
-    id: "olive-gourmando",
-    nameFr: "Équipe de gestion",
-    nameEn: "Management Team",
-    businessFr: "Olive+Gourmando - Boulangerie et épicerie fine, Montréal",
-    businessEn: "Olive+Gourmando - Bakery and Fine Grocery, Montreal",
-    quoteFr: "Avec Octogone, nous avons enfin une structure qui nous permet de croire tout en gardant une gestion rigoureuse de nos coûts et inventaires. Nous pouvons désormais nous concentrer sur ce que nous faisons de mieux : offrir une cuisine authentique et généreuse.",
-    quoteEn: "With Octogone, we finally have a structure that allows us to believe while maintaining rigorous management of our costs and inventories. We can now focus on what we do best: offering authentic and generous cuisine.",
-    rating: 5,
-    image: "/images/testimonials/olive.jpg",
-    sectors: ["cafe", "independent-restaurants"],
-    isRestaurantStyle: true,
-    isReal: true
-  },
-  {
-    id: "rioux-pettigrew",
-    nameFr: "Équipe de gestion",
-    nameEn: "Management Team",
-    businessFr: "Rioux & Pettigrew - Restaurant gastronomique, Vieux-Québec",
-    businessEn: "Rioux & Pettigrew - Fine Dining Restaurant, Old Quebec",
-    quoteFr: "Avec notre croissance et l'ouverture de nouveaux espaces, la gestion des stocks, des coûts et des opérations était devenue un enjeu majeur. Octogone nous a permis d'optimiser nos processus et de maintenir notre excellence culinaire tout en gérant efficacement nos opérations.",
-    quoteEn: "With our growth and the opening of new spaces, managing inventory, costs and operations had become a major challenge. Octogone allowed us to optimize our processes and maintain our culinary excellence while efficiently managing our operations.",
-    rating: 5,
-    image: "/images/testimonials/rioux.jpg",
-    sectors: ["gastronomic", "independent-restaurants"],
-    isRestaurantStyle: true,
-    isReal: true
-  }
-];
+export const realTestimonials: Testimonial[] = realTestimonialsData.testimonials as Testimonial[];
 
 // ========================================
-// TÉMOIGNAGES FICTIFS (pour démonstration)
+// TÉMOIGNAGES FICTIFS (depuis JSON + sectoriels)
 // ========================================
 export const demoTestimonials: Testimonial[] = [
-  {
-    id: "mario-rossi",
-    nameFr: "Mario Rossi",
-    nameEn: "Mario Rossi",
-    businessFr: "Restaurant Mario - Cuisine italienne",
-    businessEn: "Restaurant Mario - Italian Cuisine",
-    quoteFr: "Octogone a transformé notre gestion. Nous avons réduit nos coûts de 25% en 6 mois grâce à Cortex qui anticipe parfaitement nos besoins.",
-    quoteEn: "Octogone transformed our management. We reduced our costs by 25% in 6 months thanks to Cortex perfectly anticipating our needs.",
-    rating: 5,
-    image: "/resto.jpg",
-    sectors: ["independent-restaurants", "gastronomic"],
-    isRestaurantStyle: false
-  },
-  {
-    id: "laurent-dubois",
-    nameFr: "Laurent Dubois",
-    nameEn: "Laurent Dubois",
-    businessFr: "Bistro Laurent - Bistro français",
-    businessEn: "Bistro Laurent - French Bistro",
-    quoteFr: "L'automatisation des inventaires nous fait gagner 3h par jour. L'interface est intuitive et l'équipe s'est adaptée en une semaine.",
-    quoteEn: "Inventory automation saves us 3 hours per day. The interface is intuitive and the team adapted in one week.",
-    rating: 5,
-    image: "/resto.jpg",
-    sectors: ["bistro-brasserie", "independent-restaurants"],
-    isRestaurantStyle: true
-  },
-  {
-    id: "yuki-tanaka",
-    nameFr: "Yuki Tanaka",
-    nameEn: "Yuki Tanaka",
-    businessFr: "Sushi Zen - Restaurant japonais",
-    businessEn: "Sushi Zen - Japanese Restaurant",
-    quoteFr: "Les prédictions de Cortex sont impressionnantes. Nous n'avons plus de ruptures de stock et nos marges ont augmenté de 18%.",
-    quoteEn: "Cortex's predictions are impressive. We no longer have stock shortages and our margins increased by 18%.",
-    rating: 5,
-    image: "/resto.jpg",
-    sectors: ["gastronomic", "independent-restaurants"],
-    isRestaurantStyle: true
-  },
-  {
-    id: "sophie-martin",
-    nameFr: "Sophie Martin",
-    nameEn: "Sophie Martin",
-    businessFr: "Café Central - Chaîne de 12 établissements",
-    businessEn: "Café Central - Chain of 12 locations",
-    quoteFr: "La vue d'ensemble sur nos 12 cafés est un game-changer. Octogone nous permet de piloter efficacement notre croissance.",
-    quoteEn: "The overview of our 12 cafes is a game-changer. Octogone allows us to efficiently manage our growth.",
-    rating: 5,
-    image: "/resto.jpg",
-    sectors: ["chains-groups", "cafe"],
-    isRestaurantStyle: true
-  },
-
+  ...demoTestimonialsData.testimonials as Testimonial[],
   // ===== TÉMOIGNAGES SECTORIELS (pour pages secteurs) =====
   {
     id: "marc-brasseur-secteur",

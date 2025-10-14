@@ -47,11 +47,16 @@ export const ResponsiveSection: React.FC<ResponsiveSectionProps> = ({
   fullHeight = false,
   noPadding = false,
   spacing = "md",
-  bgColor = "bg-white",
+  bgColor = "",
   maxWidth = "wider",
   className,
+  style,
   ...props
 }) => {
+  // Utiliser var(--background) par défaut si aucune couleur n'est spécifiée
+  const defaultStyle = !bgColor && !style?.backgroundColor 
+    ? { backgroundColor: 'var(--background)', ...style }
+    : style;
   // Mapping des espacements pour chaque breakpoint
   const spacingClasses = {
     none: "",
@@ -90,6 +95,7 @@ export const ResponsiveSection: React.FC<ResponsiveSectionProps> = ({
         // Classes personnalisées
         className,
       )}
+      style={defaultStyle}
       {...props}
     >
       {/* Conteneur pour limiter la largeur du contenu */}
