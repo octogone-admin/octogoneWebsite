@@ -21,24 +21,39 @@ export const BlogList: React.FC<BlogListProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'title'>('date-desc');
 
-  // Filtrer les articles
-  const filteredPosts = posts.filter(post => {
-    const matchesCategory = !selectedCategory || post.category === selectedCategory;
-    const matchesSearch = !searchQuery || 
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    return matchesCategory && matchesSearch;
-  });
+  // Filtrer et trier les articles
+  const filteredAndSortedPosts = posts
+    .filter(post => {
+      const matchesCategory = !selectedCategory || post.category === selectedCategory;
+      const matchesSearch = !searchQuery || 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      return matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'date-desc':
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case 'date-asc':
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case 'title':
+          return a.title.localeCompare(b.title);
+        default:
+          return 0;
+      }
+    });
 
   return (
     <div>
-      {/* Filtres et recherche */}
+      {/* Filtres, recherche et tri */}
       {(showFilters || showSearch) && (
-        <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-          {/* Recherche */}
-          {showSearch && (
+        <div className="mb-8 space-y-4">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            {/* Recherche */}
+            {showSearch && (
             <div className="w-full md:w-96">
               <input
                 type="text"
@@ -90,13 +105,53 @@ export const BlogList: React.FC<BlogListProps> = ({
               })}
             </div>
           )}
+          </div>
+
+          {/* Tri */}
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium" style={{ color: 'var(--on-surface-variant)' }}>
+              {locale === 'fr' ? 'Trier par :' : 'Sort by:'}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setSortBy('date-desc')}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
+                style={{
+                  backgroundColor: sortBy === 'date-desc' ? '#dcb26b' : 'var(--surface-variant)',
+                  color: sortBy === 'date-desc' ? '#002236' : 'var(--on-surface-variant)'
+                }}
+              >
+                {locale === 'fr' ? 'Plus récent' : 'Newest'}
+              </button>
+              <button
+                onClick={() => setSortBy('date-asc')}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
+                style={{
+                  backgroundColor: sortBy === 'date-asc' ? '#dcb26b' : 'var(--surface-variant)',
+                  color: sortBy === 'date-asc' ? '#002236' : 'var(--on-surface-variant)'
+                }}
+              >
+                {locale === 'fr' ? 'Plus ancien' : 'Oldest'}
+              </button>
+              <button
+                onClick={() => setSortBy('title')}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
+                style={{
+                  backgroundColor: sortBy === 'title' ? '#dcb26b' : 'var(--surface-variant)',
+                  color: sortBy === 'title' ? '#002236' : 'var(--on-surface-variant)'
+                }}
+              >
+                {locale === 'fr' ? 'Titre (A-Z)' : 'Title (A-Z)'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Grille d'articles */}
-      {filteredPosts.length > 0 ? (
+      {filteredAndSortedPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post) => (
+          {filteredAndSortedPosts.map((post) => (
             <BlogCard
               key={post.slug}
               post={post}

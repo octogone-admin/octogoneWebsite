@@ -1,7 +1,7 @@
 ---
 title: "Food Cost : Le guide essentiel pour les restaurateurs qui veulent cesser de deviner – et commencer à décider"
 slug: "food-cost-guide-essentiel-restaurateurs"
-date: "2025-10-10"
+date: "2024-10-14"
 author: "equipe-octogone"
 category: "conseils"
 tags: ["food cost", "rentabilité", "gestion", "restaurant", "marges"]

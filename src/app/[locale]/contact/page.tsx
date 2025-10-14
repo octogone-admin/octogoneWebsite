@@ -202,38 +202,38 @@ Date : ${new Date().toLocaleString('fr-CA', { timeZone: 'America/Toronto' })}
           
           {/* Section d'introduction colorée */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-gradient-to-br from-green_pastel to-green-200 p-6 rounded-2xl text-center">
-              <div className="bg-white/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <MessageSquare className="w-8 h-8 text-marine-800" />
+            <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: '#B8E6D5' }}>
+              <div className="p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>
+                <MessageSquare className="w-8 h-8" style={{ color: 'var(--on-secondary-container)' }} />
               </div>
-              <h3 className="font-bold text-marine-900 mb-2">
+              <h3 className="font-bold mb-2" style={{ color: 'var(--on-secondary-container)' }}>
                 {locale === "fr" ? "Service humain et rapide" : "Human and fast service"}
               </h3>
-              <p className="text-marine-700 text-sm">
+              <p className="text-sm" style={{ color: 'var(--on-secondary-container)' }}>
                 {locale === "fr" ? "Notre équipe vous accompagne et facilite votre quotidien" : "Our team supports you and simplifies your daily operations"}
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-blue_pastel to-blue-200 p-6 rounded-2xl text-center">
-              <div className="bg-white/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Calendar className="w-8 h-8 text-marine-800" />
+            <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: '#BADFF6' }}>
+              <div className="p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>
+                <Calendar className="w-8 h-8" style={{ color: 'var(--on-secondary-container)' }} />
               </div>
-              <h3 className="font-bold text-marine-900 mb-2">
+              <h3 className="font-bold mb-2" style={{ color: 'var(--on-secondary-container)' }}>
                 {locale === "fr" ? "Démo sur mesure" : "Custom demo"}
               </h3>
-              <p className="text-marine-700 text-sm">
+              <p className="text-sm" style={{ color: 'var(--on-secondary-container)' }}>
                 {locale === "fr" ? "Voyez Octogone en action" : "See Octogone in action"}
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-purple_pastel to-purple-200 p-6 rounded-2xl text-center">
-              <div className="bg-white/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Users className="w-8 h-8 text-marine-800" />
+            <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: '#E2CDED' }}>
+              <div className="p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>
+                <Users className="w-8 h-8" style={{ color: 'var(--on-secondary-container)' }} />
               </div>
-              <h3 className="font-bold text-marine-900 mb-2">
+              <h3 className="font-bold mb-2" style={{ color: 'var(--on-secondary-container)' }}>
                 {locale === "fr" ? "À l'écoute de vos besoins" : "Listening to your needs"}
               </h3>
-              <p className="text-marine-700 text-sm">
+              <p className="text-sm" style={{ color: 'var(--on-secondary-container)' }}>
                 {locale === "fr" ? "Nous comprenons votre réalité et nous adaptons à vos défis" : "We understand your reality and adapt to your challenges"}
               </p>
             </div>
@@ -259,7 +259,7 @@ Date : ${new Date().toLocaleString('fr-CA', { timeZone: 'America/Toronto' })}
 
           {/* Formulaire de contact */}
           <div>
-            <div className="bg-gradient-to-br from-white to-marine-50 rounded-2xl p-8 border-2" style={{ borderColor: '#E5E5E5' }}>
+            <div className="rounded-2xl p-8 border" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
               <div className="flex items-center mb-8">
                 <div className="bg-gradient-to-r from-primary_color to-gold-400 p-3 rounded-lg mr-4">
                   <Send className="w-6 h-6 text-marine-900" />

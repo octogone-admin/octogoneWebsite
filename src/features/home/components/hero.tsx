@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Rocket, Settings, BarChart3, Brain } from "lucide-react";
+import { ArrowRight, Play, Zap, LineChart, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
@@ -187,7 +187,7 @@ const Hero = () => {
       titleEn: "Operate",
       descFr: "Gérez vos inventaires en temps réel",
       descEn: "Manage your inventory in real-time",
-      LucideIcon: Rocket,
+      LucideIcon: Play,
       color: "text-marine-500",
       pastelColor: "green_pastel", // Vert menthe pastel
       position: "top-left",
@@ -201,7 +201,7 @@ const Hero = () => {
       titleEn: "Automate",
       descFr: "Recettes et processus automatisés",
       descEn: "Automated recipes and processes",
-      LucideIcon: Settings,
+      LucideIcon: Zap,
       color: "text-gold-500",
       pastelColor: "blue_pastel", // Bleu ciel pastel
       position: "top-right",
@@ -215,7 +215,7 @@ const Hero = () => {
       titleEn: "Analyze",
       descFr: "Food cost et optimisation",
       descEn: "Food cost and optimization",
-      LucideIcon: BarChart3,
+      LucideIcon: LineChart,
       color: "text-marine-500",
       pastelColor: "yellow_pastel", // Jaune pastel
       position: "bottom-right",

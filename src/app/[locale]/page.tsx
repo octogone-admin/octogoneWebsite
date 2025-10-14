@@ -7,6 +7,7 @@ import CortexIntro from "@/features/cortex/components/cortex-intro";
 import TargetSectors from "@/features/secteurs/components/target-sectors";
 import HowItWorks from "@/features/secteurs/components/how-it-works";
 import SuppliersSection from "@/features/home/components/suppliers-section";
+import RecentBlogPosts from "@/features/home/components/recent-blog-posts";
 // Ces imports ont été nettoyés car ils ne sont plus utilisés
 // import {
 //   ArrowRight,
@@ -84,6 +85,9 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
         <SuppliersSection />
 
       </div>
+
+      {/* Articles récents du blog */}
+      <RecentBlogPosts locale={locale as 'fr' | 'en'} />
     </>
   );
 }

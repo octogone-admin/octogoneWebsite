@@ -1,7 +1,7 @@
 ---
 title: "Octogone Insight : Notre nouveau hub d'intelligence pour la restauration"
 slug: "nouveau-site-octogone-insight"
-date: "2025-10-14T19:10:00.000Z"
+date: "2024-10-14"
 author: "equipe-octogone"
 category: "nouveautes"
 tags: ["octogone", "innovation", "blog", "intelligence", "données"]

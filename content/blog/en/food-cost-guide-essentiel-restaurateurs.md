@@ -1,7 +1,7 @@
 ---
 title: "Food Cost: The Essential Guide for Restaurateurs Who Want to Stop Guessing – and Start Deciding"
 slug: "food-cost-guide-essentiel-restaurateurs"
-date: "2025-10-10"
+date: "2024-10-14"
 author: "equipe-octogone"
 category: "conseils"
 tags: ["food cost", "profitability", "management", "restaurant", "margins"]

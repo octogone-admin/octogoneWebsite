@@ -1,7 +1,7 @@
 ---
 title: "Le paradoxe du restaurant moderne : quand le marketing éclipse les chiffres"
 slug: "paradoxe-restaurant-moderne-marketing-vs-chiffres"
-date: "2025-10-11"
+date: "2024-10-14"
 author: "equipe-octogone"
 category: "tendances"
 tags: ["gestion restaurant", "marketing", "rentabilité", "food cost", "stratégie"]
