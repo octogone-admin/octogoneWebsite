@@ -71,6 +71,7 @@ const TargetSectors = () => {
   const [hoveredSector, setHoveredSector] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'business' | 'styles' | 'testimonials'>('business');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [carouselHeight, setCarouselHeight] = useState<number>(650);
 
   // Auto-rotation du carrousel de témoignages (simple boucle)
   React.useEffect(() => {
@@ -82,6 +83,24 @@ const TargetSectors = () => {
       return () => clearInterval(interval);
     }
   }, [activeTab]);
+
+  // Calculer la hauteur maximale des cartes de témoignages
+  React.useEffect(() => {
+    if (activeTab === 'testimonials') {
+      // Attendre que le DOM soit rendu
+      setTimeout(() => {
+        const cards = document.querySelectorAll('[data-testimonial-card]');
+        let maxHeight = 650;
+        cards.forEach((card) => {
+          const height = (card as HTMLElement).offsetHeight;
+          if (height > maxHeight) {
+            maxHeight = height;
+          }
+        });
+        setCarouselHeight(maxHeight);
+      }, 100);
+    }
+  }, [activeTab, currentTestimonial]);
 
   // Données à afficher selon l'onglet actif (seulement pour les cartes)
   const currentData = activeTab === 'business' ? targetSectors : restaurantStyles;
@@ -223,58 +242,63 @@ const TargetSectors = () => {
           {/* Affichage conditionnel : Grille ou Carrousel */}
           {activeTab === 'testimonials' ? (
             /* Carrousel de cartes de témoignages */
-            <div className="relative h-full flex flex-col justify-center">
-              {/* Contrôle gauche */}
-              <button
-                onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
-              >
-              <svg className="w-6 h-6 text-marine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            {/* Contrôle droit */}
-            <button
-              onClick={() => setCurrentTestimonial(prev => prev === testimonials.length - 1 ? 0 : prev + 1)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
-            >
-              <svg className="w-6 h-6 text-marine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            {/* Conteneur du carrousel */}
-            <div className="overflow-hidden">
+            <div className="relative flex flex-col">
+            {/* Conteneur du carrousel avec hauteur dynamique */}
+            <div className="overflow-hidden" style={{ height: `${carouselHeight}px` }}>
               <div 
-                className="flex transition-transform duration-800 ease-out"
+                className="flex transition-transform duration-800 ease-out h-full"
                 style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
               >
                 {testimonials.map((testimonial, index) => (
-                  <div key={testimonial.id} className="w-full flex-shrink-0 px-4">
-                    <TestimonialWidget
-                      testimonial={testimonial}
-                      locale={locale}
-                      className=""
-                      showTitle={false}
-                    />
+                  <div key={testimonial.id} className="w-full flex-shrink-0 px-4 h-full flex items-stretch">
+                    <div className="w-full" data-testimonial-card>
+                      <TestimonialWidget
+                        testimonial={testimonial}
+                        locale={locale}
+                        className="h-full"
+                        showTitle={false}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Indicateurs centrés */}
-            <div className="flex justify-center gap-2 mt-8">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonial(index)}
-                  className="w-3 h-3 rounded-full transition-colors cursor-pointer"
-                  style={{
-                    backgroundColor: index === currentTestimonial ? '#000000' : '#ffffff'
-                  }}
-                />
-              ))}
+            {/* Contrôles et indicateurs en bas */}
+            <div className="flex items-center justify-center gap-6 mt-8">
+              {/* Contrôle gauche */}
+              <button
+                onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
+                className="p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
+              >
+                <svg className="w-6 h-6 text-marine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              {/* Indicateurs */}
+              <div className="flex gap-2">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentTestimonial(index)}
+                    className="w-3 h-3 rounded-full transition-colors cursor-pointer"
+                    style={{
+                      backgroundColor: index === currentTestimonial ? '#000000' : '#ffffff'
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Contrôle droit */}
+              <button
+                onClick={() => setCurrentTestimonial(prev => prev === testimonials.length - 1 ? 0 : prev + 1)}
+                className="p-3 rounded-full bg-white hover:bg-gray-50 transition-colors shadow-lg cursor-pointer"
+              >
+                <svg className="w-6 h-6 text-marine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           </div>
           ) : (
@@ -301,7 +325,7 @@ const TargetSectors = () => {
                 onMouseLeave={() => setHoveredSector(null)}
               >
                 {/* Carte principale */}
-                <div className="relative h-48 lg:h-56 rounded-2xl overflow-hidden shadow-lg bg-white transition-all duration-300 ease-out group-hover:shadow-xl flex flex-col justify-end p-6">
+                <div className="relative h-48 lg:h-56 rounded-lg overflow-hidden shadow-lg bg-white transition-all duration-300 ease-out group-hover:shadow-xl flex flex-col justify-end p-6">
                   {/* Image de fond */}
                   {sector.image && (
                     <Image

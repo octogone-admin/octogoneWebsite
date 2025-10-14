@@ -12,10 +12,75 @@ export interface Testimonial {
   // Nouveaux champs pour associer aux secteurs
   sectors: string[]; // IDs des secteurs associés
   isRestaurantStyle: boolean; // true pour styles de restaurants, false pour types d'entreprises
+  isReal?: boolean; // true pour les vrais témoignages clients
 }
 
-// Données des témoignages - SOURCE UNIQUE DE VÉRITÉ
-export const testimonials: Testimonial[] = [
+// ========================================
+// VRAIS TÉMOIGNAGES CLIENTS
+// ========================================
+export const realTestimonials: Testimonial[] = [
+  {
+    id: "pauline-baroche-bromont",
+    nameFr: "Pauline Baroche",
+    nameEn: "Pauline Baroche",
+    businessFr: "Technicienne administrative - Restauration, Bromont",
+    businessEn: "Administrative Technician - Food Service, Bromont",
+    quoteFr: "La plateforme Octogone offre une merveilleuse opportunité de centralisation des données ainsi qu'un accès efficace à l'information. Le fait que les fournisseurs soient intégrés et que la facturation se fasse automatiquement engendre un gain de temps significatif.",
+    quoteEn: "The Octogone platform offers a wonderful opportunity for data centralization and efficient access to information. The fact that suppliers are integrated and billing is done automatically generates significant time savings.",
+    rating: 5,
+    image: "/images/testimonials/bromont.png",
+    sectors: ["tourism-industrial", "chains-groups"],
+    isRestaurantStyle: false,
+    isReal: true
+  },
+  {
+    id: "les-mordus-brasserie",
+    nameFr: "Équipe de gestion",
+    nameEn: "Management Team",
+    businessFr: "Brasserie Les Mordus - Vieux-Québec",
+    businessEn: "Les Mordus Brewery - Old Quebec",
+    quoteFr: "Octogone nous a permis d'automatiser notre inventaire mensuel et de gagner une clarté précieuse dans notre gestion. L'import automatique des factures avec les prix et food cost ont vraiment changé la donne. Nos recettes sont organisées et calculées en temps réel, et l'inventaire est parfaitement aligné avec les ventes grâce à l'intégration POS.",
+    quoteEn: "Octogone allowed us to automate our monthly inventory and gain precious clarity in our management. The automatic import of invoices with prices and food cost truly changed the game. Our recipes are organized and calculated in real-time, and inventory is perfectly aligned with sales thanks to POS integration.",
+    rating: 5,
+    image: "/images/testimonials/mordus.jpg",
+    sectors: ["pub-microbrewery", "independent-restaurants"],
+    isRestaurantStyle: true,
+    isReal: true
+  },
+  {
+    id: "olive-gourmando",
+    nameFr: "Équipe de gestion",
+    nameEn: "Management Team",
+    businessFr: "Olive+Gourmando - Boulangerie et épicerie fine, Montréal",
+    businessEn: "Olive+Gourmando - Bakery and Fine Grocery, Montreal",
+    quoteFr: "Avec Octogone, nous avons enfin une structure qui nous permet de croire tout en gardant une gestion rigoureuse de nos coûts et inventaires. Nous pouvons désormais nous concentrer sur ce que nous faisons de mieux : offrir une cuisine authentique et généreuse.",
+    quoteEn: "With Octogone, we finally have a structure that allows us to believe while maintaining rigorous management of our costs and inventories. We can now focus on what we do best: offering authentic and generous cuisine.",
+    rating: 5,
+    image: "/images/testimonials/olive.jpg",
+    sectors: ["cafe", "independent-restaurants"],
+    isRestaurantStyle: true,
+    isReal: true
+  },
+  {
+    id: "rioux-pettigrew",
+    nameFr: "Équipe de gestion",
+    nameEn: "Management Team",
+    businessFr: "Rioux & Pettigrew - Restaurant gastronomique, Vieux-Québec",
+    businessEn: "Rioux & Pettigrew - Fine Dining Restaurant, Old Quebec",
+    quoteFr: "Avec notre croissance et l'ouverture de nouveaux espaces, la gestion des stocks, des coûts et des opérations était devenue un enjeu majeur. Octogone nous a permis d'optimiser nos processus et de maintenir notre excellence culinaire tout en gérant efficacement nos opérations.",
+    quoteEn: "With our growth and the opening of new spaces, managing inventory, costs and operations had become a major challenge. Octogone allowed us to optimize our processes and maintain our culinary excellence while efficiently managing our operations.",
+    rating: 5,
+    image: "/images/testimonials/rioux.jpg",
+    sectors: ["gastronomic", "independent-restaurants"],
+    isRestaurantStyle: true,
+    isReal: true
+  }
+];
+
+// ========================================
+// TÉMOIGNAGES FICTIFS (pour démonstration)
+// ========================================
+export const demoTestimonials: Testimonial[] = [
   {
     id: "mario-rossi",
     nameFr: "Mario Rossi",
@@ -228,9 +293,12 @@ export const testimonials: Testimonial[] = [
   }
 ];
 
+// Combiner tous les témoignages (vrais + fictifs)
+export const testimonials: Testimonial[] = [...realTestimonials, ...demoTestimonials];
+
 // Fonction pour récupérer un témoignage associé à un secteur
 export function getTestimonialForSector(sectorId: string, isRestaurantStyle: boolean): Testimonial | null {
-  const matchingTestimonials = testimonials.filter(testimonial => 
+  const matchingTestimonials = testimonials.filter((testimonial: Testimonial) => 
     testimonial.sectors.includes(sectorId) && 
     testimonial.isRestaurantStyle === isRestaurantStyle
   );
@@ -244,7 +312,12 @@ export function getAllTestimonials(): Testimonial[] {
   return testimonials;
 }
 
+// Fonction pour récupérer seulement les vrais témoignages
+export function getRealTestimonials(): Testimonial[] {
+  return realTestimonials;
+}
+
 // Fonction pour récupérer un témoignage par ID
 export function getTestimonialById(id: string): Testimonial | null {
-  return testimonials.find(testimonial => testimonial.id === id) || null;
+  return testimonials.find((testimonial: Testimonial) => testimonial.id === id) || null;
 }

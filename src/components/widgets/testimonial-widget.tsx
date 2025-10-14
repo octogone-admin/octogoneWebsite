@@ -31,7 +31,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   }
 }) => {
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full h-full flex flex-col ${className}`}>
       {showTitle && (
         <h3 className="text-2xl font-bold text-marine-900 mb-8 text-center">
           {locale === "fr" ? title.fr : title.en}
@@ -40,12 +40,12 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       
       <Link
         href={`/${locale}/temoignages/${testimonial.id}`}
-        className="block group cursor-pointer w-full"
+        className="block group cursor-pointer w-full flex-1 flex"
       >
-        <div className="bg-white rounded-2xl overflow-hidden relative transform transition-all duration-700 ease-out group-hover:scale-102 border-2 w-full" style={{ borderColor: '#E5E5E5' }}>
+        <div className="bg-white rounded-2xl overflow-hidden relative transform transition-all duration-700 ease-out group-hover:scale-102 border-2 w-full flex flex-col" style={{ borderColor: '#E5E5E5' }}>
           {/* Image de fond */}
           {testimonial.image && (
-            <div className="relative h-48 lg:h-64 w-full">
+            <div className="relative h-48 lg:h-64 w-full flex-shrink-0">
               <Image
                 src={testimonial.image}
                 alt={locale === "fr" ? testimonial.businessFr : testimonial.businessEn}
@@ -59,7 +59,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           )}
           
           {/* Contenu */}
-          <div className="relative p-8 lg:p-12">
+          <div className="relative p-8 lg:p-12 flex-1 flex flex-col justify-between">
             <div className="text-center mb-8">
               <div className="text-8xl mb-4" style={{ color: '#BADFF6' }}>"</div>
               <p className="text-xl lg:text-2xl text-gray-700 leading-relaxed mb-8 line-clamp-3">
