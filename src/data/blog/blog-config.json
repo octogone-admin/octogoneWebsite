@@ -57,10 +57,10 @@
     }
   ],
   "seo": {
-    "defaultTitleFr": "Blog Octogone - Conseils et Actualités Restaurant",
-    "defaultTitleEn": "Octogone Blog - Restaurant Tips and News",
-    "defaultDescriptionFr": "Découvrez nos conseils d'experts, actualités et études de cas pour optimiser la gestion de votre restaurant avec Octogone.",
-    "defaultDescriptionEn": "Discover our expert tips, news and case studies to optimize your restaurant management with Octogone.",
+    "defaultTitleFr": "Octogone Insight - Intelligence et Données pour la Restauration",
+    "defaultTitleEn": "Octogone Insight - Intelligence and Data for Restaurant Management",
+    "defaultDescriptionFr": "Articles, analyses et innovations pour une restauration guidée par l'intelligence et la donnée. Opérer. Automatiser. Analyser. Prédire.",
+    "defaultDescriptionEn": "Articles, analysis and innovations for data-driven restaurant management. Operate. Automate. Analyze. Predict.",
     "defaultKeywords": [
       "gestion restaurant",
       "food cost",

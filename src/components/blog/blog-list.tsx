@@ -65,8 +65,7 @@ export const BlogList: React.FC<BlogListProps> = ({
                 style={{
                   backgroundColor: '#dcb26b',
                   color: 'var(--on-secondary-container)',
-                  opacity: !selectedCategory ? 1 : 0.6,
-                  border: !selectedCategory ? '2px solid var(--on-secondary-container)' : '2px solid transparent'
+                  opacity: !selectedCategory ? 1 : 0.6
                 }}
               >
                 {locale === 'fr' ? 'Tous' : 'All'}
@@ -82,8 +81,7 @@ export const BlogList: React.FC<BlogListProps> = ({
                     style={{
                       backgroundColor: categoryInfo.color,
                       color: 'var(--on-secondary-container)',
-                      opacity: isSelected ? 1 : 0.6,
-                      border: isSelected ? '2px solid var(--on-secondary-container)' : '2px solid transparent'
+                      opacity: isSelected ? 1 : 0.6
                     }}
                   >
                     {categoryInfo.name}

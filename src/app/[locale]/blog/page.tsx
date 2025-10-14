@@ -38,17 +38,14 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         <div className="relative z-10 text-center">
           {/* Titre */}
           <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
-            {typedLocale === 'fr' 
-              ? 'Blog Octogone' 
-              : 'Octogone Blog'
-            }
+            Octogone Insight
           </h1>
           
           {/* Description */}
           <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8">
             {typedLocale === 'fr'
-              ? 'Conseils d\'experts, actualités et études de cas pour optimiser la gestion de votre restaurant.'
-              : 'Expert tips, news and case studies to optimize your restaurant management.'
+              ? 'Articles, analyses et innovations pour une restauration guidée par l\'intelligence et la donnée. Opérer. Automatiser. Analyser. Prédire.'
+              : 'Articles, analysis and innovations for data-driven restaurant management. Operate. Automate. Analyze. Predict.'
             }
           </p>
           
