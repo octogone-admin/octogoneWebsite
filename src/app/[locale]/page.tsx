@@ -60,7 +60,7 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
   const offsetMargin = hasBanner ? -120 : -160; // -120px si bannière, -160px sinon (remonte quand pas de bannière)
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <>
       {/* Hero section avec centrage ajusté pour la barre de navigation */}
       <div className="w-full">
         <Hero />
@@ -83,10 +83,9 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
         {/* Section 1 - Connexion avec les fournisseurs */}
         <SuppliersSection />
 
-
-
-
       </div>
-    </main>
+    </>
   );
 }
+
+

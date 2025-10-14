@@ -44,6 +44,11 @@ export const routes: Route[] = [
     description: "Votre assistant IA qui transforme vos données en décisions",
   },
   {
+    path: "/blog",
+    label: "Blog",
+    description: "Conseils et actualités pour optimiser votre restaurant",
+  },
+  {
     path: "/forfaits",
     label: "Tarifs",
     description: "Des forfaits adaptés à vos besoins",
