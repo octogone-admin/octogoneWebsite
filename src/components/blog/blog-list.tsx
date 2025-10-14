@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { BlogPost } from '@/lib/blog/types';
 import { BlogCard } from './blog-card';
 import { getCategoryInfo } from '@/lib/blog/client-utils';
-import blogConfig from '@/data/blog/blog-config.json';
+import blogConfig from '../../../content/blog/_data/blog-config.json';
 
 interface BlogListProps {
   posts: BlogPost[];

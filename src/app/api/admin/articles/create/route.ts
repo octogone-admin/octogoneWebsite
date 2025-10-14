@@ -4,7 +4,8 @@ import { existsSync } from 'fs';
 import path from 'path';
 import { validateAdminAuth, validateArticleData, sanitizeString } from '@/lib/admin/security';
 
-const BLOG_CONTENT_PATH = path.join(process.cwd(), 'content', 'blog');
+const BLOG_CONTENT_PATH_FR = path.join(process.cwd(), 'content', 'blog', 'fr');
+const BLOG_CONTENT_PATH_EN = path.join(process.cwd(), 'content', 'blog', 'en');
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,8 +42,8 @@ export async function POST(request: NextRequest) {
     };
 
     // Vérifier que le slug n'existe pas déjà
-    const frFilePath = path.join(BLOG_CONTENT_PATH, `${sanitizedData.slug}.fr.md`);
-    const enFilePath = path.join(BLOG_CONTENT_PATH, `${sanitizedData.slug}.en.md`);
+    const frFilePath = path.join(BLOG_CONTENT_PATH_FR, `${sanitizedData.slug}.md`);
+    const enFilePath = path.join(BLOG_CONTENT_PATH_EN, `${sanitizedData.slug}.md`);
     
     if (existsSync(frFilePath) || existsSync(enFilePath)) {
       return NextResponse.json(
@@ -51,16 +52,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Créer le dossier si nécessaire
-    if (!existsSync(BLOG_CONTENT_PATH)) {
-      await mkdir(BLOG_CONTENT_PATH, { recursive: true });
+    // Créer les dossiers si nécessaire
+    if (!existsSync(BLOG_CONTENT_PATH_FR)) {
+      await mkdir(BLOG_CONTENT_PATH_FR, { recursive: true });
+    }
+    if (!existsSync(BLOG_CONTENT_PATH_EN)) {
+      await mkdir(BLOG_CONTENT_PATH_EN, { recursive: true });
     }
 
     // Générer le frontmatter
     const frontmatter = `---
 title: "${sanitizedData.title}"
 slug: "${sanitizedData.slug}"
-date: "${new Date().toISOString().split('T')[0]}"
+date: "${new Date().toISOString()}"
 author: "equipe-octogone"
 category: "${sanitizedData.category}"
 tags: [${sanitizedData.tags.map((tag: string) => `"${tag}"`).join(', ')}]
@@ -93,7 +97,7 @@ ${sanitizedData.content}`);
     return NextResponse.json({ 
       success: true, 
       message: 'Article créé avec succès',
-      files: [`${sanitizedData.slug}.fr.md`, `${sanitizedData.slug}.en.md`]
+      files: [`fr/${sanitizedData.slug}.md`, `en/${sanitizedData.slug}.md`]
     });
 
   } catch (error) {

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Eye, Upload, X, Bold, Italic, List, Heading2, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Save, Eye, Bold, Italic, List, Heading2, Image as ImageIcon, Trash2, Link as LinkIcon } from 'lucide-react';
 
 interface ArticleForm {
   title: string;
@@ -14,6 +14,7 @@ interface ArticleForm {
   content: string;
   image: string;
   published: boolean;
+  locale: 'fr' | 'en';
 }
 
 const categories = [
@@ -23,13 +24,17 @@ const categories = [
   { id: 'tendances', name: 'Tendances' }
 ];
 
-export default function NewArticlePage() {
+export default function EditArticlePage() {
   const router = useRouter();
+  const params = useParams();
+  const slug = params.slug as string;
+  
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState(false);
   const [newTag, setNewTag] = useState('');
   const [uploading, setUploading] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const contentRef = React.useRef<HTMLTextAreaElement>(null);
   
   const [formData, setFormData] = useState<ArticleForm>({
@@ -40,47 +45,31 @@ export default function NewArticlePage() {
     excerpt: '',
     content: '',
     image: '',
-    published: false
+    published: false,
+    locale: 'fr'
   });
 
-  // Générer automatiquement le slug depuis le titre
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
-  };
+  useEffect(() => {
+    loadArticle();
+  }, [slug]);
 
-  const handleTitleChange = (title: string) => {
-    setFormData(prev => ({
-      ...prev,
-      title,
-      slug: generateSlug(title)
-    }));
-  };
-
-  const addTag = () => {
-    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        tags: [...prev.tags, newTag.trim()]
-      }));
-      setNewTag('');
+  const loadArticle = async () => {
+    try {
+      const response = await fetch(`/api/admin/articles/${slug}`);
+      if (response.ok) {
+        const data = await response.json();
+        setFormData(data);
+      } else {
+        alert('Article non trouvé');
+        router.push('/fr/admin/dashboard');
+      }
+    } catch (error) {
+      alert('Erreur lors du chargement');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const removeTag = (tagToRemove: string) => {
-    setFormData(prev => ({
-      ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }));
-  };
-
-  // Fonctions d'aide au formatage
   const insertAtCursor = (before: string, after: string = '') => {
     if (!contentRef.current) return;
     
@@ -93,7 +82,6 @@ export default function NewArticlePage() {
     
     setFormData(prev => ({ ...prev, content: newText }));
     
-    // Repositionner le curseur
     setTimeout(() => {
       if (contentRef.current) {
         const newPos = start + before.length + selectedText.length;
@@ -116,12 +104,12 @@ export default function NewArticlePage() {
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append('image', file);
+      const formDataUpload = new FormData();
+      formDataUpload.append('image', file);
 
       const response = await fetch('/api/admin/upload-image', {
         method: 'POST',
-        body: formData
+        body: formDataUpload
       });
 
       if (response.ok) {
@@ -137,15 +125,32 @@ export default function NewArticlePage() {
     }
   };
 
-  const handleSave = async (publish: boolean = false) => {
+  const addTag = () => {
+    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        tags: [...prev.tags, newTag.trim()]
+      }));
+      setNewTag('');
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
+  };
+
+  const handleSave = async (publish?: boolean) => {
     setSaving(true);
     try {
-      const response = await fetch('/api/admin/articles/create', {
-        method: 'POST',
+      const response = await fetch(`/api/admin/articles/${slug}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          published: publish
+          published: publish !== undefined ? publish : formData.published
         })
       });
 
@@ -161,65 +166,88 @@ export default function NewArticlePage() {
     }
   };
 
+  const confirmDelete = async () => {
+    setShowDeleteModal(false);
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/admin/articles/${slug}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        router.push('/fr/admin/dashboard');
+      } else {
+        alert('Erreur lors de la suppression');
+      }
+    } catch (error) {
+      alert('Erreur lors de la suppression');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--background)' }}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 mx-auto mb-4" style={{ borderColor: '#dcb26b' }}></div>
+          <p style={{ color: 'var(--on-surface-variant)' }}>Chargement...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
       {/* Header */}
       <div className="border-b" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--outline)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="flex items-center gap-4">
-              <Link
-                href="/fr/admin/dashboard"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors hover:bg-gray-100"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Retour
-              </Link>
-              <div>
-                <h1 className="text-xl font-bold" style={{ color: 'var(--on-surface)' }}>
-                  Nouvel Article
-                </h1>
-                <p className="text-sm" style={{ color: 'var(--on-surface-variant)' }}>
-                  Créer un article pour Octogone Insight
-                </p>
-              </div>
-            </div>
+            <Link
+              href="/fr/admin/dashboard"
+              className="p-2 rounded-lg transition-colors hover:bg-gray-100"
+              title="Retour"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                disabled={saving}
+                className="p-2 rounded-lg transition-colors disabled:opacity-50 hover:opacity-80 cursor-pointer"
+                style={{ backgroundColor: '#dc2626', color: 'white' }}
+                title="Supprimer"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+              
+              <div className="w-px h-8 bg-gray-300"></div>
+              
               <button
                 onClick={() => setPreview(!preview)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors"
+                className="p-2 rounded-lg border transition-colors cursor-pointer"
                 style={{ borderColor: 'var(--outline)', color: 'var(--on-surface)' }}
+                title={preview ? 'Éditer' : 'Aperçu'}
               >
-                <Eye className="w-4 h-4" />
-                {preview ? 'Éditer' : 'Aperçu'}
+                <Eye className="w-5 h-5" />
               </button>
               
               <button
-                onClick={() => handleSave(false)}
-                disabled={saving || !formData.title}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
-                style={{ backgroundColor: 'var(--surface-variant)', color: 'var(--on-surface)' }}
+                onClick={() => handleSave()}
+                disabled={saving}
+                className="p-2 rounded-lg transition-colors disabled:opacity-50 hover:opacity-90 cursor-pointer"
+                style={{ backgroundColor: 'var(--success)', color: 'var(--on-success-container)' }}
+                title="Sauvegarder"
               >
-                <Save className="w-4 h-4" />
-                Brouillon
-              </button>
-              
-              <button
-                onClick={() => handleSave(true)}
-                disabled={saving || !formData.title || !formData.content}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
-                style={{ backgroundColor: '#dcb26b', color: '#002236' }}
-              >
-                <Save className="w-4 h-4" />
-                Publier
+                <Save className="w-5 h-5" />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contenu */}
+      {/* Contenu - Même structure que new/page.tsx */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Formulaire principal */}
@@ -233,37 +261,14 @@ export default function NewArticlePage() {
                 <input
                   type="text"
                   value={formData.title}
-                  onChange={(e) => handleTitleChange(e.target.value)}
+                  onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                   className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   style={{
                     backgroundColor: 'var(--surface-variant)',
                     borderColor: 'var(--outline)',
                     color: 'var(--on-surface)'
                   }}
-                  placeholder="Titre de votre article"
                 />
-              </div>
-
-              {/* Slug */}
-              <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--on-surface)' }}>
-                  URL (slug)
-                </label>
-                <input
-                  type="text"
-                  value={formData.slug}
-                  onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  style={{
-                    backgroundColor: 'var(--surface-variant)',
-                    borderColor: 'var(--outline)',
-                    color: 'var(--on-surface)'
-                  }}
-                  placeholder="url-de-votre-article"
-                />
-                <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
-                  URL: /fr/blog/{formData.slug}
-                </p>
               </div>
 
               {/* Excerpt */}
@@ -281,118 +286,60 @@ export default function NewArticlePage() {
                     borderColor: 'var(--outline)',
                     color: 'var(--on-surface)'
                   }}
-                  placeholder="Résumé court de votre article (affiché sur les cartes)"
                 />
               </div>
 
-              {/* Contenu */}
+              {/* Contenu avec boutons */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-sm font-medium" style={{ color: 'var(--on-surface)' }}>
                     Contenu * (Markdown)
                   </label>
                   
-                  {/* Boutons de formatage */}
                   {!preview && (
                     <div className="flex items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={() => insertAtCursor('**', '**')}
-                        className="p-2 rounded hover:bg-gray-100 transition-colors"
-                        title="Gras"
-                      >
+                      <button type="button" onClick={() => insertAtCursor('**', '**')} className="p-2 rounded hover:bg-gray-100" title="Gras">
                         <Bold className="w-4 h-4" />
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => insertAtCursor('*', '*')}
-                        className="p-2 rounded hover:bg-gray-100 transition-colors"
-                        title="Italique"
-                      >
+                      <button type="button" onClick={() => insertAtCursor('*', '*')} className="p-2 rounded hover:bg-gray-100" title="Italique">
                         <Italic className="w-4 h-4" />
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => insertAtCursor('## ', '')}
-                        className="p-2 rounded hover:bg-gray-100 transition-colors"
-                        title="Titre"
-                      >
+                      <button type="button" onClick={() => insertAtCursor('## ', '')} className="p-2 rounded hover:bg-gray-100" title="Titre">
                         <Heading2 className="w-4 h-4" />
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => insertAtCursor('- ', '')}
-                        className="p-2 rounded hover:bg-gray-100 transition-colors"
-                        title="Liste"
-                      >
+                      <button type="button" onClick={() => insertAtCursor('- ', '')} className="p-2 rounded hover:bg-gray-100" title="Liste">
                         <List className="w-4 h-4" />
                       </button>
                       <div className="w-px h-6 bg-gray-300 mx-1"></div>
-                      <label className="p-2 rounded hover:bg-gray-100 transition-colors cursor-pointer" title="Upload une image">
+                      <label className="p-2 rounded hover:bg-gray-100 cursor-pointer" title="Upload une image">
                         <ImageIcon className="w-4 h-4" />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          className="hidden"
-                          disabled={uploading}
-                        />
+                        <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" disabled={uploading} />
                       </label>
-                      <button
-                        type="button"
-                        onClick={handleInsertImageUrl}
-                        className="p-2 rounded hover:bg-gray-100 transition-colors"
-                        title="Insérer image par URL"
-                      >
+                      <button type="button" onClick={handleInsertImageUrl} className="p-2 rounded hover:bg-gray-100" title="Insérer image par URL">
                         <LinkIcon className="w-4 h-4" />
                       </button>
                       {uploading && <span className="text-xs" style={{ color: 'var(--on-surface-variant)' }}>Upload...</span>}
                     </div>
                   )}
                 </div>
-                {preview ? (
-                  <div 
-                    className="w-full min-h-96 p-4 rounded-lg border prose max-w-none"
-                    style={{
-                      backgroundColor: 'var(--surface-variant)',
-                      borderColor: 'var(--outline)',
-                      color: 'var(--on-surface)'
-                    }}
-                    dangerouslySetInnerHTML={{ __html: formData.content.replace(/\n/g, '<br>') }}
-                  />
-                ) : (
-                  <textarea
-                    ref={contentRef}
-                    value={formData.content}
-                    onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                    rows={20}
-                    className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 font-mono text-sm"
-                    style={{
-                      backgroundColor: 'var(--surface-variant)',
-                      borderColor: 'var(--outline)',
-                      color: 'var(--on-surface)'
-                    }}
-                    placeholder="# Votre titre
-
-Votre contenu en Markdown...
-
-## Sous-titre
-
-- Liste à puces
-- Autre élément
-
-**Texte en gras** et *italique*
-
-![Image](/images/blog/mon-image.jpg)"
-                  />
-                )}
+                <textarea
+                  ref={contentRef}
+                  value={formData.content}
+                  onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                  rows={20}
+                  className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 font-mono text-sm"
+                  style={{
+                    backgroundColor: 'var(--surface-variant)',
+                    borderColor: 'var(--outline)',
+                    color: 'var(--on-surface)'
+                  }}
+                />
               </div>
             </div>
           </div>
 
-          {/* Sidebar */}
+          {/* Sidebar - Métadonnées */}
           <div className="space-y-6">
-            {/* Métadonnées */}
             <div className="rounded-xl p-6" style={{ backgroundColor: 'var(--surface)', border: '1px solid var(--outline)' }}>
               <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--on-surface)' }}>
                 Métadonnées
@@ -406,7 +353,7 @@ Votre contenu en Markdown...
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--surface-variant)',
                     borderColor: 'var(--outline)',
@@ -455,7 +402,7 @@ Votre contenu en Markdown...
                     >
                       {tag}
                       <button onClick={() => removeTag(tag)}>
-                        <X className="w-3 h-3" />
+                        <Trash2 className="w-3 h-3" />
                       </button>
                     </span>
                   ))}
@@ -471,7 +418,7 @@ Votre contenu en Markdown...
                   type="text"
                   value={formData.image}
                   onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full px-4 py-3 rounded-lg border"
                   style={{
                     backgroundColor: 'var(--surface-variant)',
                     borderColor: 'var(--outline)',
@@ -479,29 +426,54 @@ Votre contenu en Markdown...
                   }}
                   placeholder="/images/blog/mon-image.jpg"
                 />
-                <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
-                  Laissez vide pour utiliser l'image par défaut
-                </p>
-              </div>
-            </div>
-
-            {/* Aide Markdown */}
-            <div className="rounded-xl p-6" style={{ backgroundColor: 'var(--surface)', border: '1px solid var(--outline)' }}>
-              <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--on-surface)' }}>
-                Aide Markdown
-              </h3>
-              <div className="space-y-2 text-sm" style={{ color: 'var(--on-surface-variant)' }}>
-                <div><code># Titre</code> → Titre principal</div>
-                <div><code>## Sous-titre</code> → Sous-titre</div>
-                <div><code>**gras**</code> → <strong>gras</strong></div>
-                <div><code>*italique*</code> → <em>italique</em></div>
-                <div><code>- Liste</code> → Liste à puces</div>
-                <div><code>![Alt](/image.jpg)</code> → Image</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmation de suppression */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="rounded-2xl p-6 max-w-md w-full shadow-2xl" style={{ backgroundColor: 'var(--surface)' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 rounded-full" style={{ backgroundColor: '#fee2e2' }}>
+                <Trash2 className="w-6 h-6" style={{ color: '#dc2626' }} />
+              </div>
+              <h3 className="text-xl font-bold" style={{ color: 'var(--on-surface)' }}>
+                Supprimer l'article
+              </h3>
+            </div>
+            
+            <p className="mb-2" style={{ color: 'var(--on-surface)' }}>
+              Êtes-vous sûr de vouloir supprimer :
+            </p>
+            <p className="font-semibold mb-4" style={{ color: 'var(--on-surface)' }}>
+              "{formData.title}"
+            </p>
+            <p className="text-sm mb-6" style={{ color: 'var(--on-surface-variant)' }}>
+              Cette action est irréversible. L'article sera supprimé définitivement.
+            </p>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 px-4 py-3 rounded-lg font-medium transition-colors cursor-pointer"
+                style={{ backgroundColor: 'var(--surface-variant)', color: 'var(--on-surface)' }}
+              >
+                Annuler
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 px-4 py-3 rounded-lg font-medium transition-colors hover:opacity-90 cursor-pointer"
+                style={{ backgroundColor: '#dc2626', color: 'white' }}
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

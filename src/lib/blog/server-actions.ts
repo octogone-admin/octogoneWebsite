@@ -11,26 +11,36 @@ import matter from 'gray-matter';
 import { marked } from 'marked';
 import { BlogPost } from './types';
 
-const BLOG_CONTENT_PATH = path.join(process.cwd(), 'content', 'blog');
+const BLOG_CONTENT_PATH_FR = path.join(process.cwd(), 'content', 'blog', 'fr');
+const BLOG_CONTENT_PATH_EN = path.join(process.cwd(), 'content', 'blog', 'en');
 
 /**
  * Server Action : Obtient tous les slugs des articles de blog
  */
 export async function getAllBlogSlugsServer(): Promise<string[]> {
-  if (!fs.existsSync(BLOG_CONTENT_PATH)) {
-    return [];
-  }
-
-  const files = fs.readdirSync(BLOG_CONTENT_PATH);
   const slugs = new Set<string>();
   
-  files
-    .filter(file => file.endsWith('.fr.md') || file.endsWith('.en.md'))
-    .forEach(file => {
-      // Extraire le slug de base (sans .fr.md ou .en.md)
-      const slug = file.replace(/\.(fr|en)\.md$/, '');
-      slugs.add(slug);
-    });
+  // Lire les slugs français
+  if (fs.existsSync(BLOG_CONTENT_PATH_FR)) {
+    const frFiles = fs.readdirSync(BLOG_CONTENT_PATH_FR);
+    frFiles
+      .filter(file => file.endsWith('.md'))
+      .forEach(file => {
+        const slug = file.replace('.md', '');
+        slugs.add(slug);
+      });
+  }
+  
+  // Lire les slugs anglais
+  if (fs.existsSync(BLOG_CONTENT_PATH_EN)) {
+    const enFiles = fs.readdirSync(BLOG_CONTENT_PATH_EN);
+    enFiles
+      .filter(file => file.endsWith('.md'))
+      .forEach(file => {
+        const slug = file.replace('.md', '');
+        slugs.add(slug);
+      });
+  }
   
   return Array.from(slugs);
 }
@@ -40,17 +50,18 @@ export async function getAllBlogSlugsServer(): Promise<string[]> {
  */
 export async function getBlogPostBySlugServer(slug: string, locale?: 'fr' | 'en'): Promise<BlogPost | null> {
   try {
-    // Si locale spécifiée, chercher le fichier avec cette locale
+    // Si locale spécifiée, chercher dans le dossier correspondant
     if (locale) {
-      const filePath = path.join(BLOG_CONTENT_PATH, `${slug}.${locale}.md`);
+      const contentPath = locale === 'fr' ? BLOG_CONTENT_PATH_FR : BLOG_CONTENT_PATH_EN;
+      const filePath = path.join(contentPath, `${slug}.md`);
       if (fs.existsSync(filePath)) {
         return await parseBlogPost(filePath, slug);
       }
     }
     
     // Sinon, chercher d'abord en français, puis en anglais
-    const frPath = path.join(BLOG_CONTENT_PATH, `${slug}.fr.md`);
-    const enPath = path.join(BLOG_CONTENT_PATH, `${slug}.en.md`);
+    const frPath = path.join(BLOG_CONTENT_PATH_FR, `${slug}.md`);
+    const enPath = path.join(BLOG_CONTENT_PATH_EN, `${slug}.md`);
     
     if (fs.existsSync(frPath)) {
       return await parseBlogPost(frPath, slug);
@@ -131,24 +142,33 @@ export async function getAllBlogPostsServer(options: {
 } = {}): Promise<BlogPost[]> {
   const { locale, category, publishedOnly = true, limit, offset = 0 } = options;
 
-  if (!fs.existsSync(BLOG_CONTENT_PATH)) {
-    return [];
-  }
-
-  const files = fs.readdirSync(BLOG_CONTENT_PATH);
   let posts: BlogPost[] = [];
+  const contentPath = locale === 'fr' ? BLOG_CONTENT_PATH_FR : 
+                      locale === 'en' ? BLOG_CONTENT_PATH_EN : null;
 
-  // Filtrer les fichiers selon la locale
-  const targetFiles = locale 
-    ? files.filter(file => file.endsWith(`.${locale}.md`))
-    : files.filter(file => file.endsWith('.fr.md') || file.endsWith('.en.md'));
-
-  for (const file of targetFiles) {
-    const slug = file.replace(/\.(fr|en)\.md$/, '');
-    const post = await getBlogPostBySlugServer(slug, locale);
-    
-    if (post && (!publishedOnly || post.published)) {
-      posts.push(post);
+  // Si locale spécifiée, lire seulement ce dossier
+  if (contentPath && fs.existsSync(contentPath)) {
+    const files = fs.readdirSync(contentPath);
+    for (const file of files.filter(f => f.endsWith('.md'))) {
+      const slug = file.replace('.md', '');
+      const post = await getBlogPostBySlugServer(slug, locale);
+      if (post && (!publishedOnly || post.published)) {
+        posts.push(post);
+      }
+    }
+  } else {
+    // Sinon, lire les deux dossiers
+    for (const [lang, langPath] of [['fr', BLOG_CONTENT_PATH_FR], ['en', BLOG_CONTENT_PATH_EN]] as const) {
+      if (fs.existsSync(langPath)) {
+        const files = fs.readdirSync(langPath);
+        for (const file of files.filter(f => f.endsWith('.md'))) {
+          const slug = file.replace('.md', '');
+          const post = await getBlogPostBySlugServer(slug, lang);
+          if (post && (!publishedOnly || post.published)) {
+            posts.push(post);
+          }
+        }
+      }
     }
   }
 
@@ -160,8 +180,12 @@ export async function getAllBlogPostsServer(options: {
     return true;
   });
 
-  // Tri par date (plus récent en premier)
-  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // Tri par date avec heure (plus récent en premier)
+  posts.sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateB - dateA;
+  });
 
   // Pagination
   if (limit) {

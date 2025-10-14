@@ -1,7 +1,7 @@
 ---
 title: "The Modern Restaurant Paradox: When Marketing Eclipses the Numbers"
 slug: "paradoxe-restaurant-moderne-marketing-vs-chiffres"
-date: "2025-10-14"
+date: "2025-10-11"
 author: "equipe-octogone"
 category: "tendances"
 tags: ["restaurant management", "marketing", "profitability", "food cost", "strategy"]

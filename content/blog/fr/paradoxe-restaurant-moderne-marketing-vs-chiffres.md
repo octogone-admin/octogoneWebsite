@@ -1,7 +1,7 @@
 ---
 title: "Le paradoxe du restaurant moderne : quand le marketing éclipse les chiffres"
 slug: "paradoxe-restaurant-moderne-marketing-vs-chiffres"
-date: "2025-10-14"
+date: "2025-10-11"
 author: "equipe-octogone"
 category: "tendances"
 tags: ["gestion restaurant", "marketing", "rentabilité", "food cost", "stratégie"]
@@ -10,10 +10,12 @@ image: "/images/blog/blog_header.jpg"
 locale: "fr"
 published: true
 seo:
-  title: "Le Paradoxe du Restaurant Moderne : Marketing vs Rentabilité"
-  description: "Salle pleine mais compte en banque vide ? Découvrez pourquoi le succès marketing ne garantit pas la rentabilité et comment équilibrer les deux."
-  keywords: ["gestion restaurant", "rentabilité restaurant", "marketing restaurant", "food cost", "gestion financière restaurant", "optimisation restaurant"]
+  title: "Le paradoxe du restaurant moderne : quand le marketing éclipse les chiffres"
+  description: "Votre salle est pleine, Instagram explose, les avis sont élogieux. Pourtant, vous perdez de l'argent. Découvrez le paradoxe qui tue silencieusement des milliers de restaurants."
+  keywords: ["gestion restaurant", "marketing", "rentabilité", "food cost", "stratégie"]
 ---
+
+
 
 # Le paradoxe du restaurant moderne : quand le marketing éclipse les chiffres
 

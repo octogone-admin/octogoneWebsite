@@ -4,7 +4,7 @@
  * Fonctions utilitaires pour le blog
  */
 
-import blogConfig from '@/data/blog/blog-config.json';
+import blogConfig from '../../../content/blog/_data/blog-config.json';
 
 /**
  * Formate une date pour l'affichage
