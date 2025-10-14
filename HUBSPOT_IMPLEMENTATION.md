@@ -1,35 +1,39 @@
-# 📊 HubSpot Analytics - Guide d'Implémentation
+# 📊 Analytics - Guide d'Implémentation
 
-## ✅ Fichiers créés
+Ce guide détaille l'implémentation du tracking HubSpot + Google Analytics 4 sur le site Octogone.
 
-### 1. Configuration
+### 1. Fichiers créés
 - `.env.local.example` - Template des variables d'environnement
 - `src/lib/analytics/hubspot.ts` - Module de tracking HubSpot
 - `src/components/analytics/analytics-provider.tsx` - Provider React pour le tracking automatique
 
 ### 2. Variables d'environnement à configurer
+Créer un fichier `.env.local`## 🔧 Configuration
 
-Créer un fichier `.env.local` à la racine du projet :
+### Variables d'environnement requises
+# HubSpot
+NEXT_PUBLIC_HUBSPOT_PORTAL_ID=votre_portal_id_hubspot
 
-```env
-NEXT_PUBLIC_HUBSPOT_PORTAL_ID=votre_portal_id_ici
-NEXT_PUBLIC_SITE_URL=https://octogone.ca
-```
+# Google Analytics 4
+NEXT_PUBLIC_GA4_MEASUREMENT_ID=G-XXXXXXXXXX
 
-## 🎯 Fonctionnalités de tracking implémentées
+##  Données Trackées
 
-### Tracking automatique
-- ✅ **Pages vues** - Chaque changement de page
-- ✅ **Scroll depth** - 25%, 50%, 75%, 100%
-- ✅ **Temps sur la page** - Durée de session par page
-- ✅ **Initialisation HubSpot** - Chargement automatique du script
+### Automatiques (HubSpot + GA4)
+-   **Pages vues** - Chaque changement de page
+-   **Scroll depth** - 25%, 50%, 75%, 100%
+-   **Temps sur la page** - En secondes (minimum 5s)
 
-### Événements personnalisés disponibles
+### Événements Personnalisés (HubSpot + GA4)
+-   **Calculateur ROI** - Interactions utilisateur
+-   **Téléchargements** - Fichiers PDF, images
+-   **Liens externes** - Clics sortants
+-   **Formulaires** - Soumissions
+-   **Blog** - Lectures d'articles, partages, recherchesibles
 
 #### 1. Calculateur ROI
 ```typescript
 import { trackROICalculator, trackModuleSelection, trackROIModalOpen } from '@/lib/analytics/hubspot';
-
 // Utilisation du calculateur
 trackROICalculator({
   locations: 3,
