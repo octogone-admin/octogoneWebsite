@@ -113,6 +113,11 @@ export function Footer({ className }: FooterProps) {
                   {locale === "fr" ? "Connexion" : "Login"}
                 </Link>
               </li>
+              <li>
+                <Link href={`/${locale}/admin`} className="transition-colors" style={{ color: 'var(--on-surface-variant)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--on-surface)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--on-surface-variant)'}>
+                  Admin
+                </Link>
+              </li>
             </ul>
           </div>
 

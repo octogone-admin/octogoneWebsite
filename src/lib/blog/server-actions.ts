@@ -132,27 +132,20 @@ export async function getAllBlogPostsServer(options: {
   const { locale, category, publishedOnly = true, limit, offset = 0 } = options;
 
   if (!fs.existsSync(BLOG_CONTENT_PATH)) {
-    console.log('Blog content path does not exist:', BLOG_CONTENT_PATH);
     return [];
   }
 
   const files = fs.readdirSync(BLOG_CONTENT_PATH);
-  console.log('Found files:', files);
-  
   let posts: BlogPost[] = [];
 
   // Filtrer les fichiers selon la locale
   const targetFiles = locale 
     ? files.filter(file => file.endsWith(`.${locale}.md`))
     : files.filter(file => file.endsWith('.fr.md') || file.endsWith('.en.md'));
-  
-  console.log('Target files for locale', locale, ':', targetFiles);
 
   for (const file of targetFiles) {
     const slug = file.replace(/\.(fr|en)\.md$/, '');
     const post = await getBlogPostBySlugServer(slug, locale);
-    
-    console.log('Processing file:', file, 'slug:', slug, 'post found:', !!post);
     
     if (post && (!publishedOnly || post.published)) {
       posts.push(post);

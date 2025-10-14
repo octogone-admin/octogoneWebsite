@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { BlogCardSimple } from './blog-card-simple';
+import { BlogCard } from './blog-card';
 import { ResponsiveSection } from '@/components/ui/responsive-section';
 import { OctogoneButton } from '@/components/ui/octogone-button';
 import { ArrowRight, BookOpen } from 'lucide-react';
@@ -51,13 +51,14 @@ export const BlogHomeSection: React.FC<{
       {/* Grille des articles récents */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         {posts.map((post) => (
-          <BlogCardSimple
+          <BlogCard
             key={post.slug}
             post={post} 
             locale={locale}
             showExcerpt={true}
             showAuthor={false}
             showReadingTime={true}
+            showCategory={true}
           />
         ))}
       </div>

@@ -18,7 +18,7 @@ export function LogoMarquee({
   const [partnerLogos, setPartnerLogos] = useState<PartnerLogo[]>(logos);
   const marqueeRef = useRef<HTMLDivElement>(null);
 
-  // Charger dynamiquement les logos depuis l'API
+  // Charger dynamiquement les logos depuis l'API (optionnel)
   useEffect(() => {
     const fetchLogos = async () => {
       try {
@@ -29,13 +29,18 @@ export function LogoMarquee({
             setPartnerLogos(data);
           }
         }
+        // Si l'API n'existe pas, on utilise les logos statiques (pas d'erreur)
       } catch (error) {
-        console.error("Erreur lors du chargement des logos:", error);
+        // Erreur silencieuse - on garde les logos statiques par défaut
+        // console.error("Erreur lors du chargement des logos:", error);
       }
     };
 
-    fetchLogos();
-  }, []); // Dépendances vides pour n'exécuter qu'au montage
+    // Seulement si on n'a pas déjà des logos statiques
+    if (logos === staticPartnerLogos) {
+      fetchLogos();
+    }
+  }, [logos]); // Dépendance sur logos pour éviter les appels inutiles
 
   return (
     <div className="w-full py-6">
