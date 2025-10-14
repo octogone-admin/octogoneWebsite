@@ -1,7 +1,10 @@
 /**
  * Schema.org Simple et Fiable pour Octogone
  * Approche statique, testée et maintenue manuellement
+ * Utilise le générateur centralisé pour les témoignages
  */
+
+import { generateProductSchema, generateOrganizationWithTestimonials } from '@/lib/seo/testimonial-schema-generator';
 
 interface SimpleSchemaProps {
   locale: string;
@@ -154,83 +157,13 @@ export function SimpleSchema({ locale }: SimpleSchemaProps) {
     ]
   };
 
-  // Reviews Schema - témoignages clients
-  const reviewsSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "Octogone Restaurant Management",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": 5,
-      "reviewCount": 4,
-      "bestRating": 5,
-      "worstRating": 5
-    },
-    "review": [
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Mario Rossi"
-        },
-        "reviewBody": isEnglish 
-          ? "Octogone transformed our management. We reduced our costs by 25% in 6 months thanks to Cortex perfectly anticipating our needs."
-          : "Octogone a transformé notre gestion. Nous avons réduit nos coûts de 25% en 6 mois grâce à Cortex qui anticipe parfaitement nos besoins.",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": 5,
-          "bestRating": 5
-        }
-      },
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person", 
-          "name": "Laurent Dubois"
-        },
-        "reviewBody": isEnglish
-          ? "Inventory automation saves us 3 hours per day. The interface is intuitive and the team adapted in one week."
-          : "L'automatisation des inventaires nous fait gagner 3h par jour. L'interface est intuitive et l'équipe s'est adaptée en une semaine.",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": 5,
-          "bestRating": 5
-        }
-      },
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Yuki Tanaka"
-        },
-        "reviewBody": isEnglish
-          ? "Cortex's predictions are impressive. We no longer have stock shortages and our margins increased by 18%."
-          : "Les prédictions de Cortex sont impressionnantes. Nous n'avons plus de ruptures de stock et nos marges ont augmenté de 18%.",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": 5,
-          "bestRating": 5
-        }
-      },
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Sophie Martin"
-        },
-        "reviewBody": isEnglish
-          ? "The overview of our 12 cafes is a game-changer. Octogone allows us to efficiently manage our growth."
-          : "La vue d'ensemble sur nos 12 cafés est un game-changer. Octogone nous permet de piloter efficacement notre croissance.",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": 5,
-          "bestRating": 5
-        }
-      }
-    ]
-  };
+  // Reviews Schema - témoignages clients (générés dynamiquement depuis les données)
+  const reviewsSchema = generateProductSchema(locale);
 
-  const allSchemas = [organizationSchema, faqSchema, reviewsSchema];
+  // Organization Schema avec témoignages (pour AI crawlers)
+  const organizationWithTestimonials = generateOrganizationWithTestimonials(locale);
+
+  const allSchemas = [organizationSchema, faqSchema, reviewsSchema, organizationWithTestimonials];
 
   return (
     <script

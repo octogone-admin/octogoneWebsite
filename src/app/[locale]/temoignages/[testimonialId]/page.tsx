@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { testimonials, type Testimonial } from "@/data/testimonials-data";
 import Image from "next/image";
-import { Metadata } from "next";
+import { generateReviewSchema, generateTestimonialBreadcrumb } from "@/lib/seo/testimonial-schema-generator";
 
 // Données complètes des témoignages (pour ceux qui ont des détails - exemples fictifs)
 const demoTestimonialDetails = [
@@ -95,6 +95,69 @@ export default function TestimonialDetailPage() {
     ? { ...testimonial, ...demoDetails } 
     : testimonial;
 
+  // Mettre à jour les métadonnées dynamiquement
+  useEffect(() => {
+    if (fullTestimonial) {
+      const title = locale === "fr" 
+        ? `Témoignage ${fullTestimonial.nameFr} - ${fullTestimonial.businessFr} | Octogone`
+        : `Testimonial ${fullTestimonial.nameEn} - ${fullTestimonial.businessEn} | Octogone`;
+      
+      const description = locale === "fr" ? fullTestimonial.quoteFr : fullTestimonial.quoteEn;
+      
+      document.title = title;
+      
+      // Métadonnées
+      let metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        metaDescription = document.createElement('meta');
+        metaDescription.setAttribute('name', 'description');
+        document.head.appendChild(metaDescription);
+      }
+      metaDescription.setAttribute('content', description);
+
+      // Open Graph
+      const updateMetaTag = (property: string, content: string) => {
+        let meta = document.querySelector(`meta[property="${property}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute('property', property);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      };
+
+      updateMetaTag('og:title', title);
+      updateMetaTag('og:description', description);
+      updateMetaTag('og:type', 'article');
+      if (fullTestimonial.image) {
+        updateMetaTag('og:image', fullTestimonial.image);
+      }
+
+      // Schema.org JSON-LD pour SEO - Review + Breadcrumb
+      const existingSchema = document.getElementById('testimonial-schema');
+      if (existingSchema) {
+        existingSchema.remove();
+      }
+
+      // Générer les schemas avec le générateur centralisé
+      const reviewSchema = generateReviewSchema(fullTestimonial, locale);
+      const breadcrumbSchema = generateTestimonialBreadcrumb(
+        testimonialId,
+        locale === "fr" ? fullTestimonial.nameFr : fullTestimonial.nameEn,
+        locale
+      );
+
+      // Combiner les schemas
+      const combinedSchemas = [reviewSchema, breadcrumbSchema];
+
+      const script = document.createElement('script');
+      script.id = 'testimonial-schema';
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(combinedSchemas);
+      document.head.appendChild(script);
+    }
+  }, [fullTestimonial, locale]);
+
   // Si le témoignage n'existe pas, afficher une page 404
   if (!fullTestimonial) {
     return (
@@ -114,7 +177,7 @@ export default function TestimonialDetailPage() {
   return (
     <main className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--background)' }}>
       {/* Hero Section du témoignage */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-12" style={{ backgroundColor: 'var(--background)' }}>
+      <article className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-12" style={{ backgroundColor: 'var(--background)' }} itemScope itemType="https://schema.org/Review">
         <div className="w-full rounded-3xl p-8 lg:p-12 shadow-xl text-center" style={{ backgroundColor: 'var(--secondary-container)' }}>
           {/* Badge témoignage */}
           <div className="inline-block px-4 py-2 rounded-full font-semibold mb-6" style={{ backgroundColor: 'var(--primary)', color: 'var(--on-primary)' }}>
@@ -122,8 +185,8 @@ export default function TestimonialDetailPage() {
           </div>
 
           {/* Citation principale */}
-          <div className="text-6xl mb-4" style={{ color: 'var(--primary)' }}>"</div>
-          <blockquote className="text-2xl lg:text-3xl font-medium leading-relaxed mb-8" style={{ color: 'var(--on-secondary-container)' }}>
+          <div className="text-6xl mb-4" style={{ color: 'var(--primary)' }} aria-hidden="true">"</div>
+          <blockquote className="text-2xl lg:text-3xl font-medium leading-relaxed mb-8" style={{ color: 'var(--on-secondary-container)' }} itemProp="reviewBody">
             {locale === "fr" ? fullTestimonial.quoteFr : fullTestimonial.quoteEn}
           </blockquote>
 
@@ -137,16 +200,18 @@ export default function TestimonialDetailPage() {
           </div>
 
           {/* Nom et entreprise */}
-          <div>
-            <h1 className="text-3xl lg:text-4xl font-bold mb-3" style={{ color: 'var(--on-secondary-container)' }}>
+          <div itemProp="author" itemScope itemType="https://schema.org/Person">
+            <h1 className="text-3xl lg:text-4xl font-bold mb-3" style={{ color: 'var(--on-secondary-container)' }} itemProp="name">
               {locale === "fr" ? fullTestimonial.nameFr : fullTestimonial.nameEn}
             </h1>
-            <p className="text-xl" style={{ color: 'var(--on-secondary-container)' }}>
+            <p className="text-xl" style={{ color: 'var(--on-secondary-container)' }} itemProp="jobTitle">
               {locale === "fr" ? fullTestimonial.businessFr : fullTestimonial.businessEn}
             </p>
           </div>
+          <meta itemProp="ratingValue" content={fullTestimonial.rating.toString()} />
+          <meta itemProp="bestRating" content="5" />
         </div>
-      </div>
+      </article>
 
       {/* Image du client (pour les vrais témoignages) */}
       {fullTestimonial.isReal && fullTestimonial.image && (
