@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { BlogPost } from '@/lib/blog/types';
 import { formatBlogDate, formatReadingTime, getCategoryInfo, getAuthorInfo } from '@/lib/blog/client-utils';
 import { ResponsiveSection } from '@/components/ui/responsive-section';
@@ -20,44 +21,57 @@ export const BlogContent: React.FC<BlogContentProps> = ({ post, locale, previous
 
   return (
     <>
-      {/* Hero de l'article - Style témoignage */}
-      <article className="w-full px-4 sm:px-6 lg:px-8 py-8 lg:py-12" style={{ backgroundColor: 'var(--background)' }}>
-        <div className="w-full rounded-3xl p-8 lg:p-12 shadow-xl text-center" style={{ backgroundColor: 'var(--secondary-container)' }}>
-          {/* Badge catégorie */}
-          <div className="inline-block px-4 py-2 rounded-full font-semibold mb-6" style={{ backgroundColor: categoryInfo.color, color: 'var(--on-secondary-container)' }}>
-            {categoryInfo.name}
-          </div>
+      {/* Hero de l'article avec image de fond */}
+      <article className="relative w-full overflow-hidden">
+        {/* Image de fond */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={post.image || "/images/blog/blog_header.jpg"}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
 
-          {/* Titre */}
-          <h1 className="text-3xl lg:text-4xl font-bold mb-6 leading-tight" style={{ color: 'var(--on-secondary-container)' }}>
-            {post.title}
-          </h1>
-
-          {/* Excerpt */}
-          {post.excerpt && (
-            <p className="text-lg lg:text-xl leading-relaxed mb-8 max-w-3xl mx-auto" style={{ color: 'var(--on-secondary-container)' }}>
-              {post.excerpt}
-            </p>
-          )}
-
-          {/* Métadonnées */}
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm mb-8" style={{ color: 'var(--on-secondary-container)', opacity: 0.8 }}>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              <time dateTime={post.date}>{formatBlogDate(post.date, locale)}</time>
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Badge catégorie */}
+            <div className="inline-block px-4 py-2 rounded-full font-semibold mb-6" style={{ backgroundColor: categoryInfo.color, color: 'var(--on-secondary-container)' }}>
+              {categoryInfo.name}
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              <span>{formatReadingTime(post.readingTime, locale)}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              <span>{authorInfo.name}</span>
-            </div>
-          </div>
 
-          {/* Navigation - Articles */}
-          <div className="flex flex-wrap justify-center items-center gap-3">
+            {/* Titre */}
+            <h1 className="text-3xl lg:text-5xl font-bold mb-6 leading-tight text-white drop-shadow-lg">
+              {post.title}
+            </h1>
+
+            {/* Excerpt */}
+            {post.excerpt && (
+              <p className="text-lg lg:text-xl leading-relaxed mb-8 max-w-3xl mx-auto text-white/90">
+                {post.excerpt}
+              </p>
+            )}
+
+            {/* Métadonnées */}
+            <div className="flex flex-wrap justify-center items-center gap-6 text-sm mb-8 text-white/80">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                <time dateTime={post.date}>{formatBlogDate(post.date, locale)}</time>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                <span className="text-white">{formatReadingTime(post.readingTime, locale)}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4" />
+                <span className="text-white">{authorInfo.name}</span>
+              </div>
+            </div>
+
+            {/* Navigation - Articles */}
+            <div className="flex flex-wrap justify-center items-center gap-3">
             {/* Article précédent */}
             {previousPost && (
               <Link 
@@ -104,6 +118,7 @@ export const BlogContent: React.FC<BlogContentProps> = ({ post, locale, previous
                 <ArrowLeft className="w-5 h-5 rotate-180" style={{ color: 'var(--on-secondary-container)' }} />
               </Link>
             )}
+            </div>
           </div>
         </div>
       </article>

@@ -6,7 +6,7 @@ author: "equipe-octogone"
 category: "conseils"
 tags: ["food cost", "rentabilité", "gestion", "restaurant", "marges"]
 excerpt: "Maîtrisez votre food cost et transformez votre restaurant en machine à profits. Découvrez les méthodes éprouvées pour calculer, analyser et optimiser vos coûts alimentaires."
-image: "/images/blog/food-cost-guide.jpg"
+image: "/images/blog/blog_header.jpg"
 locale: "fr"
 published: true
 seo:

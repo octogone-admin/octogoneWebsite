@@ -6,7 +6,7 @@ author: "equipe-octogone"
 category: "tendances"
 tags: ["gestion restaurant", "marketing", "rentabilité", "food cost", "stratégie"]
 excerpt: "Votre salle est pleine, Instagram explose, les avis sont élogieux. Pourtant, vous perdez de l'argent. Découvrez le paradoxe qui tue silencieusement des milliers de restaurants."
-image: "/images/blog/paradoxe-restaurant-moderne.jpg"
+image: "/images/blog/blog_header.jpg"
 locale: "fr"
 published: true
 seo:

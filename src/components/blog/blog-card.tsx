@@ -4,9 +4,9 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, User, Tag } from 'lucide-react';
 import { BlogPost } from '@/lib/blog/types';
 import { formatBlogDate, formatReadingTime, getCategoryInfo, getAuthorInfo, getBlogPostUrl } from '@/lib/blog/client-utils';
+import { Calendar, Clock, User, Tag } from 'lucide-react';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -41,8 +41,20 @@ export const BlogCard: React.FC<BlogCardProps> = ({
       style={{ backgroundColor: 'var(--surface)', border: '1px solid var(--outline)' }}
     >
       <Link href={postUrl} className="block">
-        {/* Placeholder avec titre */}
-        <div className="relative h-48 overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--secondary-container)' }}>
+        {/* Image de l'article */}
+        <div className="relative h-48 overflow-hidden">
+          <Image
+            src={post.image || "/images/blog/blog_header.jpg"}
+            alt={post.title}
+            fill
+            className="object-cover transition-transform duration-300 hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={(e) => {
+              console.log('Erreur image:', post.image || "/images/blog/blog_header.jpg");
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+          
           {/* Badge catégorie */}
           {showCategory && (
             <div className="absolute top-4 left-4">
@@ -54,13 +66,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({
               </span>
             </div>
           )}
-          
-          {/* Titre dans le placeholder */}
-          <div className="px-6 text-center">
-            <h3 className="text-xl font-bold line-clamp-3" style={{ color: 'var(--on-secondary-container)' }}>
-              {post.title}
-            </h3>
-          </div>
         </div>
 
         {/* Contenu */}
@@ -81,6 +86,11 @@ export const BlogCard: React.FC<BlogCardProps> = ({
               </div>
             )}
           </div>
+
+          {/* Titre */}
+          <h3 className="text-xl font-bold mb-3 line-clamp-2 hover:opacity-80 transition-opacity" style={{ color: 'var(--on-surface)' }}>
+            {post.title}
+          </h3>
 
           {/* Excerpt */}
           {showExcerpt && post.excerpt && (
