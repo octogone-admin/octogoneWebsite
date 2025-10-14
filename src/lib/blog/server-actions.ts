@@ -22,24 +22,58 @@ export async function getAllBlogSlugsServer(): Promise<string[]> {
   }
 
   const files = fs.readdirSync(BLOG_CONTENT_PATH);
-  return files
-    .filter(file => file.endsWith('.md'))
-    .map(file => file.replace('.md', ''));
+  const slugs = new Set<string>();
+  
+  files
+    .filter(file => file.endsWith('.fr.md') || file.endsWith('.en.md'))
+    .forEach(file => {
+      // Extraire le slug de base (sans .fr.md ou .en.md)
+      const slug = file.replace(/\.(fr|en)\.md$/, '');
+      slugs.add(slug);
+    });
+  
+  return Array.from(slugs);
 }
 
 /**
- * Server Action : Obtient un article de blog par son slug
+ * Server Action : Obtient un article de blog par son slug et locale
  */
-export async function getBlogPostBySlugServer(slug: string): Promise<BlogPost | null> {
+export async function getBlogPostBySlugServer(slug: string, locale?: 'fr' | 'en'): Promise<BlogPost | null> {
   try {
-    const filePath = path.join(BLOG_CONTENT_PATH, `${slug}.md`);
-    
-    if (!fs.existsSync(filePath)) {
-      return null;
+    // Si locale spécifiée, chercher le fichier avec cette locale
+    if (locale) {
+      const filePath = path.join(BLOG_CONTENT_PATH, `${slug}.${locale}.md`);
+      if (fs.existsSync(filePath)) {
+        return await parseBlogPost(filePath, slug);
+      }
     }
+    
+    // Sinon, chercher d'abord en français, puis en anglais
+    const frPath = path.join(BLOG_CONTENT_PATH, `${slug}.fr.md`);
+    const enPath = path.join(BLOG_CONTENT_PATH, `${slug}.en.md`);
+    
+    if (fs.existsSync(frPath)) {
+      return await parseBlogPost(frPath, slug);
+    } else if (fs.existsSync(enPath)) {
+      return await parseBlogPost(enPath, slug);
+    }
+    
+    return null;
+  } catch (error) {
+    console.error(`Erreur lors de la lecture de l'article ${slug}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Fonction helper pour parser un fichier blog
+ */
+async function parseBlogPost(filePath: string, slug: string): Promise<BlogPost | null> {
+  try {
 
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(fileContent);
+    
     // Validation des métadonnées requises
     if (!data.title || !data.date || !data.locale || data.published === false) {
       return null;
@@ -57,11 +91,6 @@ export async function getBlogPostBySlugServer(slug: string): Promise<BlogPost | 
     
     // Convertir le Markdown en HTML
     const htmlContent = await marked(content);
-    
-    // Debug: vérifier la conversion
-    console.log('Markdown length:', content.length);
-    console.log('HTML length:', htmlContent.length);
-    console.log('First 200 chars of HTML:', htmlContent.substring(0, 200));
 
     return {
       slug,
@@ -85,7 +114,7 @@ export async function getBlogPostBySlugServer(slug: string): Promise<BlogPost | 
       relatedPosts: data.relatedPosts || []
     };
   } catch (error) {
-    console.error(`Erreur lors de la lecture de l'article ${slug}:`, error);
+    console.error(`Erreur lors du parsing de l'article ${slug}:`, error);
     return null;
   }
 }
@@ -96,26 +125,36 @@ export async function getBlogPostBySlugServer(slug: string): Promise<BlogPost | 
 export async function getAllBlogPostsServer(options: {
   locale?: 'fr' | 'en';
   category?: string;
-  tag?: string;
+  publishedOnly?: boolean;
   limit?: number;
   offset?: number;
-  publishedOnly?: boolean;
 } = {}): Promise<BlogPost[]> {
-  const {
-    locale,
-    category,
-    tag,
-    limit,
-    offset = 0,
-    publishedOnly = true
-  } = options;
+  const { locale, category, publishedOnly = true, limit, offset = 0 } = options;
 
-  const slugs = await getAllBlogSlugsServer();
+  if (!fs.existsSync(BLOG_CONTENT_PATH)) {
+    console.log('Blog content path does not exist:', BLOG_CONTENT_PATH);
+    return [];
+  }
+
+  const files = fs.readdirSync(BLOG_CONTENT_PATH);
+  console.log('Found files:', files);
+  
   let posts: BlogPost[] = [];
 
-  for (const slug of slugs) {
-    const post = await getBlogPostBySlugServer(slug);
-    if (post) {
+  // Filtrer les fichiers selon la locale
+  const targetFiles = locale 
+    ? files.filter(file => file.endsWith(`.${locale}.md`))
+    : files.filter(file => file.endsWith('.fr.md') || file.endsWith('.en.md'));
+  
+  console.log('Target files for locale', locale, ':', targetFiles);
+
+  for (const file of targetFiles) {
+    const slug = file.replace(/\.(fr|en)\.md$/, '');
+    const post = await getBlogPostBySlugServer(slug, locale);
+    
+    console.log('Processing file:', file, 'slug:', slug, 'post found:', !!post);
+    
+    if (post && (!publishedOnly || post.published)) {
       posts.push(post);
     }
   }
@@ -125,7 +164,6 @@ export async function getAllBlogPostsServer(options: {
     if (publishedOnly && !post.published) return false;
     if (locale && post.locale !== locale) return false;
     if (category && post.category !== category) return false;
-    if (tag && !post.tags.includes(tag)) return false;
     return true;
   });
 

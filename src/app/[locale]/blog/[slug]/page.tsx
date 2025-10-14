@@ -9,8 +9,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const { locale, slug } = await params;
   const typedLocale = locale as 'fr' | 'en';
 
-  // Récupérer l'article
-  const post = await getBlogPostBySlugServer(slug);
+  // Récupérer l'article dans la langue demandée
+  const post = await getBlogPostBySlugServer(slug, typedLocale);
 
   // Si l'article n'existe pas ou n'est pas dans la bonne locale
   if (!post || post.locale !== typedLocale || !post.published) {
@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale, slug } = await params;
   const typedLocale = locale as 'fr' | 'en';
   
-  const post = await getBlogPostBySlugServer(slug);
+  const post = await getBlogPostBySlugServer(slug, typedLocale);
   
   if (!post || post.locale !== typedLocale) {
     return {

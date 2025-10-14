@@ -14,6 +14,8 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
     publishedOnly: true 
   });
 
+  const displayPosts = posts;
+
   return (
     <main className="min-h-screen">
       {/* Hero Section Blog - Style secteur */}
@@ -53,7 +55,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
           {/* Statistiques */}
           <div className="flex justify-center items-center gap-8 text-sm text-white/80">
             <div>
-              <span className="font-bold text-white">{posts.length}</span>
+              <span className="font-bold text-white">{displayPosts.length}</span>
               {' '}
               {typedLocale === 'fr' ? 'articles' : 'articles'}
             </div>
@@ -74,12 +76,25 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       {/* Liste des articles */}
       <section className="py-16 md:py-24" style={{ backgroundColor: 'var(--background)' }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <BlogList 
-            posts={posts} 
-            locale={typedLocale}
-            showFilters={true}
-            showSearch={true}
-          />
+          {displayPosts.length > 0 ? (
+            <BlogList 
+              posts={displayPosts} 
+              locale={typedLocale}
+              showFilters={true}
+              showSearch={true}
+            />
+          ) : (
+            <div className="text-center py-16">
+              <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--on-background)' }}>
+                {typedLocale === 'fr' ? 'Aucun article disponible' : 'No articles available'}
+              </h3>
+              <p style={{ color: 'var(--on-surface-variant)' }}>
+                {typedLocale === 'fr' 
+                  ? 'Les articles seront bientôt disponibles dans cette langue.'
+                  : 'Articles will be available in this language soon.'}
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </main>
