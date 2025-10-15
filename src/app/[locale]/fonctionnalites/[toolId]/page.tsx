@@ -1,12 +1,15 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "framer-motion";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import ToolDetailWidget from "@/components/widgets/tool-detail-widget";
 import { getToolById, getAllTools, getNextTool, getPreviousTool } from "@/data/tools/tools-content";
+import { ToolSEO } from "@/components/seo/tool-seo";
+import { LogoCard } from "@/components/widgets/logo-card";
 
 export default function ToolPage({
   params,
@@ -42,7 +45,11 @@ export default function ToolPage({
   const nextTool = getNextTool(toolId);
 
   return (
-    <main className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--background)' }}>
+    <>
+      {/* SEO Schemas JSON-LD */}
+      <ToolSEO tool={tool} locale={locale} />
+      
+      <main className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--background)' }}>
       {/* Hero Section */}
       <ResponsiveSection 
         spacing="xl" 
@@ -61,22 +68,42 @@ export default function ToolPage({
 
         <div className="relative z-10 text-center">
           {/* Catégorie en texte simple */}
-          <p className="text-white text-lg font-semibold mb-4 opacity-90">
+          <motion.p 
+            className="text-white text-lg font-semibold mb-4 opacity-90"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 0.9, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             {headerCategory}
-          </p>
+          </motion.p>
 
           {/* Titre */}
-          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-3 drop-shadow-lg">
+          <motion.h1 
+            className="text-4xl lg:text-6xl font-bold text-white mb-3 drop-shadow-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             {headerTitle}
-          </h1>
+          </motion.h1>
           
           {/* Description */}
-          <p className="text-lg text-white opacity-90 max-w-3xl mx-auto mb-8">
+          <motion.p 
+            className="text-lg text-white opacity-90 max-w-3xl mx-auto mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 0.9, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             {headerDescription}
-          </p>
+          </motion.p>
 
           {/* Navigation inter-outils */}
-          <div className="flex justify-center items-center gap-4 mt-8">
+          <motion.div 
+            className="flex justify-center items-center gap-4 mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             {/* Bouton Précédent */}
             {previousTool && (
               <Link 
@@ -112,7 +139,7 @@ export default function ToolPage({
                 <ChevronRight className="w-6 h-6 text-marine-700" />
               </Link>
             )}
-          </div>
+          </motion.div>
         </div>
       </ResponsiveSection>
 
@@ -120,6 +147,90 @@ export default function ToolPage({
       <ResponsiveSection spacing="xxl" bgColor="">
         <ToolDetailWidget tool={tool} locale={locale} />
       </ResponsiveSection>
-    </main>
+
+      {/* Section Partenaires - RH : Gestionnaires d'horaires */}
+      {toolId === 'ressources-humaines' && (
+        <ResponsiveSection spacing="xl" bgColor="">
+          <div className="max-w-4xl mx-auto">
+            {/* Séparateur */}
+            <div className="mb-12 flex items-center gap-4">
+              <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
+              <div className="text-sm font-semibold" style={{ color: 'var(--on-surface-variant)' }}>
+                {isEnglish ? 'Our Schedule Management Partners' : 'Nos partenaires gestionnaires d\'horaires'}
+              </div>
+              <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
+            </div>
+
+            {/* Logos des partenaires gestionnaires d'horaires */}
+            <div className="flex justify-center gap-6 flex-wrap">
+              {[
+                { name: 'Evolia', logo: '/images/punch/evolia.png' },
+                { name: 'Agendrix', logo: '/images/punch/agendrix.png' },
+                { name: 'Emprez', logo: '/images/punch/emprez.png' }
+              ].map((scheduler, index) => (
+                <LogoCard
+                  key={scheduler.name}
+                  name={scheduler.name}
+                  logo={scheduler.logo}
+                  index={index}
+                  delay={0.1}
+                />
+              ))}
+            </div>
+          </div>
+        </ResponsiveSection>
+      )}
+
+      {/* Section Partenaires - Inventaire : Fournisseurs */}
+      {toolId === 'inventaire' && (
+        <ResponsiveSection spacing="xl" bgColor="">
+          <div className="max-w-5xl mx-auto">
+            {/* Séparateur */}
+            <div className="mb-12 flex items-center gap-4">
+              <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
+              <div className="text-sm font-semibold" style={{ color: 'var(--on-surface-variant)' }}>
+                {isEnglish ? 'Our Supplier Partners' : 'Nos fournisseurs partenaires'}
+              </div>
+              <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
+            </div>
+            
+            {/* Description */}
+            <p className="text-center text-base mb-8 max-w-3xl mx-auto" style={{ color: 'var(--on-surface-variant)' }}>
+              {isEnglish 
+                ? 'Work with these partner suppliers? We handle importing all the products you use into Octogone. Your supplier isn\'t listed? No problem—we\'ll connect to them.'
+                : 'Vous travaillez avec ces fournisseurs partenaires ? Nous nous chargeons d\'importer tous les produits que vous utilisez dans Octogone. Votre fournisseur n\'est pas dans la liste ? Aucun problème, nous nous connecterons à lui.'
+              }
+            </p>
+
+            {/* Logos des fournisseurs partenaires */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {[
+                { name: 'Borderon et fils', logo: '/images/suppliers/borderon.png' },
+                { name: 'Norref', logo: '/images/suppliers/norref.png' },
+                { name: 'Gordon', logo: '/images/suppliers/gordon.png' },
+                { name: 'Hector Larivée', logo: '/images/suppliers/hector.png' },
+                { name: 'Sysco', logo: '/images/suppliers/sysco.png' },
+                { name: 'SAQ', logo: '/images/suppliers/saq.png' },
+                { name: 'Viandex', logo: '/images/suppliers/viandex.png' },
+                { name: 'FLB', logo: '/images/suppliers/flb.png' },
+                { name: 'Canabec', logo: '/images/suppliers/canabec.png' },
+                { name: 'JG Fruits et Légumes', logo: '/images/suppliers/jg.png' },
+                { name: 'Les emballages L.Boucher', logo: '/images/suppliers/lboucher.png' },
+                { name: 'Tout Prêt', logo: '/images/suppliers/toutpret.png' }
+              ].map((supplier, index) => (
+                <LogoCard
+                  key={supplier.name}
+                  name={supplier.name}
+                  logo={supplier.logo}
+                  index={index}
+                  delay={0.05}
+                />
+              ))}
+            </div>
+          </div>
+        </ResponsiveSection>
+      )}
+      </main>
+    </>
   );
 }
