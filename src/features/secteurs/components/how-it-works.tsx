@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import { ResponsiveSection } from '@/components/ui/responsive-section';
-import { Heart, MonitorSpeaker, Settings, TrendingUp, ArrowRight, Headphones, CreditCard, Phone, Clock, ClipboardList, ChefHat, BarChart3, Lightbulb, DollarSign, Play, Zap, LineChart, Brain } from 'lucide-react';
+import { Heart, MonitorSpeaker, Settings, TrendingUp, Headphones, Play, Zap, LineChart, Brain } from 'lucide-react';
 import { OctogoneButton } from '@/components/ui/octogone-button';
 import { LogoCard } from '@/components/widgets/logo-card';
 import { motion } from 'framer-motion';
@@ -16,7 +15,6 @@ interface HowItWorksProps {
 const HowItWorks = ({ onOpenCalculator }: HowItWorksProps) => {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
 
   const steps = [
     {
