@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { ConceptFeature } from "@/data/features/features-content";
 import { OctogoneButton } from "@/components/ui/octogone-button";
@@ -9,6 +10,22 @@ interface FeatureDetailWidgetProps {
   concept: ConceptFeature;
   locale: string;
 }
+
+// Variants d'animation
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
 
 export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWidgetProps) {
   const isEnglish = locale === 'en';
@@ -19,40 +36,67 @@ export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWi
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="prose prose-lg" style={{ color: 'var(--on-surface)' }}>
+      <motion.div 
+        className="prose prose-lg" 
+        style={{ color: 'var(--on-surface)' }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={staggerContainer}
+      >
         {paragraphs.map((paragraph, index) => (
-          <p 
+          <motion.p 
             key={index} 
             className="text-lg leading-relaxed mb-6"
             style={{ color: 'var(--on-surface-variant)' }}
+            variants={fadeInUp}
           >
             {paragraph}
-          </p>
+          </motion.p>
         ))}
-      </div>
+      </motion.div>
       
       {/* CTA optionnel */}
       {concept.ctaLink && concept.ctaLabelFr && concept.ctaLabelEn && (
         <>
           {/* Séparateur */}
-          <div className="my-12 flex items-center gap-4">
+          <motion.div 
+            className="my-12 flex items-center gap-4"
+            initial={{ opacity: 0, scaleX: 0 }}
+            whileInView={{ opacity: 1, scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
             <div className="text-sm font-semibold" style={{ color: 'var(--on-surface-variant)' }}>
               {isEnglish ? 'Discover Octogone\'s new AI' : 'Découvrez le nouvel IA d\'Octogone'}
             </div>
             <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
-          </div>
+          </motion.div>
           
           {/* Description */}
-          <p className="text-center text-base mb-6 max-w-2xl mx-auto" style={{ color: 'var(--on-surface-variant)' }}>
+          <motion.p 
+            className="text-center text-base mb-6 max-w-2xl mx-auto" 
+            style={{ color: 'var(--on-surface-variant)' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             {isEnglish 
               ? 'Cortex is our AI agent, available in beta. Explore how artificial intelligence can help you make better decisions.'
               : 'Cortex est notre agent IA, disponible en version bêta. Explorez comment l\'intelligence artificielle peut vous aider à prendre de meilleures décisions.'
             }
-          </p>
+          </motion.p>
           
           {/* Bouton */}
-          <div className="text-center">
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <OctogoneButton
               href={`/${locale}${concept.ctaLink}`}
               variant="cortex"
@@ -72,7 +116,7 @@ export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWi
             >
               {isEnglish ? concept.ctaLabelEn : concept.ctaLabelFr}
             </OctogoneButton>
-          </div>
+          </motion.div>
         </>
       )}
     </div>

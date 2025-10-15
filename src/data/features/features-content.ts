@@ -174,3 +174,22 @@ export function getConceptById(id: string): ConceptFeature | undefined {
 export function getAllConcepts(): ConceptFeature[] {
   return concepts;
 }
+
+// Fonctions de navigation entre concepts (boucle circulaire)
+export function getNextConcept(currentId: string): ConceptFeature | null {
+  const currentIndex = concepts.findIndex(c => c.id === currentId);
+  if (currentIndex === -1) return null;
+  
+  // Boucle : si on est à la fin, retourner au début
+  const nextIndex = (currentIndex + 1) % concepts.length;
+  return concepts[nextIndex];
+}
+
+export function getPreviousConcept(currentId: string): ConceptFeature | null {
+  const currentIndex = concepts.findIndex(c => c.id === currentId);
+  if (currentIndex === -1) return null;
+  
+  // Boucle : si on est au début, aller à la fin
+  const previousIndex = currentIndex === 0 ? concepts.length - 1 : currentIndex - 1;
+  return concepts[previousIndex];
+}
