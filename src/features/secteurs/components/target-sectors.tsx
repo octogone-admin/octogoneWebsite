@@ -393,16 +393,16 @@ const TargetSectors = () => {
                 <p className="text-lg leading-relaxed" style={{ color: 'var(--on-secondary-container)' }}>
                   {locale === "fr" ? (
                     <>
-                      Octogone s'adapte à tous les types d'établissements et de modèles d'affaires. 
+                      Octogone s&rsquo;adapte à tous les types d&rsquo;établissements et de modèles d&rsquo;affaires. 
                       Si vous pensez que notre solution pourrait vous être utile, 
-                      <span className="font-semibold"> n'hésitez pas à contacter notre service à la clientèle</span> 
+                      <span className="font-semibold"> n&rsquo;hésitez pas à contacter notre service à la clientèle</span> 
                       {" "}pour discuter de vos besoins spécifiques.
                     </>
                   ) : (
                     <>
                       Octogone adapts to all types of establishments and business models. 
                       If you think our solution could be useful to you, 
-                      <span className="font-semibold"> don't hesitate to contact our customer service</span> 
+                      <span className="font-semibold"> don&rsquo;t hesitate to contact our customer service</span> 
                       {" "}to discuss your specific needs.
                     </>
                   )}

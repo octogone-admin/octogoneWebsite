@@ -378,15 +378,15 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                 <div className="space-y-4 overflow-y-auto" style={{ maxHeight: '400px' }}>
                   {selectedModules.includes('pro') ? (
                     // Si PRO est sélectionné, afficher tous les modules avec détails
-                    AVAILABLE_MODULES.filter(m => m.id !== 'pro').map(module => {
-                      const Icon = ICON_MAP[module.icon];
-                      const features = locale === "fr" ? module.featuresFr : module.featuresEn;
+                    AVAILABLE_MODULES.filter(m => m.id !== 'pro').map(moduleData => {
+                      const Icon = ICON_MAP[moduleData.icon];
+                      const features = locale === "fr" ? moduleData.featuresFr : moduleData.featuresEn;
                       return (
-                        <div key={module.id} className="pb-3 border-b last:border-b-0" style={{ borderColor: 'var(--outline)' }}>
+                        <div key={moduleData.id} className="pb-3 border-b last:border-b-0" style={{ borderColor: 'var(--outline)' }}>
                           <div className="flex items-center gap-2 mb-2">
                             {Icon && <Icon className="w-5 h-5" style={{ color: 'var(--on-surface)' }} />}
                             <span className="font-bold text-sm" style={{ color: 'var(--on-surface)' }}>
-                              {locale === "fr" ? module.nameFr : module.nameEn}
+                              {locale === "fr" ? moduleData.nameFr : moduleData.nameEn}
                             </span>
                           </div>
                           <ul className="space-y-1 ml-7">
@@ -403,16 +403,16 @@ export default function ROICalculatorAdvanced({ onSavingsCalculated }: ROICalcul
                   ) : (
                     // Sinon, afficher les modules sélectionnés avec détails
                     selectedModules.map(moduleId => {
-                      const module = AVAILABLE_MODULES.find(m => m.id === moduleId);
-                      if (!module) return null;
-                      const Icon = ICON_MAP[module.icon];
-                      const features = locale === "fr" ? module.featuresFr : module.featuresEn;
+                      const moduleData = AVAILABLE_MODULES.find(m => m.id === moduleId);
+                      if (!moduleData) return null;
+                      const Icon = ICON_MAP[moduleData.icon];
+                      const features = locale === "fr" ? moduleData.featuresFr : moduleData.featuresEn;
                       return (
                         <div key={moduleId} className="pb-3 border-b last:border-b-0" style={{ borderColor: 'var(--outline)' }}>
                           <div className="flex items-center gap-2 mb-2">
                             {Icon && <Icon className="w-5 h-5" style={{ color: 'var(--on-surface)' }} />}
                             <span className="font-bold text-sm" style={{ color: 'var(--on-surface)' }}>
-                              {locale === "fr" ? module.nameFr : module.nameEn}
+                              {locale === "fr" ? moduleData.nameFr : moduleData.nameEn}
                             </span>
                           </div>
                           <ul className="space-y-1 ml-7">
@@ -591,8 +591,8 @@ RÉSULTATS DU CALCULATEUR ROI
 
 Nombre d'établissements : ${numberOfLocations}
 Forfait sélectionné : ${selectedModules.includes('pro') ? 'PRO (tous les modules)' : selectedModules.map(id => {
-  const module = AVAILABLE_MODULES.find(m => m.id === id);
-  return module?.nameFr || id;
+  const moduleData = AVAILABLE_MODULES.find(m => m.id === id);
+  return moduleData?.nameFr || id;
 }).join(', ')}
 
 RÉSULTATS FINANCIERS
@@ -619,8 +619,8 @@ ROI CALCULATOR RESULTS
 
 Number of locations: ${numberOfLocations}
 Selected plan: ${selectedModules.includes('pro') ? 'PRO (all modules)' : selectedModules.map(id => {
-  const module = AVAILABLE_MODULES.find(m => m.id === id);
-  return module?.nameEn || id;
+  const moduleData = AVAILABLE_MODULES.find(m => m.id === id);
+  return moduleData?.nameEn || id;
 }).join(', ')}
 
 FINANCIAL RESULTS
