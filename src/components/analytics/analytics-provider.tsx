@@ -46,8 +46,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   
   // Tracker le scroll depth
   useEffect(() => {
-    let scrollDepths = [25, 50, 75, 100];
-    let trackedDepths = new Set<number>();
+    const scrollDepths = [25, 50, 75, 100];
+    const trackedDepths = new Set<number>();
     
     const handleScroll = () => {
       const windowHeight = window.innerHeight;

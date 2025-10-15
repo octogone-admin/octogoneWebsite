@@ -5,14 +5,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { conversations, TIMING, type Message, type GeneratedDocument } from "../data/conversations";
 import DocumentBadge from "./document-badge";
-import InlineChart from "./inline-chart";
+import InlineChartComponent from "./inline-chart";
 
 // Fallbacks pour la compatibilité
 const FALLBACK_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23e5e7eb'/%3E%3Cpath d='M20 20a6 6 0 1 0 0-12 6 6 0 0 0 0 12zm0 2c-4 0-12 2-12 6v4h24v-4c0-4-8-6-12-6z' fill='%23374151'/%3E%3C/svg%3E";
 const FALLBACK_CORTEX = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z' fill='%23374151'/%3E%3C/svg%3E";
 
+// Type pour les graphiques
+type ChartData = {
+  type: 'line' | 'bar' | 'pie' | 'area';
+  title: string;
+  data: Array<{
+    name: string;
+    value: number;
+    color?: string;
+  }>;
+};
+
 // Composant wrapper pour les graphiques avec gestion d'erreur
-function ChartWrapper({ chart, isEnglish }: { chart: any; isEnglish: boolean }) {
+function ChartWrapper({ chart, isEnglish }: { chart: ChartData; isEnglish: boolean }) {
   const [hasError, setHasError] = useState(false);
 
   if (hasError) {
@@ -24,9 +35,9 @@ function ChartWrapper({ chart, isEnglish }: { chart: any; isEnglish: boolean }) 
   }
 
   try {
-    return <InlineChart chart={chart} />;
-  } catch (error) {
-    console.warn('Chart rendering error:', error);
+    return <InlineChartComponent chart={chart} />;
+  } catch (_error) {
+    console.warn('Chart rendering error:', _error);
     setHasError(true);
     return null;
   }
@@ -39,7 +50,7 @@ interface AnimatedChatProps {
 export default function AnimatedChat({ locale }: AnimatedChatProps) {
   const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
   const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
@@ -79,7 +90,7 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
       // Afficher les messages avec leurs délais
       const timeouts: NodeJS.Timeout[] = [];
       
-      currentConversation.messages.forEach((message, index) => {
+      currentConversation.messages.forEach((message, _index) => {
         if (!message || typeof message.delay !== 'number') return;
         
         const timeout = setTimeout(() => {
@@ -103,8 +114,8 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
       }
 
       return () => cleanupTimeouts(timeouts);
-    } catch (error) {
-      console.warn('AnimatedChat error:', error);
+    } catch (_error) {
+      console.warn('AnimatedChat error:', _error);
       setHasError(true);
     }
   }, [currentConversationIndex, isPlaying, currentConversations, currentConversation, isClient, cleanupTimeouts]);
@@ -226,8 +237,10 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
             </div>
 
             {/* Graphique en pleine largeur */}
+            {/* @ts-ignore - chart property exists in runtime data */}
             {message.chart && (
               <div className="w-full">
+                {/* @ts-ignore - chart property exists in runtime data */}
                 <ChartWrapper chart={message.chart} isEnglish={isEnglish} />
               </div>
             )}

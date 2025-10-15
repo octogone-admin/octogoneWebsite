@@ -86,7 +86,7 @@ const availableModules = {
 };
 
 // Logique de sélection des modules selon le secteur
-const getRelevantModules = (sectorId: string, isRestaurantStyle: boolean = false) => {
+const getRelevantModules = (sectorId: string) => {
   const baseModules = ['products', 'inventory', 'recipes', 'analytics'];
   
   const sectorSpecificModules: Record<string, string[]> = {
@@ -214,11 +214,11 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
         {/* Modules en format alternés gauche/droite */}
         <div className="space-y-16">
           {relevantModules.slice(0, 4).map((moduleKey, index) => {
-            const module = availableModules[moduleKey as keyof typeof availableModules];
-            if (!module) return null;
+            const moduleData = availableModules[moduleKey as keyof typeof availableModules];
+            if (!moduleData) return null;
             
             const isEven = index % 2 === 0;
-            const IconComponent = module.icon;
+            const IconComponent = moduleData.icon;
             
             return (
               <div key={moduleKey} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-col-dense'}`}>
@@ -228,7 +228,7 @@ export default function SectorDetailWidget({ sector, locale, isRestaurantStyle =
                     <div className="text-center">
                       <IconComponent className="w-16 h-16 mx-auto mb-4" style={{ color: '#dcb26b' }} />
                       <p className="text-sm font-medium text-marine-600">
-                        {locale === "fr" ? `Interface ${module.titleFr}` : `${module.titleEn} Interface`}
+                        {locale === "fr" ? `Interface ${moduleData.titleFr}` : `${moduleData.titleEn} Interface`}
                       </p>
                       <p className="text-xs mt-1 opacity-70 text-marine-500">(placeholder)</p>
                     </div>
