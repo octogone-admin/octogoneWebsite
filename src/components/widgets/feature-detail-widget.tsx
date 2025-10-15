@@ -38,7 +38,7 @@ export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWi
           <div className="my-12 flex items-center gap-4">
             <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
             <div className="text-sm font-semibold" style={{ color: 'var(--on-surface-variant)' }}>
-              {isEnglish ? 'Discover our AI' : 'Découvrez notre IA'}
+              {isEnglish ? 'Discover Octogone\'s new AI' : 'Découvrez le nouvel IA d\'Octogone'}
             </div>
             <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
           </div>

@@ -7,6 +7,7 @@ import { Play } from "lucide-react";
 import Image from "next/image";
 import FeatureDetailWidget from "@/components/widgets/feature-detail-widget";
 import { getConceptById } from "@/data/features/features-content";
+import { ConceptSEO } from "@/components/seo/concept-seo";
 
 export default function OperatePage() {
   const params = useParams();
@@ -16,7 +17,11 @@ export default function OperatePage() {
   if (!concept) return null;
 
   return (
-    <main className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--background)' }}>
+    <>
+      {/* SEO Schemas JSON-LD */}
+      <ConceptSEO concept={concept} locale={locale} />
+      
+      <main className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--background)' }}>
       {/* Hero Section - Header unique conservé */}
       <ResponsiveSection
         as="section"
@@ -70,6 +75,7 @@ export default function OperatePage() {
           <FeatureDetailWidget concept={concept} locale={locale} />
         </ResponsiveSection>
       </div>
-    </main>
+      </main>
+    </>
   );
 }
