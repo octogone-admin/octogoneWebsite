@@ -15,7 +15,8 @@ export function generateConceptSchema(concept: ConceptFeature, locale: string) {
     operate: { fr: 'Opérer', en: 'Operate' },
     automate: { fr: 'Automatiser', en: 'Automate' },
     analyze: { fr: 'Analyser', en: 'Analyze' },
-    predict: { fr: 'Prédire', en: 'Predict' }
+    predict: { fr: 'Prédire', en: 'Predict' },
+    cortex: { fr: 'Assistant IA', en: 'AI Assistant' }
   };
 
   const conceptDescriptions = {
@@ -34,6 +35,10 @@ export function generateConceptSchema(concept: ConceptFeature, locale: string) {
     predict: {
       fr: 'Anticipez avec l\'intelligence artificielle. Prévisions de demande, détection d\'anomalies, recommandations intelligentes avec Cortex AI.',
       en: 'Anticipate with artificial intelligence. Demand forecasting, anomaly detection, intelligent recommendations with Cortex AI.'
+    },
+    cortex: {
+      fr: 'Votre assistant IA qui transforme vos données en décisions. Posez des questions, obtenez des réponses instantanées et optimisez vos opérations sans effort.',
+      en: 'Your AI assistant that transforms data into decisions. Ask questions, get instant answers, and optimize your restaurant operations effortlessly.'
     }
   };
 
@@ -53,6 +58,10 @@ export function generateConceptSchema(concept: ConceptFeature, locale: string) {
     predict: {
       fr: 'intelligence artificielle restaurant, prévision demande, IA restaurant, Cortex AI, prédiction stocks',
       en: 'restaurant artificial intelligence, demand forecasting, restaurant AI, Cortex AI, inventory prediction'
+    },
+    cortex: {
+      fr: 'assistant IA restaurant, intelligence artificielle, Cortex AI, questions naturelles, réponses instantanées, optimisation données',
+      en: 'restaurant AI assistant, artificial intelligence, Cortex AI, natural questions, instant answers, data optimization'
     }
   };
 
@@ -63,7 +72,7 @@ export function generateConceptSchema(concept: ConceptFeature, locale: string) {
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web, iOS, Android",
     "description": isEnglish ? conceptDescriptions[concept.id].en : conceptDescriptions[concept.id].fr,
-    "url": `https://octogone.app/${locale}/features/${concept.id}`,
+    "url": `https://octogone.app/${locale}/${concept.id === 'cortex' ? 'cortex' : `features/${concept.id}`}`,
     "keywords": isEnglish ? keywords[concept.id].en : keywords[concept.id].fr,
     "offers": {
       "@type": "Offer",
@@ -106,7 +115,7 @@ export function generateConceptBreadcrumb(conceptId: string, conceptName: string
         "@type": "ListItem",
         "position": 3,
         "name": conceptName,
-        "item": `https://octogone.app/${locale}/features/${conceptId}`
+        "item": `https://octogone.app/${locale}/${conceptId === 'cortex' ? 'cortex' : `features/${conceptId}`}`
       }
     ]
   };
@@ -123,7 +132,7 @@ export function generateConceptWebPageSchema(concept: ConceptFeature, locale: st
     "@type": "WebPage",
     "name": isEnglish ? concept.heroTitleEn : concept.heroTitleFr,
     "description": isEnglish ? concept.heroDescriptionEn : concept.heroDescriptionFr,
-    "url": `https://octogone.app/${locale}/features/${concept.id}`,
+    "url": `https://octogone.app/${locale}/${concept.id === 'cortex' ? 'cortex' : `features/${concept.id}`}`,
     "inLanguage": locale,
     "isPartOf": {
       "@type": "WebSite",

@@ -1,18 +1,33 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
-import { Sparkles, Brain, Zap, MessageSquare, TrendingUp, Clock } from "lucide-react";
-import Image from "next/image";
+import { Brain, Sparkles, MessageSquare, TrendingUp, Clock, Zap } from "lucide-react";
 import OctogoneButton from "@/components/ui/octogone-button";
-import { motion, AnimatePresence } from "framer-motion";
+import { getConceptById } from "@/data/features/features-content";
+import { ConceptSEO } from "@/components/seo/concept-seo";
 import AnimatedChat from "@/features/cortex/components/animated-chat";
+import Image from "next/image";
+import Head from "next/head";
 
 export default function CortexPage() {
   const params = useParams();
   const locale = params.locale as string;
   const isEnglish = locale === "en";
+  
+  const concept = getConceptById('cortex');
+  if (!concept) return null;
+
+  // SEO data
+  const title = isEnglish ? concept.heroTitleEn : concept.heroTitleFr;
+  const description = isEnglish ? concept.heroDescriptionEn : concept.heroDescriptionFr;
+  const keywords = isEnglish 
+    ? 'restaurant AI assistant, artificial intelligence, Cortex AI, natural questions, instant answers, data optimization, restaurant chatbot'
+    : 'assistant IA restaurant, intelligence artificielle, Cortex AI, questions naturelles, réponses instantanées, optimisation données, chatbot restaurant';
+  const url = `https://octogone.app/${locale}/cortex`;
+  const imageUrl = concept.heroImage.startsWith('http') ? concept.heroImage : `https://octogone.app${concept.heroImage}`;
 
   const capabilities = [
     {
@@ -60,58 +75,111 @@ export default function CortexPage() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <>
+      {/* SEO Head Metadata */}
+      <Head>
+        <title>{`${title} | Octogone`}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="author" content="Octogone" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={url} />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={`${title} | Octogone`} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={isEnglish ? concept.nameEn : concept.nameFr} />
+        <meta property="og:site_name" content="Octogone" />
+        <meta property="og:locale" content={locale === 'fr' ? 'fr_CA' : 'en_CA'} />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${title} | Octogone`} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={imageUrl} />
+        <meta name="twitter:creator" content="@OctogoneApp" />
+        
+        {/* Alternate languages */}
+        <link rel="alternate" hrefLang="fr-CA" href={`https://octogone.app/fr/cortex`} />
+        <link rel="alternate" hrefLang="en-CA" href={`https://octogone.app/en/cortex`} />
+        <link rel="alternate" hrefLang="x-default" href={`https://octogone.app/fr/cortex`} />
+      </Head>
+      
+      {/* SEO Schemas JSON-LD */}
+      <ConceptSEO concept={concept} locale={locale} />
+      
+      <main className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--background)' }}>
       {/* Hero Section */}
-      <div className="px-4 md:px-8 lg:px-12 py-8 md:py-12" style={{ backgroundColor: 'var(--background)' }}>
-        <motion.div 
-          className="rounded-3xl overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)' }}
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ 
-            duration: 0.8, 
-            ease: [0.22, 1, 0.36, 1],
-            scale: { duration: 0.6 }
-          }}
-        >
-          <ResponsiveSection
-            as="section"
-            bgColor=""
-            spacing="xl"
-            className="relative"
-          >
+      <ResponsiveSection
+        as="section"
+        spacing="xl"
+        className="relative overflow-hidden"
+        style={{ 
+          background: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)'
+        }}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#BADFF6] to-[#E2CDED] px-4 py-2 rounded-full mb-6 border-2 border-white shadow-lg">
+          <div>
+            <motion.div 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+              style={{ 
+                backgroundColor: concept.pastelColor
+              }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Image 
+                src="/cortex.svg" 
+                alt="Cortex" 
+                width={20} 
+                height={20}
+                className="w-5 h-5"
+                style={{ filter: 'brightness(0) saturate(100%)', color: 'var(--on-secondary-container)' }}
+              />
               <span className="text-sm font-semibold" style={{ color: 'var(--on-secondary-container)' }}>
-                {isEnglish ? 'Beta Version' : 'Version Bêta'}
+                {locale === 'fr' ? concept.nameFr : concept.nameEn}
               </span>
-            </div>
+            </motion.div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6" style={{ color: 'var(--on-secondary-container)' }}>
-              {isEnglish 
-                ? 'Meet Cortex' 
-                : 'Voici Cortex'}
-            </h1>
+            <motion.h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6" 
+              style={{ color: 'var(--on-secondary-container)' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              {locale === 'fr' ? concept.heroTitleFr : concept.heroTitleEn}
+            </motion.h1>
             
-            <p className="text-lg md:text-xl mb-8" style={{ color: 'var(--on-secondary-container)' }}>
-              {isEnglish
-                ? 'Your AI assistant that transforms data into decisions. Ask questions, get instant answers, and optimize your restaurant operations effortlessly.'
-                : 'Votre assistant IA qui transforme vos données en décisions. Posez des questions, obtenez des réponses instantanées et optimisez vos opérations sans effort.'}
-            </p>
+            <motion.p 
+              className="text-lg md:text-xl mb-8" 
+              style={{ color: 'var(--on-secondary-container)' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              {locale === 'fr' ? concept.heroDescriptionFr : concept.heroDescriptionEn}
+            </motion.p>
 
-            <div className="flex flex-wrap gap-4">
+            <motion.div 
+              className="flex flex-wrap gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               <OctogoneButton
-                href={`/${locale}/demo`}
+                href={concept.ctaLink || `/${locale}/demo`}
                 variant="primary"
                 size="lg"
                 icon={<Sparkles className="w-5 h-5" />}
               >
-                {isEnglish ? "See the platform in action" : "Voir la plateforme en action"}
+                {locale === 'fr' ? (concept.ctaLabelFr || "Voir la plateforme en action") : (concept.ctaLabelEn || "See the platform in action")}
               </OctogoneButton>
               
               <OctogoneButton
@@ -122,36 +190,28 @@ export default function CortexPage() {
               >
                 {isEnglish ? "Contact us" : "Nous contacter"}
               </OctogoneButton>
-            </div>
-          </motion.div>
-
-          {/* Vidéo Cortex */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          >
-          <div 
-            className="relative rounded-2xl overflow-hidden shadow-2xl"
-            style={{ 
-              aspectRatio: '16/9',
-              backgroundColor: 'var(--surface-variant)'
-            }}
-          >
-            <iframe
-              src="https://player.vimeo.com/video/1126878170?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&autoplay=1&loop=1&muted=1&controls=0&background=1"
-              className="w-full h-full"
-              frameBorder="0"
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-              allowFullScreen
-              title="Cortex Demo"
-            />
+            </motion.div>
           </div>
-          </motion.div>
+
+          <div className="relative h-[400px] lg:h-[500px]">
+            <div 
+              className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl"
+              style={{ 
+                backgroundColor: 'var(--surface-variant)'
+              }}
+            >
+              <iframe
+                src={concept.heroImage}
+                className="w-full h-full object-cover"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                allowFullScreen
+                title={locale === 'fr' ? concept.nameFr : concept.nameEn}
+              />
+            </div>
+          </div>
         </div>
-          </ResponsiveSection>
-        </motion.div>
-      </div>
+      </ResponsiveSection>
 
       {/* Capabilities Section */}
       <ResponsiveSection
@@ -259,34 +319,7 @@ export default function CortexPage() {
         <AnimatedChat locale={locale} />
       </ResponsiveSection>
 
-      {/* CTA Section */}
-      <ResponsiveSection
-        as="section"
-        bgColor=""
-        spacing="xl"
-        style={{ backgroundColor: 'var(--background)' }}
-      >
-        <div className="text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: 'var(--on-background)' }}>
-            {isEnglish 
-              ? 'Ready to add Cortex to your platform?' 
-              : 'Prêt à ajouter Cortex à votre plateforme ?'}
-          </h2>
-          <p className="text-lg mb-8" style={{ color: 'var(--on-surface-variant)' }}>
-            {isEnglish
-              ? 'Contact our team to discover how Cortex can transform your restaurant operations'
-              : 'Contactez notre équipe pour découvrir comment Cortex peut transformer vos opérations'}
-          </p>
-          <OctogoneButton
-            href={`/${locale}/contact`}
-            variant="primary"
-            size="lg"
-            icon={<Sparkles className="w-5 h-5" />}
-          >
-            {isEnglish ? "Contact us" : "Nous contacter"}
-          </OctogoneButton>
-        </div>
-      </ResponsiveSection>
-    </main>
+      </main>
+    </>
   );
 }

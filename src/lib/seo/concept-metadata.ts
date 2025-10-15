@@ -16,8 +16,8 @@ export function generateConceptMetadata(
   const description = isEnglish ? concept.heroDescriptionEn : concept.heroDescriptionFr;
   const conceptName = isEnglish ? concept.nameEn : concept.nameFr;
   
-  const url = `https://octogone.app/${locale}/features/${concept.id}`;
-  const imageUrl = `https://octogone.app${concept.heroImage}`;
+  const url = `https://octogone.app/${locale}/${concept.id === 'cortex' ? 'cortex' : `features/${concept.id}`}`;
+  const imageUrl = concept.heroImage.startsWith('http') ? concept.heroImage : `https://octogone.app${concept.heroImage}`;
 
   return {
     title: `${title} | Octogone`,
@@ -58,8 +58,8 @@ export function generateConceptMetadata(
     alternates: {
       canonical: url,
       languages: {
-        'fr-CA': `https://octogone.app/fr/features/${concept.id}`,
-        'en-CA': `https://octogone.app/en/features/${concept.id}`,
+        'fr-CA': `https://octogone.app/fr/${concept.id === 'cortex' ? 'cortex' : `features/${concept.id}`}`,
+        'en-CA': `https://octogone.app/en/${concept.id === 'cortex' ? 'cortex' : `features/${concept.id}`}`,
       },
     },
     
@@ -94,6 +94,10 @@ function getConceptKeywords(conceptId: string, isEnglish: boolean): string {
     predict: {
       fr: 'intelligence artificielle restaurant, prévision demande, IA restaurant, Cortex AI, prédiction stocks, machine learning',
       en: 'restaurant artificial intelligence, demand forecasting, restaurant AI, Cortex AI, inventory prediction, machine learning'
+    },
+    cortex: {
+      fr: 'assistant IA restaurant, intelligence artificielle, Cortex AI, questions naturelles, réponses instantanées, optimisation données, chatbot restaurant',
+      en: 'restaurant AI assistant, artificial intelligence, Cortex AI, natural questions, instant answers, data optimization, restaurant chatbot'
     }
   };
 
