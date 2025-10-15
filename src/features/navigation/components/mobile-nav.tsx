@@ -80,22 +80,46 @@ export const MobileNav: React.FC<MobileDrawerProps> = ({
                       {isExpanded && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="overflow-hidden pl-4"
+                          animate={{
+                            height: isExpanded ? "auto" : 0,
+                            opacity: isExpanded ? 1 : 0,
+                          }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden motion-element"
+                          onAnimationComplete={() => {
+                            // Nettoyage après animation de sous-menu
+                            if (isExpanded) {
+                              const element = document.querySelector(`[data-submenu="${route.path}"]`);
+                              if (element) element.classList.add('animation-complete');
+                            }
+                          }}
+                          pl-4
                         >
                           <div className="space-y-1 border-l border-marine-100 pl-4">
                             {route.children.map((child: Route) => (
-                              <Link
-                                key={child.path}
-                                href={child.path}
-                                className={navigationLinkVariants({
-                                  active: pathname === child.path,
-                                })}
-                                onClick={onClose}
+                              <motion.div
+                                key={route.path}
+                                initial="hidden"
+                                animate="visible"
+                                variants={navigationLinkVariants}
+                                transition={{ delay: index * 0.1 }}
+                                className="motion-element"
+                                onAnimationComplete={() => {
+                                  // Nettoyage GPU après animation
+                                  const element = document.querySelector(`[data-route="${route.path}"]`);
+                                  if (element) element.classList.add('animation-complete');
+                                }}
                               >
-                                {child.label}
-                              </Link>
+                                <Link
+                                  href={child.path}
+                                  className={navigationLinkVariants({
+                                    active: pathname === child.path,
+                                  })}
+                                  onClick={onClose}
+                                >
+                                  {child.label}
+                                </Link>
+                              </motion.div>
                             ))}
                           </div>
                         </motion.div>

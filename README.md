@@ -59,9 +59,11 @@ Toute la documentation est disponible dans le dossier `/docs/` :
 ## 🏗️ Architecture
 
 ### **Stack Technique**
-- **Framework** : Next.js 14 (App Router)
+- **Framework** : Next.js 15.5.4 (App Router)
 - **Language** : TypeScript
-- **Styling** : Tailwind CSS
+- **Runtime** : React 19
+- **Styling** : Tailwind CSS 4.1.3
+- **Animations** : Framer Motion (optimisé)
 - **Analytics** : HubSpot
 - **SEO** : Schema.org, JSON-LD, Microdata
 
@@ -117,15 +119,17 @@ octogoneWebsite/
 
 ```bash
 # Développement
-npm run dev              # Lancer le serveur de développement
+npm run dev              # Lancer le serveur de développement (Turbopack)
 
 # Production
 npm run build            # Build de production
+npm run analyze          # Analyser la taille du bundle
 npm run start            # Lancer le serveur de production
 
 # Qualité du code
 npm run lint             # Linter ESLint
-npm run type-check       # Vérification TypeScript
+npm run test             # Tests Jest
+npm run test:coverage    # Tests avec couverture
 ```
 
 ---
@@ -218,6 +222,14 @@ Pour toute question :
 ---
 
 ## 📝 Changelog
+
+### **v2.1 - 2025-10-15**
+- ✅ Optimisations performance majeures
+- ✅ Bundle analyzer intégré
+- ✅ Hook useReducedMotion pour accessibilité
+- ✅ Images non utilisées supprimées (-2.9MB)
+- ✅ Next.js 15 + React 19
+- ✅ Framer Motion tree-shaking optimisé
 
 ### **v2.0 - 2025-10-14**
 - ✅ Réorganisation complète de la structure

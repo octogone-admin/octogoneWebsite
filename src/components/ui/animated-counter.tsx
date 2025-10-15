@@ -69,7 +69,12 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={controls}
       transition={{ duration: 0.5 }}
-      className={className}
+      className={`${className} motion-element`}
+      onAnimationComplete={() => {
+        // Nettoyage GPU - Technique Netflix
+        const element = ref.current;
+        if (element) element.classList.add('animation-complete');
+      }}
     >
       {prefix}
       {negative ? '–' : ''}{count}
@@ -96,7 +101,7 @@ export const StatItem: React.FC<StatItemProps> = ({
   delay = 0
 }) => {
   return (
-    <div className="flex flex-col items-center text-center p-6">
+    <div className="flex flex-col items-center text-center p-6 motion-container">
       <div className="text-3xl text-gold-500 mb-3">{icon}</div>
       <AnimatedCounter
         from={0}

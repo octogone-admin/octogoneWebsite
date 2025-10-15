@@ -34,15 +34,22 @@ const FeaturesSection = () => {
     <ResponsiveSection 
       bgColor="bg-marine-50" 
       spacing="xxxl"
-      className="overflow-visible"
+      className="overflow-visible motion-container"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center text-center lg:text-left">
         {/* Colonne de gauche - Image happy_octogone_users */}
-        <motion.div
+        <motion.div 
+          className="relative flex justify-center lg:justify-start motion-element"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInUpVariants}
           transition={{ duration: 0.6 }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU - Technique Netflix
+            const element = document.querySelector('.relative.motion-element');
+            if (element) element.classList.add('animation-complete');
+          }}
           variants={fadeInUpVariants}
           className="relative order-1 flex justify-center"
         >
@@ -76,11 +83,18 @@ const FeaturesSection = () => {
         </motion.div>
         
         {/* Colonne de droite - Texte et bullet points */}
-        <motion.div
+        <motion.div 
+          className="space-y-6 lg:space-y-8 motion-element"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInUpVariants}
           transition={{ duration: 0.6, delay: 0.2 }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU pour contenu textuel
+            const elements = document.querySelectorAll('.space-y-6.motion-element');
+            elements.forEach(el => el.classList.add('animation-complete'));
+          }}
           variants={fadeInUpVariants}
           className="flex flex-col order-2"
         >

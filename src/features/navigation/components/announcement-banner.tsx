@@ -51,7 +51,7 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="announcement-banner z-[70] overflow-hidden"
+          className="announcement-banner fixed top-0 left-0 right-0 z-[70] overflow-hidden"
           style={{ backgroundColor: '#C8B6FF' }}
         >
           <div className="container mx-auto px-3 py-3 sm:py-4 flex items-center justify-center relative">

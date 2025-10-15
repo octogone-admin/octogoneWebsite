@@ -17,14 +17,19 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
   return (
     <div style={{ backgroundColor: 'var(--background)' }}>
       <ResponsiveSection spacing="xxl" bgColor="">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto motion-container">
         {/* Logo et titre */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-12 motion-element"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU - Technique Netflix
+            const element = document.querySelector('.text-center.motion-element');
+            if (element) element.classList.add('animation-complete');
+          }}
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <Image
@@ -118,10 +123,19 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
 
         {/* Vidéo Cortex depuis Vimeo */}
         <motion.div
+          className="motion-element"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU pour vidéo
+            const videoElements = document.querySelectorAll('.motion-element iframe');
+            videoElements.forEach(el => {
+              const parent = el.closest('.motion-element');
+              if (parent) parent.classList.add('animation-complete');
+            });
+          }}
         >
         <div 
           className="relative rounded-2xl overflow-hidden shadow-2xl mt-32 mb-32"
@@ -143,40 +157,51 @@ export default function CortexIntro({ locale = "fr" }: CortexIntroProps) {
 
         {/* Texte percutant sous la vidéo */}
         <motion.div 
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center mb-8 motion-element"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
           <p 
-            className="text-lg font-medium mb-6"
+            className="text-lg font-medium"
             style={{ color: 'var(--on-background)' }}
           >
             {isEnglish 
               ? "Instant insights. Real-time recommendations. Zero effort." 
               : "Insights instantanés. Recommandations en temps réel. Zéro effort."}
           </p>
-          
-          {/* CTA pour ajouter Cortex */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
-            <OctogoneButton
-              href={`/${locale}/cortex`}
-              variant="secondary"
-              size="lg"
-              icon={<ArrowRight className="w-5 h-5" />}
-            >
-              {isEnglish ? "Learn more" : "En savoir plus"}
-            </OctogoneButton>
-            <OctogoneButton
-              href={`/${locale}/contact`}
-              variant="primary"
-              size="lg"
-              icon={<Sparkles className="w-5 h-5" />}
-            >
-              {isEnglish ? "Contact us" : "Nous contacter"}
-            </OctogoneButton>
-          </div>
+        </motion.div>
+        
+        {/* CTA pour ajouter Cortex */}
+        <motion.div 
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 motion-element"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU pour boutons CTA
+            const elements = document.querySelectorAll('.flex.motion-element');
+            elements.forEach(el => el.classList.add('animation-complete'));
+          }}
+        >
+          <OctogoneButton
+            href={`/${locale}/cortex`}
+            variant="secondary"
+            size="lg"
+            icon={<ArrowRight className="w-5 h-5" />}
+          >
+            {isEnglish ? "Learn more" : "En savoir plus"}
+          </OctogoneButton>
+          <OctogoneButton
+            href={`/${locale}/contact`}
+            variant="primary"
+            size="lg"
+            icon={<Sparkles className="w-5 h-5" />}
+          >
+            {isEnglish ? "Contact us" : "Nous contacter"}
+          </OctogoneButton>
         </motion.div>
         </div>
       </ResponsiveSection>

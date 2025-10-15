@@ -343,8 +343,7 @@ const ModulesSection = () => {
                   {/* Carte flippable avec contenu du module d'un côté et témoignage de l'autre */}
                   <div className="h-full">
                     <FlipCard
-                      initialFlipped={flippedCards[module.id] || false}
-                      autoFlipInterval={Math.random() * 10000 + 15000} // Flip aléatoire entre 15 et 25 secondes
+                      isFlipped={flippedCards[module.id] || false}
                       className="h-full"
                       front={
                         <div className="h-full w-full flex flex-col">
@@ -415,18 +414,6 @@ const ModulesSection = () => {
                             </div>
                           )}
                         </div>
-                            className="flip-card-testimonial"
-                          />
-                        ) : (
-                          <div className="flip-card-testimonial flex flex-col items-center justify-center h-full text-gold-600">
-                            <Quote className="w-8 h-8 mb-4 text-gold-400" />
-                            <p className="text-center">
-                              {locale === "fr" 
-                                ? "Témoignage client bientôt disponible" 
-                                : "Customer testimonial coming soon"}
-                            </p>
-                          </div>
-                        )
                       }
                     />
                   </div>

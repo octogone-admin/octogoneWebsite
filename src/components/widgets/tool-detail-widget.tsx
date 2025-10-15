@@ -42,20 +42,38 @@ const conceptConfig = {
   }
 };
 
-// Variants d'animation pour les éléments
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
+// Fonction utilitaire pour créer les groupes de features
+const createFeatureGroups = (features: number[]): { type: 'single' | 'triple', features: number[] }[] => {
+  const groups: { type: 'single' | 'triple', features: number[] }[] = [];
+  let i = 0;
+  
+  while (i < features.length) {
+    // Feature 1 : single
+    if (i < features.length) {
+      groups.push({ type: 'single', features: [features[i]] });
+      i++;
+    }
+    
+    // Feature 2 : single
+    if (i < features.length) {
+      groups.push({ type: 'single', features: [features[i]] });
+      i++;
+    }
+    
+    // Features 3-4-5 : triple (si on a au moins 3 features)
+    if (i + 2 < features.length) {
+      groups.push({ type: 'triple', features: [features[i], features[i + 1], features[i + 2]] });
+      i += 3;
+    } else {
+      // Moins de 3 features restantes, faire des singles
+      while (i < features.length) {
+        groups.push({ type: 'single', features: [features[i]] });
+        i++;
+      }
     }
   }
+  
+  return groups;
 };
 
 export default function ToolDetailWidget({ tool, locale }: ToolDetailWidgetProps) {
@@ -68,7 +86,7 @@ export default function ToolDetailWidget({ tool, locale }: ToolDetailWidgetProps
 
   // Layout avec sections et concepts
   return (
-    <div className="space-y-24">
+    <div className="max-w-6xl mx-auto space-y-8 motion-container">
       {tool.sections.map((section, sectionIndex) => {
         
         return (
@@ -79,38 +97,7 @@ export default function ToolDetailWidget({ tool, locale }: ToolDetailWidgetProps
               {section.features.length > 0 && (
                 <>
                   {(() => {
-                    const remainingFeatures = section.features;
-                    
-                    // Pattern : 1 single, 1 single, 1 triple (3 features), répéter
-                    const groups: { type: 'single' | 'triple', features: number[] }[] = [];
-                    let i = 0;
-                    
-                    while (i < remainingFeatures.length) {
-                      // Feature 1 : single
-                      if (i < remainingFeatures.length) {
-                        groups.push({ type: 'single', features: [remainingFeatures[i]] });
-                        i++;
-                      }
-                      
-                      // Feature 2 : single
-                      if (i < remainingFeatures.length) {
-                        groups.push({ type: 'single', features: [remainingFeatures[i]] });
-                        i++;
-                      }
-                      
-                      // Features 3-4-5 : triple (si on a au moins 3 features)
-                      if (i + 2 < remainingFeatures.length) {
-                        groups.push({ type: 'triple', features: [remainingFeatures[i], remainingFeatures[i + 1], remainingFeatures[i + 2]] });
-                        i += 3;
-                      } else {
-                        // Moins de 3 features restantes, faire des singles
-                        while (i < remainingFeatures.length) {
-                          groups.push({ type: 'single', features: [remainingFeatures[i]] });
-                          i++;
-                        }
-                      }
-                    }
-                    
+                    const groups = createFeatureGroups(section.features);
                     let imageCounter = 0;
                     
                     return (
@@ -120,25 +107,32 @@ export default function ToolDetailWidget({ tool, locale }: ToolDetailWidgetProps
                           if (group.type === 'triple') {
                             // Groupe de 3 features SANS IMAGE en colonnes (juste texte)
                             return (
-                              <motion.div 
+                              <motion.div
                                 key={`triple-${groupIdx}`} 
-                                className="grid grid-cols-1 md:grid-cols-3 gap-8 py-32"
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, margin: "-100px" }}
-                                variants={staggerContainer}
+                                className="grid grid-cols-1 md:grid-cols-3 gap-8 py-32 motion-element"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
                               >
                                 {group.features.map((featureIndex) => {
                                   const feature = tool.features[featureIndex];
                                   if (!feature) return null;
                                   
                                   return (
-                                    <motion.div key={featureIndex} className="flex flex-col" variants={fadeInUp}>
+                                    <motion.div key={featureIndex} className="flex flex-col motion-element"
+                                      initial={{ opacity: 0, y: 20 }}
+                                      whileInView={{ opacity: 1, y: 0 }}
+                                      viewport={{ once: true }}
+                                      transition={{ duration: 0.6 }}
+                                    >
                                       {/* Badges de concepts */}
                                       {feature.concepts && feature.concepts.length > 0 && (
                                         <div className="flex flex-wrap gap-2 mb-4">
                                           {feature.concepts.map((conceptId) => {
                                             const conceptInfo = conceptConfig[conceptId];
+                                            if (!conceptInfo) return null;
+                                            
                                             const ConceptIconBadge = conceptInfo.icon;
                                             return (
                                               <div 
@@ -180,30 +174,43 @@ export default function ToolDetailWidget({ tool, locale }: ToolDetailWidgetProps
                           
                           // Feature seule avec image (alternance gauche/droite)
                           const singleFeature = tool.features[group.features[0]];
+                          if (!singleFeature) return null;
+                          
                           const imageOnLeft = imageCounter % 2 === 0;
                           imageCounter++;
                           
                           return (
                             <motion.div 
                               key={`single-${groupIdx}`} 
-                              className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-                              initial="hidden"
-                              whileInView="visible"
-                              viewport={{ once: true, margin: "-100px" }}
-                              variants={fadeInUp}
-                              transition={{ duration: 0.5 }}
+                              className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center motion-element"
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.6 }}
                             >
                               {/* Image */}
                               <div className={imageOnLeft ? 'lg:order-1' : 'lg:order-2'}>
-                                <div className="bg-gradient-to-br from-marine-100 to-gold-100 rounded-2xl p-8 aspect-video flex items-center justify-center border-2" style={{ borderColor: '#E5E5E5' }}>
-                                  <div className="text-center">
-                                    <div className="text-5xl mb-2">📱</div>
+                                <motion.div
+                                  className="bg-gradient-to-r from-marine-50 to-gold-50 rounded-2xl p-8 motion-element shadow-lg border border-gray-200"
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true }}
+                                  transition={{ duration: 0.8, delay: 0.4 }}
+                                >
+                                  <motion.div 
+                                    className="text-center motion-element"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.6 }}
+                                  >
+                                    <div className="text-5xl mb-2" role="img" aria-label="Mobile device">📱</div>
                                     <p className="text-sm font-medium text-marine-600">
                                       {isEnglish ? singleFeature.titleEn : singleFeature.titleFr}
                                     </p>
                                     <p className="text-xs mt-1 opacity-70 text-marine-500">(placeholder)</p>
-                                  </div>
-                                </div>
+                                  </motion.div>
+                                </motion.div>
                               </div>
                               
                               {/* Contenu */}
@@ -211,8 +218,10 @@ export default function ToolDetailWidget({ tool, locale }: ToolDetailWidgetProps
                                 {/* Badges de concepts */}
                                 {singleFeature.concepts && singleFeature.concepts.length > 0 && (
                                   <div className="flex flex-wrap gap-2 mb-4">
-                                    {singleFeature.concepts.map((conceptId) => {
+                                    {singleFeature.concepts?.map((conceptId) => {
                                       const conceptInfo = conceptConfig[conceptId];
+                                      if (!conceptInfo) return null;
+                                      
                                       const ConceptIconBadge = conceptInfo.icon;
                                       return (
                                         <div 

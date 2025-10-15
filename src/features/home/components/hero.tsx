@@ -276,7 +276,7 @@ const Hero = () => {
         minHeight: 'calc(100vh - 128px)' // 80px nav + 48px banner en desktop
       }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full motion-container">
         {/* Fond décoratif */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-marine-50 rounded-bl-[100px] opacity-70" />
@@ -610,32 +610,42 @@ const Hero = () => {
               {/* Titre principal - maintenant le slogan */}
               <motion.h1 
                 id="hero-title"
-                className="font-bold tracking-wide"
+                className="font-bold tracking-wide motion-element"
                 style={{ 
-                  color: 'var(--on-background)',
-                  fontSize: 'clamp(2rem, 6vw, 4.5rem)', 
-                  lineHeight: '1.1' 
+                  fontSize: 'clamp(1.75rem, 4vw, 3.5rem)',
+                  lineHeight: '1.1',
+                  color: 'var(--on-background)'
                 }}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                onAnimationComplete={() => {
+                  // Nettoyage GPU - Technique Netflix
+                  const element = document.getElementById('hero-title');
+                  if (element) element.classList.add('animation-complete');
+                }}
               >
                 {t('hero.title', { defaultValue: locale === 'fr' ? 'Opérer, automatiser, analyser, prédire' : 'Operate, automate, analyze, predict' })}
               </motion.h1>
 
               {/* Sous-titre - maintenant l'explication */}
               <motion.div 
-                className="text-center lg:text-left"
+                className="text-center lg:text-left motion-element"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                onAnimationComplete={() => {
+                  // Nettoyage final pour les boutons CTA
+                  const element = document.querySelector('[role="group"].motion-element');
+                  if (element) element.classList.add('animation-complete');
+                }}
               >
                 <p 
                   className="font-semibold tracking-wide"
                   style={{ 
-                    color: 'var(--on-surface)',
                     fontSize: 'clamp(1.125rem, 3vw, 1.875rem)', 
-                    lineHeight: '1.3' 
+                    lineHeight: '1.3',
+                    color: 'var(--on-surface)'
                   }}
                 >
                   {locale === "fr" ? (
@@ -671,14 +681,21 @@ const Hero = () => {
 
               {/* Description */}
               <motion.p 
-                className="mt-0.5 xs:mt-1 lg:mt-2 max-w-2xl mx-auto lg:mx-0"
+                className="mt-0.5 xs:mt-1 lg:mt-2 max-w-2xl mx-auto lg:mx-0 motion-element"
                 style={{ 
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.6',
                   color: 'var(--on-surface)',
-                  fontSize: 'clamp(0.875rem, 2vw, 1.25rem)' 
+                  opacity: 0.9
                 }}
                 initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 0.9, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                onAnimationComplete={() => {
+                  // Nettoyage GPU pour description
+                  const elements = document.querySelectorAll('p.motion-element');
+                  elements.forEach(el => el.classList.add('animation-complete'));
+                }}
               >
                 {t('hero.description', { 
                   defaultValue: locale === 'fr' 
@@ -689,12 +706,17 @@ const Hero = () => {
 
               {/* Boutons d'action */}
               <motion.div 
-                className="mt-2 xs:mt-4 lg:mt-6 flex justify-center lg:justify-start" 
+                className="mt-2 xs:mt-4 lg:mt-6 flex justify-center lg:justify-start motion-element" 
                 role="group" 
                 aria-label={locale === 'fr' ? 'Actions principales' : 'Main actions'}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                onAnimationComplete={() => {
+                  // Nettoyage final pour les boutons CTA
+                  const element = document.querySelector('[role="group"].motion-element');
+                  if (element) element.classList.add('animation-complete');
+                }}
               >
                 <OctogoneButton
                   href={`/${locale}/demo`}

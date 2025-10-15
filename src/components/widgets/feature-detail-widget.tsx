@@ -35,14 +35,19 @@ export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWi
   const paragraphs = content.split('\n\n').filter(p => p.trim());
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto motion-container">
       <motion.div 
-        className="prose prose-lg" 
+        className="prose prose-lg motion-element" 
         style={{ color: 'var(--on-surface)' }}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={staggerContainer}
+        onAnimationComplete={() => {
+          // Nettoyage GPU - Technique Netflix
+          const element = document.querySelector('.prose.motion-element');
+          if (element) element.classList.add('animation-complete');
+        }}
       >
         {paragraphs.map((paragraph, index) => (
           <motion.p 
@@ -61,11 +66,16 @@ export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWi
         <>
           {/* Séparateur */}
           <motion.div 
-            className="my-12 flex items-center gap-4"
+            className="my-12 flex items-center gap-4 motion-element"
             initial={{ opacity: 0, scaleX: 0 }}
             whileInView={{ opacity: 1, scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            onAnimationComplete={() => {
+              // Nettoyage GPU pour séparateur
+              const separators = document.querySelectorAll('.flex.motion-element');
+              separators.forEach(el => el.classList.add('animation-complete'));
+            }}
           >
             <div className="flex-1 h-px" style={{ backgroundColor: 'var(--outline)' }}></div>
             <div className="text-sm font-semibold" style={{ color: 'var(--on-surface-variant)' }}>
@@ -76,12 +86,17 @@ export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWi
           
           {/* Description */}
           <motion.p 
-            className="text-center text-base mb-6 max-w-2xl mx-auto" 
+            className="text-center text-base mb-6 max-w-2xl mx-auto motion-element" 
             style={{ color: 'var(--on-surface-variant)' }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            onAnimationComplete={() => {
+              // Nettoyage GPU pour description
+              const descriptions = document.querySelectorAll('p.motion-element');
+              descriptions.forEach(el => el.classList.add('animation-complete'));
+            }}
           >
             {isEnglish 
               ? 'Cortex is our AI agent, available in beta. Explore how artificial intelligence can help you make better decisions.'
@@ -91,11 +106,16 @@ export default function FeatureDetailWidget({ concept, locale }: FeatureDetailWi
           
           {/* Bouton */}
           <motion.div 
-            className="text-center"
+            className="text-center motion-element"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            onAnimationComplete={() => {
+              // Nettoyage final pour bouton CTA
+              const ctaElements = document.querySelectorAll('.text-center.motion-element');
+              ctaElements.forEach(el => el.classList.add('animation-complete'));
+            }}
           >
             <OctogoneButton
               href={`/${locale}${concept.ctaLink}`}

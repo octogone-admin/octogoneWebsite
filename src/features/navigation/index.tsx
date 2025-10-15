@@ -123,26 +123,30 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
         />
       )}
 
-      <header
+      <motion.header
         className={cn(
-          "fixed left-0 right-0 z-50 transition-all duration-300 ease-in-out",
+          "fixed left-0 right-0 z-40 transition-all duration-300 motion-element",
           isScrolled
-            ? "backdrop-blur-md shadow-lg border-b"
-            : "",
-          isAnnouncementVisible ? "top-14" : "top-0",
-          {
-            "with-announcement":
-              SHOW_ANNOUNCEMENT_BANNER && isAnnouncementVisible,
-            "without-announcement":
-              !SHOW_ANNOUNCEMENT_BANNER || !isAnnouncementVisible,
-          },
+            ? "bg-background/95 backdrop-blur-md border-b border-border/50 shadow-sm"
+            : "bg-transparent"
         )}
-        style={isScrolled ? {
-          backgroundColor: 'var(--surface)',
-          opacity: 0.95,
-          borderColor: 'var(--outline)'
-        } : {
-          backgroundColor: 'var(--background)'
+        style={{
+          top: isAnnouncementVisible ? '60px' : '0px', // Ajuster selon la hauteur de la bannière
+          ...(isScrolled ? {
+            backgroundColor: 'var(--surface)',
+            opacity: 0.95,
+            borderColor: 'var(--outline)'
+          } : {
+            backgroundColor: 'var(--background)'
+          })
+        }}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        onAnimationComplete={() => {
+          // Nettoyage GPU - Technique Netflix
+          const element = document.querySelector('header.motion-element');
+          if (element) element.classList.add('animation-complete');
         }}
       >
         {/* Progress bar */}
@@ -220,7 +224,7 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
             />
           </div>
         </div>
-      </header>
+      </motion.header>
     </>
   );
 };

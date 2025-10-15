@@ -26,6 +26,16 @@ Stratégie SEO et optimisation pour les AI crawlers (ChatGPT, Perplexity, Claude
 
 ---
 
+### 🚀 [PERFORMANCE-OPTIMIZATION-SUMMARY.md](./PERFORMANCE-OPTIMIZATION-SUMMARY.md)
+**NOUVEAU** - Résumé complet des optimisations performance v2.1
+
+**Consulter pour :**
+- Voir toutes les optimisations appliquées
+- Comprendre les gains de performance
+- Connaître les métriques actuelles
+
+---
+
 ### 📦 [IMPORTS-CHEATSHEET.md](./IMPORTS-CHEATSHEET.md)
 Guide rapide des imports - exemples et bonnes pratiques.
 

@@ -131,7 +131,7 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
   }, [] as GeneratedDocument[]);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6" style={{ minHeight: `${estimatedHeight}px` }}>
+    <div className="max-w-4xl mx-auto space-y-6 motion-container" style={{ minHeight: `${estimatedHeight}px` }}>
       {/* Zone réservée pour les documents générés - hauteur fixe pour éviter les sauts */}
       <div className="min-h-[80px] flex items-start">
         <AnimatePresence>
@@ -160,7 +160,14 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4 }}
-            className="w-full"
+            className="w-full motion-element"
+            onAnimationComplete={() => {
+              // Nettoyage après animation - Technique Netflix
+              const element = document.querySelector(`[data-motion-key="conv-${currentConversation.id}-msg-${index}"]`);
+              if (element) {
+                element.classList.add('animation-complete');
+              }
+            }}
           >
             {/* Message avec avatar */}
             <div className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} items-start gap-3 mb-2`}>

@@ -338,26 +338,12 @@ const ModulesSection = () => {
                            transform: `translate(${15 + (index % 6) * 2}%, ${15 + (index % 6) * 2}%)`
                          }}>
                     </div>
-                       style={{
-                         background: `radial-gradient(circle, rgba(220, 178, 107, ${0.15 + (index % 3) * 0.05}) 0%, rgba(220, 178, 107, ${0.05 + (index % 3) * 0.02}) 50%, rgba(0, 0, 0, 0) 70%)`,
-                         transform: `translate(-${25 + (index % 5) * 2}%, -${25 + (index % 5) * 2}%)`
-                       }}>
-                  </div>
-                  
-                  {/* Dégradé subtil dans le coin inférieur droit */}
-                  <div className="absolute bottom-0 right-0 w-32 h-32 rounded-full opacity-5" 
-                       style={{
-                         background: `radial-gradient(circle, rgba(220, 178, 107, ${0.12 + (index % 4) * 0.03}) 0%, rgba(220, 178, 107, ${0.04 + (index % 4) * 0.01}) 50%, rgba(0, 0, 0, 0) 70%)`,
-                         transform: `translate(${15 + (index % 6) * 2}%, ${15 + (index % 6) * 2}%)`
-                       }}>
-                  </div>
                 </div>
                 
                 {/* Carte flippable avec contenu du module d'un côté et témoignage de l'autre */}
                 <div className="h-full">
                   <FlipCard
-                    initialFlipped={flippedCards[module.id] || false}
-                    autoFlipInterval={Math.random() * 10000 + 15000} // Flip aléatoire entre 15 et 25 secondes
+                    isFlipped={flippedCards[module.id] || false}
                     className="h-full"
                     front={
                       <div className="h-full flex flex-col">
@@ -439,6 +425,7 @@ const ModulesSection = () => {
                 </div>
               </motion.div>
             </motion.div>
+            </div>
           ))}
         </div>
         

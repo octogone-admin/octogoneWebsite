@@ -32,17 +32,22 @@ const SuppliersSection = () => {
     <ResponsiveSection 
       bgColor="bg-marine-50" 
       spacing="xxxl"
-      className="overflow-visible"
+      className="overflow-visible motion-container"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center text-center lg:text-left">
         {/* Colonne de gauche - Grille de logos fournisseurs */}
         <motion.div
+          className="motion-element relative order-1 flex justify-center"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
           variants={fadeInUpVariants}
-          className="relative order-1 flex justify-center"
+          transition={{ duration: 0.6 }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU - Technique Netflix
+            const elements = document.querySelectorAll('.motion-element');
+            elements.forEach(el => el.classList.add('animation-complete'));
+          }}
         >
           <div className="w-full max-w-3xl mx-auto">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -80,13 +85,18 @@ const SuppliersSection = () => {
         </motion.div>
         
         {/* Colonne de droite - Texte et bullet points */}
-        <motion.div
+        <motion.div 
+          className="space-y-6 lg:space-y-8 motion-element flex flex-col order-2"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.2 }}
           variants={fadeInUpVariants}
-          className="flex flex-col order-2"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU pour contenu textuel
+            const textElements = document.querySelectorAll('.space-y-6.motion-element');
+            textElements.forEach(el => el.classList.add('animation-complete'));
+          }}
         >
           {/* Titre principal */}
           <h2 className="text-base xs:text-lg lg:text-2xl lg:text-3xl xl:text-4xl font-bold tracking-tight mb-6 mx-auto lg:mx-0 max-w-3xl" style={{ color: 'var(--on-surface)' }}>

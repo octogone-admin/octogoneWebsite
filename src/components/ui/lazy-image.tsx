@@ -64,9 +64,15 @@ export const LazyImage = ({
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
       {(isIntersecting || priority) ? (
         <motion.div
+          className="motion-element"
           initial={{ opacity: 0 }}
           animate={{ opacity: isLoaded ? 1 : 0 }}
           transition={{ duration: 0.3 }}
+          onAnimationComplete={() => {
+            // Nettoyage GPU - Technique Netflix
+            const element = document.querySelector('.motion-element');
+            if (element) element.classList.add('animation-complete');
+          }}
         >
           <Image
             src={src}

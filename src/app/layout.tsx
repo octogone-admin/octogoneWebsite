@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@/styles/motion-optimization.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
