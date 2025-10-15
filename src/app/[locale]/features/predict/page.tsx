@@ -4,22 +4,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Metadata } from "next";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { Brain, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import FeatureDetailWidget from "@/components/widgets/feature-detail-widget";
 import { getConceptById, getNextConcept, getPreviousConcept } from "@/data/features/features-content";
 import { ConceptSEO } from "@/components/seo/concept-seo";
-import { generateConceptMetadata } from "@/lib/seo/concept-metadata";
-
-// Génération des métadonnées pour SEO
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
-  const { locale } = await params;
-  const concept = getConceptById('predict');
-  if (!concept) return {};
-  return generateConceptMetadata(concept, locale);
-}
 
 export default function PredictPage() {
   const params = useParams();

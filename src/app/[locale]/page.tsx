@@ -1,6 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
 import { motion } from "framer-motion";
 import Hero from "@/features/home/components/hero";
 import PartnersSection from "@/features/home/components/partners-section";
@@ -12,13 +11,6 @@ import RecentBlogPosts from "@/features/home/components/recent-blog-posts";
 import { useRef, useState, useEffect } from "react";
 import * as React from "react";
 import { useCalculator } from "@/contexts/calculator-context";
-import { generateHomeMetadata } from "@/lib/seo/home-metadata";
-
-// Génération des métadonnées pour SEO
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
-  const { locale } = await params;
-  return generateHomeMetadata(locale);
-}
 
 export default function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   // Utiliser React.use pour accéder aux paramètres de route

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Metadata } from "next";
 import { motion } from "framer-motion";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -11,23 +10,6 @@ import ToolDetailWidget from "@/components/widgets/tool-detail-widget";
 import { getToolById, getAllTools, getNextTool, getPreviousTool } from "@/data/tools/tools-content";
 import { ToolSEO } from "@/components/seo/tool-seo";
 import { LogoCard } from "@/components/widgets/logo-card";
-import { generateToolMetadata } from "@/lib/seo/tool-metadata";
-
-// Génération des métadonnées pour SEO
-export async function generateMetadata({ params }: { params: Promise<{ locale: string; toolId: string }> }): Promise<Metadata> {
-  const { locale, toolId } = await params;
-  const tool = getToolById(toolId);
-  
-  if (!tool) return {};
-  
-  return generateToolMetadata({
-    id: tool.id,
-    nameFr: tool.nameFr,
-    nameEn: tool.nameEn,
-    descriptionFr: tool.descriptionFr,
-    descriptionEn: tool.descriptionEn,
-  }, locale);
-}
 
 export default function ToolPage({
   params,
