@@ -3,21 +3,21 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
-import { Play } from "lucide-react";
+import { Zap } from "lucide-react";
 import Image from "next/image";
 import FeatureDetailWidget from "@/components/widgets/feature-detail-widget";
 import { getConceptById } from "@/data/features/features-content";
 
-export default function OperatePage() {
+export default function AutomatePage() {
   const params = useParams();
   const locale = params.locale as string;
   
-  const concept = getConceptById('operate');
+  const concept = getConceptById('automate');
   if (!concept) return null;
 
   return (
     <main className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--background)' }}>
-      {/* Hero Section - Header unique conservé */}
+      {/* Hero Section - Header unique */}
       <ResponsiveSection
         as="section"
         spacing="xl"
@@ -34,7 +34,7 @@ export default function OperatePage() {
                 backgroundColor: concept.pastelColor
               }}
             >
-              <Play className="w-5 h-5" style={{ color: '#002236' }} />
+              <Zap className="w-5 h-5" style={{ color: '#002236' }} />
               <span className="text-sm font-semibold" style={{ color: '#002236' }}>
                 {locale === 'fr' ? concept.nameFr : concept.nameEn}
               </span>

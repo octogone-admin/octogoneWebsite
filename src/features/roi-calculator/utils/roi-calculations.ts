@@ -165,9 +165,10 @@ export function calculateROI(
   invoiceTasksReductionTotal = Math.min(invoiceTasksReductionTotal, 1);
   
   // Calcul des heures économisées sur tâches manuelles
+  const totalReduction = Math.min(manualTasksReductionTotal + invoiceTasksReductionTotal, 1);
   const manualTasksTimeSaved = 
     manualTasksHoursPerWeek * 
-    (manualTasksReductionTotal + invoiceTasksReductionTotal) * 
+    totalReduction * 
     CALCULATION_CONFIG.weeksPerYear * 
     numberOfLocations * 
     efficiencyMultiplier * 
@@ -182,9 +183,10 @@ export function calculateROI(
     ? (netYearlySavings / totalFirstYearCost) * 100 
     : 0;
   
-  // Période de retour sur investissement
-  const paybackPeriodMonths = monthlyMoneySavings + (monthlyTimeSavings * hourlyCost) > 0
-    ? totalFirstYearCost / (monthlyMoneySavings + (monthlyTimeSavings * hourlyCost))
+  // Période de retour sur investissement - CORRIGÉ
+  const monthlyTotalSavings = monthlyMoneySavings + (monthlyTimeSavings * hourlyCost) + (manualTasksValueSaved / 12);
+  const paybackPeriodMonths = monthlyTotalSavings > 0
+    ? totalFirstYearCost / monthlyTotalSavings
     : 0;
   
   return {

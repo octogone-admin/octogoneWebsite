@@ -63,23 +63,23 @@ export default function SectorDetailPage() {
         )}
 
         <div className="relative z-10 text-center">
-          {/* Badge du secteur */}
-          <div 
-            className="inline-block px-6 py-2 rounded-full text-white font-semibold mb-6"
-            style={{
-              background: `linear-gradient(to right, ${sector.gradient.replace('from-', '').replace(' to-', ', ')})`.replace('marine-', '#0073ff').replace('gold-', '#dcb26b')
-            }}
-          >
+          {/* Catégorie en texte simple */}
+          <p className="text-white text-lg font-semibold mb-4 opacity-90">
             {locale === "fr" 
               ? (isRestaurantStyle ? "Style de restaurant" : "Type d'entreprise")
               : (isRestaurantStyle ? "Restaurant style" : "Business type")
             }
-          </div>
+          </p>
 
           {/* Titre du secteur */}
-          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
+          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-3 drop-shadow-lg">
             {locale === "fr" ? `Octogone pour ${sector.titleFr}` : `Octogone for ${sector.titleEn}`}
           </h1>
+          
+          {/* Description du secteur */}
+          <p className="text-lg text-white opacity-90 max-w-3xl mx-auto mb-8">
+            {locale === "fr" ? sector.descriptionFr : sector.descriptionEn}
+          </p>
 
           {/* Navigation inter-secteurs */}
           <div className="flex justify-center items-center gap-4 mt-8">
