@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Metadata } from "next";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
@@ -8,6 +9,24 @@ import { getAllSectors, targetSectors, restaurantStyles, getNextSector, getPrevi
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SectorDetailWidget from "@/components/widgets/sector-detail-widget";
+import { generateSectorMetadata } from "@/lib/seo/sector-metadata";
+
+// Génération des métadonnées pour SEO
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; sectorId: string }> }): Promise<Metadata> {
+  const { locale, sectorId } = await params;
+  const allSectors = getAllSectors();
+  const sector = allSectors.find(s => s.id === sectorId);
+  
+  if (!sector) return {};
+  
+  return generateSectorMetadata({
+    id: sector.id,
+    titleFr: sector.titleFr,
+    titleEn: sector.titleEn,
+    descriptionFr: sector.descriptionFr,
+    descriptionEn: sector.descriptionEn,
+  }, locale);
+}
 
 export default function SectorDetailPage() {
   const params = useParams();
