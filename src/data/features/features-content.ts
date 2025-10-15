@@ -3,14 +3,6 @@
  * SOURCE DE VÉRITÉ - Utilisée par toutes les pages et composants
  */
 
-export interface FeatureItem {
-  titleFr: string;
-  titleEn: string;
-  descriptionFr: string;
-  descriptionEn: string;
-  icon?: string;
-}
-
 export interface ConceptFeature {
   id: 'operate' | 'automate' | 'analyze' | 'predict';
   
@@ -28,14 +20,14 @@ export interface ConceptFeature {
   heroDescriptionEn: string;
   heroImage: string;
   
-  // Section principale
-  sectionTitleFr: string;
-  sectionTitleEn: string;
-  sectionDescriptionFr: string;
-  sectionDescriptionEn: string;
+  // Contenu explicatif du concept
+  contentFr: string;
+  contentEn: string;
   
-  // Liste des fonctionnalités
-  features: FeatureItem[];
+  // CTA optionnel
+  ctaLabelFr?: string;
+  ctaLabelEn?: string;
+  ctaLink?: string;
 }
 
 // Données des 4 concepts
@@ -46,40 +38,31 @@ export const concepts: ConceptFeature[] = [
     nameEn: 'Operate',
     pastelColor: '#B8E0D2', // Vert menthe pastel
     
-    heroTitleFr: 'Gérez vos opérations avec efficacité',
-    heroTitleEn: 'Manage your operations efficiently',
-    heroDescriptionFr: 'Optimisez vos inventaires, réduisez le gaspillage et gagnez du temps avec nos outils de gestion opérationnelle.',
-    heroDescriptionEn: 'Optimize your inventory, reduce waste, and save time with our operational management tools.',
+    heroTitleFr: 'Boostez vos performances opérationnelles',
+    heroTitleEn: 'Boost your operational performance',
+    heroDescriptionFr: 'Opérer, c\'est exécuter. Prendre vos inventaires, gérer vos stocks, contrôler vos ressources. Avec Octogone, chaque opération devient plus rapide et plus efficace. Gagnez du temps, économisez de l\'argent, performez mieux.',
+    heroDescriptionEn: 'Operating means executing. Taking inventory, managing stock, controlling resources. With Octogone, every operation becomes faster and more efficient. Save time, save money, perform better.',
     heroImage: '/operate.jpg',
     
-    sectionTitleFr: 'Fonctionnalités clés',
-    sectionTitleEn: 'Key Features',
-    sectionDescriptionFr: 'Découvrez comment Octogone vous aide à opérer plus efficacement',
-    sectionDescriptionEn: 'Discover how Octogone helps you operate more efficiently',
+    contentFr: `Opérer, c'est le cœur de votre activité quotidienne. C'est faire les choses concrètement : compter vos inventaires, gérer vos stocks, contrôler vos ressources, exécuter vos opérations.
+
+Dans un restaurant, chaque minute compte. Chaque heure passée sur des tâches administratives est une heure de moins pour servir vos clients, former votre équipe ou développer votre entreprise. C'est pourquoi la performance opérationnelle est cruciale.
+
+Avec Octogone, opérer devient plus rapide, plus simple et plus efficace. Nos outils sont conçus pour éliminer les frictions, accélérer les processus et vous faire gagner un temps précieux. Prenez vos inventaires en équipe et divisez le temps par trois. Suivez vos stocks en temps réel sans effort. Contrôlez vos coûts automatiquement.
+
+Le résultat ? Vous gagnez 10 à 15 heures par semaine. Vous réduisez vos pertes de 2 à 5%. Vous libérez votre équipe des tâches répétitives pour qu'elle se concentre sur ce qui compte vraiment : vos clients et votre croissance.
+
+Opérer efficacement, c'est la base de tout. C'est ce qui vous permet d'automatiser, d'analyser et de prédire. Sans opérations solides et performantes, rien d'autre n'est possible. Octogone vous donne les outils pour opérer au meilleur de vos capacités.`,
     
-    features: [
-      {
-        titleFr: 'Gestion des inventaires',
-        titleEn: 'Inventory Management',
-        descriptionFr: 'Suivez vos stocks en temps réel et optimisez vos commandes',
-        descriptionEn: 'Track your inventory in real-time and optimize your orders',
-        icon: 'Package'
-      },
-      {
-        titleFr: 'Optimisation des coûts',
-        titleEn: 'Cost Optimization',
-        descriptionFr: 'Réduisez le gaspillage et maximisez votre rentabilité',
-        descriptionEn: 'Reduce waste and maximize your profitability',
-        icon: 'TrendingUp'
-      },
-      {
-        titleFr: 'Gain de temps',
-        titleEn: 'Time Savings',
-        descriptionFr: 'Automatisez les tâches répétitives et concentrez-vous sur l\'essentiel',
-        descriptionEn: 'Automate repetitive tasks and focus on what matters',
-        icon: 'Clock'
-      }
-    ]
+    contentEn: `Operating is the heart of your daily activity. It's getting things done concretely: counting inventory, managing stock, controlling resources, executing operations.
+
+In a restaurant, every minute counts. Every hour spent on administrative tasks is an hour less to serve your customers, train your team or grow your business. That's why operational performance is crucial.
+
+With Octogone, operating becomes faster, simpler and more efficient. Our tools are designed to eliminate friction, accelerate processes and save you precious time. Take inventory as a team and divide time by three. Track your stock in real-time effortlessly. Control your costs automatically.
+
+The result? You save 10 to 15 hours per week. You reduce your losses by 2 to 5%. You free your team from repetitive tasks so they can focus on what really matters: your customers and your growth.
+
+Operating efficiently is the foundation of everything. It's what allows you to automate, analyze and predict. Without solid and efficient operations, nothing else is possible. Octogone gives you the tools to operate at your best.`
   },
   {
     id: 'automate',
@@ -87,122 +70,99 @@ export const concepts: ConceptFeature[] = [
     nameEn: 'Automate',
     pastelColor: '#B4D4FF', // Bleu ciel pastel
     
-    heroTitleFr: 'Automatisez pour gagner en efficacité',
-    heroTitleEn: 'Automate for greater efficiency',
-    heroDescriptionFr: 'Libérez votre équipe des tâches répétitives et concentrez-vous sur ce qui compte vraiment.',
-    heroDescriptionEn: 'Free your team from repetitive tasks and focus on what really matters.',
+    heroTitleFr: 'Automatisez et éliminez les erreurs',
+    heroTitleEn: 'Automate and eliminate errors',
+    heroDescriptionFr: 'Laissez le système faire le travail. Calculs automatiques, mises à jour instantanées, zéro erreur humaine. Concentrez-vous sur ce qui compte vraiment.',
+    heroDescriptionEn: 'Let the system do the work. Automatic calculations, instant updates, zero human error. Focus on what really matters.',
     heroImage: '/resto.jpg',
     
-    sectionTitleFr: 'Automatisation intelligente',
-    sectionTitleEn: 'Smart Automation',
-    sectionDescriptionFr: 'Des processus automatisés qui vous font gagner du temps',
-    sectionDescriptionEn: 'Automated processes that save you time',
+    contentFr: `Automatiser, c'est libérer votre équipe des tâches répétitives et chronophages. C'est laisser le système faire ce qu'il fait le mieux : calculer, mettre à jour, synchroniser, sans erreur et sans effort.
+
+Dans la gestion d'un restaurant, il y a des dizaines de calculs à faire chaque jour. Coûts de recettes, food cost, marges, prix de vente, inventaires théoriques. Faire tout ça manuellement, c'est perdre du temps et risquer des erreurs. Une erreur de calcul peut vous coûter des milliers de dollars sans que vous le sachiez.
+
+Avec Octogone, l'automatisation fait tout le travail pour vous. Changez le prix d'un ingrédient ? Toutes vos recettes se mettent à jour instantanément. Vendez un plat ? Votre inventaire théorique se déduit automatiquement.
+
+Le résultat ? Zéro erreur de calcul. Zéro temps perdu sur des tâches répétitives. Des données toujours à jour, en temps réel. Votre équipe peut se concentrer sur ce qui a vraiment de la valeur : servir vos clients, créer de nouveaux plats, améliorer votre service.
+
+Automatiser, c'est travailler plus intelligemment. C'est avoir confiance dans vos chiffres. C'est la précision et la rapidité que seul un système peut offrir. Octogone automatise pour que vous puissiez vous concentrer sur l'essentiel.`,
     
-    features: [
-      {
-        titleFr: 'Calculs automatiques',
-        titleEn: 'Automatic Calculations',
-        descriptionFr: 'Coûts de recettes, food cost et marges calculés automatiquement',
-        descriptionEn: 'Recipe costs, food cost and margins calculated automatically',
-        icon: 'Calculator'
-      },
-      {
-        titleFr: 'Mises à jour en temps réel',
-        titleEn: 'Real-time Updates',
-        descriptionFr: 'Les changements de prix se répercutent instantanément partout',
-        descriptionEn: 'Price changes instantly reflect everywhere',
-        icon: 'RefreshCw'
-      },
-      {
-        titleFr: 'Intégrations POS',
-        titleEn: 'POS Integrations',
-        descriptionFr: 'Synchronisation automatique avec votre système de caisse',
-        descriptionEn: 'Automatic synchronization with your POS system',
-        icon: 'Zap'
-      }
-    ]
+    contentEn: `Automating means freeing your team from repetitive and time-consuming tasks. It's letting the system do what it does best: calculate, update, synchronize, without error and without effort.
+
+In restaurant management, there are dozens of calculations to do every day. Recipe costs, food cost, margins, selling prices, theoretical inventory. Doing all this manually means wasting time and risking errors. A calculation error can cost you thousands of dollars without you knowing it.
+
+With Octogone, automation does all the work for you. Change an ingredient price? All your recipes update instantly. Sell a dish? Your theoretical inventory deducts automatically.
+
+The result? Zero calculation errors. Zero time wasted on repetitive tasks. Data always up to date, in real-time. Your team can focus on what truly adds value: serving your customers, creating new dishes, improving your service.
+
+Automating means working smarter. It's having confidence in your numbers. It's the precision and speed that only a system can offer. Octogone automates so you can focus on what matters.`
   },
   {
     id: 'analyze',
     nameFr: 'Analyser',
     nameEn: 'Analyze',
-    pastelColor: '#FFE5B4', // Jaune pastel
+    pastelColor: '#FFE5B4',
     
-    heroTitleFr: 'Analysez pour mieux décider',
-    heroTitleEn: 'Analyze to make better decisions',
-    heroDescriptionFr: 'Transformez vos données en insights actionnables pour optimiser votre performance.',
-    heroDescriptionEn: 'Transform your data into actionable insights to optimize your performance.',
+    heroTitleFr: 'Analysez et prenez les bonnes décisions',
+    heroTitleEn: 'Analyze and make the right decisions',
+    heroDescriptionFr: 'Transformez vos données en décisions éclairées. Comprenez vos performances, identifiez les problèmes et optimisez votre rentabilité.',
+    heroDescriptionEn: 'Transform your data into informed decisions. Understand your performance, identify issues and optimize your profitability.',
     heroImage: '/resto.jpg',
     
-    sectionTitleFr: 'Analyses puissantes',
-    sectionTitleEn: 'Powerful Analytics',
-    sectionDescriptionFr: 'Des rapports détaillés pour comprendre votre performance',
-    sectionDescriptionEn: 'Detailed reports to understand your performance',
+    contentFr: `Analyser, c'est comprendre ce qui se passe vraiment dans votre restaurant. C'est transformer des chiffres bruts en insights actionnables qui vous permettent de prendre les bonnes décisions.
+
+Sans analyse, vous pilotez à l'aveugle. Vous ne savez pas où vous perdez de l'argent, quels plats sont rentables, où se situent vos problèmes. Vous réagissez aux crises au lieu de les anticiper. Vous prenez des décisions basées sur l'intuition plutôt que sur des faits.
+
+Avec Octogone, l'analyse devient simple et puissante. Visualisez vos performances en temps réel avec des rapports clairs et détaillés. Comparez votre inventaire physique avec votre inventaire théorique pour identifier précisément vos écarts. Analysez la rentabilité de chaque plat avec l'ingénierie de menu. Détectez les tendances et les anomalies avant qu'elles ne deviennent des problèmes.
+
+Le résultat ? Vous savez exactement où vous en êtes. Vous identifiez rapidement les sources de pertes et vous pouvez agir. Vous optimisez votre menu pour maximiser vos marges. Vous prenez des décisions basées sur des données réelles, pas sur des suppositions.
+
+Analyser, c'est avoir le contrôle. C'est savoir plutôt que deviner. C'est la différence entre gérer et subir. Octogone vous donne les outils d'analyse pour piloter votre restaurant avec précision et confiance.`,
     
-    features: [
-      {
-        titleFr: 'Rapports détaillés',
-        titleEn: 'Detailed Reports',
-        descriptionFr: 'Visualisez vos performances avec des rapports complets',
-        descriptionEn: 'Visualize your performance with comprehensive reports',
-        icon: 'BarChart3'
-      },
-      {
-        titleFr: 'Analyse des écarts',
-        titleEn: 'Variance Analysis',
-        descriptionFr: 'Identifiez les sources de pertes et optimisez',
-        descriptionEn: 'Identify sources of loss and optimize',
-        icon: 'TrendingDown'
-      },
-      {
-        titleFr: 'Ingénierie de menu',
-        titleEn: 'Menu Engineering',
-        descriptionFr: 'Optimisez votre menu pour maximiser la rentabilité',
-        descriptionEn: 'Optimize your menu to maximize profitability',
-        icon: 'LineChart'
-      }
-    ]
+    contentEn: `Analyzing means understanding what's really happening in your restaurant. It's transforming raw numbers into actionable insights that allow you to make the right decisions.
+
+Without analysis, you're flying blind. You don't know where you're losing money, which dishes are profitable, where your problems are. You react to crises instead of anticipating them. You make decisions based on intuition rather than facts.
+
+With Octogone, analysis becomes simple and powerful. Visualize your performance in real-time with clear and detailed reports. Compare your physical inventory with your theoretical inventory to precisely identify your variances. Analyze the profitability of each dish with menu engineering. Detect trends and anomalies before they become problems.
+
+The result? You know exactly where you stand. You quickly identify sources of loss and can act. You optimize your menu to maximize your margins. You make decisions based on real data, not assumptions.
+
+Analyzing means having control. It's knowing rather than guessing. It's the difference between managing and enduring. Octogone gives you the analytical tools to run your restaurant with precision and confidence.`
   },
   {
     id: 'predict',
     nameFr: 'Prédire',
     nameEn: 'Predict',
-    pastelColor: '#C8B6FF', // Mauve pastel
+    pastelColor: '#C8B6FF',
     
-    heroTitleFr: 'Anticipez avec l\'intelligence artificielle',
-    heroTitleEn: 'Anticipate with artificial intelligence',
-    heroDescriptionFr: 'L\'IA d\'Octogone analyse vos données pour vous aider à prendre les meilleures décisions.',
-    heroDescriptionEn: 'Octogone\'s AI analyzes your data to help you make the best decisions.',
+    heroTitleFr: 'L\'avenir de la gestion : l\'intelligence artificielle',
+    heroTitleEn: 'The future of management: artificial intelligence',
+    heroDescriptionFr: 'Prédire, c\'est notre vision. Anticiper plutôt que réagir. Octogone évolue constamment pour intégrer l\'IA et vous donner une longueur d\'avance.',
+    heroDescriptionEn: 'Predicting is our vision. Anticipating rather than reacting. Octogone constantly evolves to integrate AI and give you an edge.',
     heroImage: '/predict.jpg',
     
-    sectionTitleFr: 'IA prédictive',
-    sectionTitleEn: 'Predictive AI',
-    sectionDescriptionFr: 'Anticipez les tendances et optimisez vos décisions',
-    sectionDescriptionEn: 'Anticipate trends and optimize your decisions',
+    contentFr: `Prédire, c'est la prochaine frontière de la gestion de restaurant. C'est notre vision et notre direction. C'est anticiper plutôt que réagir, voir les problèmes avant qu'ils n'arrivent, saisir les opportunités avant la concurrence.
+
+Dans un restaurant, tout change constamment. La demande fluctue, les tendances évoluent, les imprévus surgissent. Aujourd'hui, vous opérez, vous automatisez, vous analysez. Demain, vous prédisez. C'est l'évolution naturelle de la gestion moderne, et c'est exactement ce sur quoi nous travaillons.
+
+L'intelligence artificielle transforme déjà de nombreuses industries. Dans la restauration, elle permettra d'anticiper la demande, de détecter les anomalies avant qu'elles ne coûtent cher, de recommander les meilleures décisions basées sur vos données historiques. C'est passer du mode réaction au mode anticipation.
+
+Octogone évolue constamment dans cette direction. Chaque mise à jour nous rapproche de cette vision. Nous développons les capacités prédictives qui transformeront votre façon de gérer. L'IA ne remplacera jamais votre expertise, mais elle l'amplifiera, vous donnant des insights que vous ne pourriez pas voir seul.
+
+Prédire, c'est l'avenir. Et cet avenir, nous le construisons ensemble. Avec Octogone, vous n'adoptez pas juste un logiciel, vous rejoignez une plateforme qui évolue, qui s'améliore, qui intègre les technologies de demain pour vous garder toujours un pas devant.`,
     
-    features: [
-      {
-        titleFr: 'Prévisions de demande',
-        titleEn: 'Demand Forecasting',
-        descriptionFr: 'Anticipez les besoins et optimisez vos commandes',
-        descriptionEn: 'Anticipate needs and optimize your orders',
-        icon: 'TrendingUp'
-      },
-      {
-        titleFr: 'Détection d\'anomalies',
-        titleEn: 'Anomaly Detection',
-        descriptionFr: 'Identifiez automatiquement les comportements inhabituels',
-        descriptionEn: 'Automatically identify unusual behaviors',
-        icon: 'AlertTriangle'
-      },
-      {
-        titleFr: 'Recommandations intelligentes',
-        titleEn: 'Smart Recommendations',
-        descriptionFr: 'Recevez des suggestions basées sur vos données',
-        descriptionEn: 'Receive suggestions based on your data',
-        icon: 'Brain'
-      }
-    ]
+    contentEn: `Predicting is the next frontier of restaurant management. It's our vision and our direction. It's anticipating rather than reacting, seeing problems before they happen, seizing opportunities before the competition.
+
+In a restaurant, everything is constantly changing. Demand fluctuates, trends evolve, the unexpected happens. Today, you operate, you automate, you analyze. Tomorrow, you predict. It's the natural evolution of modern management, and it's exactly what we're working on.
+
+Artificial intelligence is already transforming many industries. In restaurants, it will enable anticipating demand, detecting anomalies before they cost money, recommending the best decisions based on your historical data. It's moving from reaction mode to anticipation mode.
+
+Octogone constantly evolves in this direction. Each update brings us closer to this vision. We're developing the predictive capabilities that will transform how you manage. AI will never replace your expertise, but it will amplify it, giving you insights you couldn't see alone.
+
+Predicting is the future. And this future, we're building it together. With Octogone, you're not just adopting software, you're joining a platform that evolves, that improves, that integrates tomorrow's technologies to keep you always one step ahead.`,
+    
+    ctaLabelFr: 'Découvrez Cortex, notre agent IA',
+    ctaLabelEn: 'Discover Cortex, our AI agent',
+    ctaLink: '/cortex'
   }
 ];
 

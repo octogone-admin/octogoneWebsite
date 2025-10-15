@@ -7,7 +7,7 @@ interface OctogoneButtonProps {
   children: React.ReactNode;
   href?: string;
   onClick?: () => void;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'cortex';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   disabled?: boolean;
@@ -38,6 +38,11 @@ export const OctogoneButton: React.FC<OctogoneButtonProps> = ({
         return {
           normal: '#BADFF6', // secondary_color
           hover: '#dcb26b'   // primary_color
+        };
+      case 'cortex':
+        return {
+          normal: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)', // Cortex Light gradient
+          hover: 'linear-gradient(135deg, #E2CDED 0%, #BADFF6 100%)'   // Reversed gradient on hover
         };
       default:
         return {
@@ -79,13 +84,21 @@ export const OctogoneButton: React.FC<OctogoneButtonProps> = ({
   // Handlers pour les couleurs
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     if (!disabled) {
-      e.currentTarget.style.backgroundColor = colors.hover;
+      if (variant === 'cortex') {
+        e.currentTarget.style.background = colors.hover;
+      } else {
+        e.currentTarget.style.backgroundColor = colors.hover;
+      }
     }
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     if (!disabled) {
-      e.currentTarget.style.backgroundColor = colors.normal;
+      if (variant === 'cortex') {
+        e.currentTarget.style.background = colors.normal;
+      } else {
+        e.currentTarget.style.backgroundColor = colors.normal;
+      }
     }
   };
 
@@ -102,9 +115,9 @@ export const OctogoneButton: React.FC<OctogoneButtonProps> = ({
   // Props communes
   const commonProps = {
     className: baseClasses,
-    style: { 
-      backgroundColor: disabled ? '#9CA3AF' : colors.normal 
-    },
+    style: variant === 'cortex' 
+      ? { background: disabled ? '#9CA3AF' : colors.normal }
+      : { backgroundColor: disabled ? '#9CA3AF' : colors.normal },
     onMouseEnter: handleMouseEnter,
     onMouseLeave: handleMouseLeave,
     onClick: handleClick
