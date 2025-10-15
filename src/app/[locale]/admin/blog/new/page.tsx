@@ -130,7 +130,7 @@ export default function NewArticlePage() {
       } else {
         alert('Erreur lors de l\'upload de l\'image');
       }
-    } catch (_error) {
+    } catch {
       alert('Erreur lors de l\'upload de l\'image');
     } finally {
       setUploading(false);
@@ -154,7 +154,7 @@ export default function NewArticlePage() {
       } else {
         alert('Erreur lors de la sauvegarde');
       }
-    } catch (_error) {
+    } catch {
       alert('Erreur lors de la sauvegarde');
     } finally {
       setSaving(false);

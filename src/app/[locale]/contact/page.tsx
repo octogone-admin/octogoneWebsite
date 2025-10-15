@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { 
   MapPin, 

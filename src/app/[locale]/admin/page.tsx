@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
         const errorData = await response.json();
         setError(errorData.error || 'Mot de passe incorrect');
       }
-    } catch (error) {
+    } catch {
       setError('Erreur de connexion');
     } finally {
       setIsLoading(false);

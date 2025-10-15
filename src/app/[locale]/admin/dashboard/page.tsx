@@ -26,7 +26,7 @@ export default function AdminDashboard() {
       if (!response.ok) {
         router.push('/fr/admin');
       }
-    } catch (_error) {
+    } catch {
       router.push('/fr/admin');
     }
   }, [router]);
@@ -38,8 +38,8 @@ export default function AdminDashboard() {
         const data = await response.json();
         setPosts(data);
       }
-    } catch (_error) {
-      console.error('Erreur lors du chargement des articles:', _error);
+    } catch (error) {
+      console.error('Erreur lors du chargement des articles:', error);
     } finally {
       setLoading(false);
     }
@@ -56,7 +56,7 @@ export default function AdminDashboard() {
     try {
       await fetch('/api/admin/logout', { method: 'POST' });
       router.push('/fr/admin');
-    } catch (_error) {
+    } catch {
       router.push('/fr/admin');
     }
   };
@@ -72,8 +72,8 @@ export default function AdminDashboard() {
       if (response.ok) {
         loadPosts(); // Recharger la liste
       }
-    } catch (_error) {
-      console.error('Erreur lors de la publication:', _error);
+    } catch (error) {
+      console.error('Erreur lors de la publication:', error);
     }
   };
 

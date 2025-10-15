@@ -76,7 +76,7 @@ export async function generateStaticParams({ params }: { params: { locale: strin
   const locale = params.locale as 'fr' | 'en';
   
   // Cette fonction sera appelée au build pour générer toutes les pages
-  // Pour l'instant, on retourne un tableau vide - les pages seront générées à la demande
+  // Pour l&rsquo;instant, on retourne un tableau vide - les pages seront générées à la demande
   return [];
 }
 

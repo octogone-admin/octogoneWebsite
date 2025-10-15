@@ -59,7 +59,7 @@ export default function EditArticlePage() {
         alert('Article non trouvé');
         router.push('/fr/admin/dashboard');
       }
-    } catch (_error) {
+    } catch {
       alert('Erreur lors du chargement');
     } finally {
       setLoading(false);
@@ -118,8 +118,6 @@ export default function EditArticlePage() {
       } else {
         alert('Erreur lors de l&rsquo;upload de l&rsquo;image');
       }
-    } catch (_error) {
-      alert('Erreur lors de l&rsquo;upload de l&rsquo;image');
     } finally {
       setUploading(false);
     }
@@ -159,7 +157,7 @@ export default function EditArticlePage() {
       } else {
         alert('Erreur lors de la sauvegarde');
       }
-    } catch (_error) {
+    } catch {
       alert('Erreur lors de la sauvegarde');
     } finally {
       setSaving(false);
@@ -179,7 +177,7 @@ export default function EditArticlePage() {
       } else {
         alert('Erreur lors de la suppression');
       }
-    } catch (_error) {
+    } catch {
       alert('Erreur lors de la suppression');
     } finally {
       setSaving(false);
