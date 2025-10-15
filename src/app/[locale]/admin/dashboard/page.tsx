@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Plus, FileText, Edit, Trash2, Eye, Calendar, User, LogOut } from 'lucide-react';
+import { Plus, FileText, Edit, Eye, LogOut } from 'lucide-react';
 
 interface BlogPost {
   slug: string;
@@ -20,43 +20,43 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    // Vérifier l'authentification
-    checkAuth();
-    // Charger les articles
-    loadPosts();
-  }, []);
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/check-auth');
       if (!response.ok) {
         router.push('/fr/admin');
       }
-    } catch (error) {
+    } catch (_error) {
       router.push('/fr/admin');
     }
-  };
+  }, [router]);
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/posts');
       if (response.ok) {
         const data = await response.json();
         setPosts(data);
       }
-    } catch (error) {
-      console.error('Erreur lors du chargement des articles:', error);
+    } catch (_error) {
+      console.error('Erreur lors du chargement des articles:', _error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // Vérifier l'authentification
+    checkAuth();
+    // Charger les articles
+    loadPosts();
+  }, [checkAuth, loadPosts]);
 
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/logout', { method: 'POST' });
       router.push('/fr/admin');
-    } catch (error) {
+    } catch (_error) {
       router.push('/fr/admin');
     }
   };
@@ -72,8 +72,8 @@ export default function AdminDashboard() {
       if (response.ok) {
         loadPosts(); // Recharger la liste
       }
-    } catch (error) {
-      console.error('Erreur lors de la publication:', error);
+    } catch (_error) {
+      console.error('Erreur lors de la publication:', _error);
     }
   };
 

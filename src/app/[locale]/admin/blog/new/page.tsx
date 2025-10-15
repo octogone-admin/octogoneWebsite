@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Eye, Upload, X, Bold, Italic, List, Heading2, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Save, Eye, X, Bold, Italic, List, Heading2, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 
 interface ArticleForm {
   title: string;
@@ -29,7 +29,7 @@ export default function NewArticlePage() {
   const [preview, setPreview] = useState(false);
   const [newTag, setNewTag] = useState('');
   const [uploading, setUploading] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState(0);
+  // const [cursorPosition, setCursorPosition] = useState(0); // Unused
   const contentRef = React.useRef<HTMLTextAreaElement>(null);
   
   const [formData, setFormData] = useState<ArticleForm>({
@@ -104,9 +104,9 @@ export default function NewArticlePage() {
   };
 
   const handleInsertImageUrl = () => {
-    const url = prompt('URL de l\'image :');
+    const url = prompt('URL de l&rsquo;image :');
     if (url && url.trim()) {
-      insertAtCursor(`![Description de l'image](${url.trim()})\n\n`);
+      insertAtCursor(`![Description de l&rsquo;image](${url.trim()})\n\n`);
     }
   };
 
@@ -126,11 +126,11 @@ export default function NewArticlePage() {
 
       if (response.ok) {
         const data = await response.json();
-        insertAtCursor(`![Description de l'image](${data.url})\n\n`);
+        insertAtCursor(`![Description de l&rsquo;image](${data.url})\n\n`);
       } else {
         alert('Erreur lors de l\'upload de l\'image');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('Erreur lors de l\'upload de l\'image');
     } finally {
       setUploading(false);
@@ -154,7 +154,7 @@ export default function NewArticlePage() {
       } else {
         alert('Erreur lors de la sauvegarde');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('Erreur lors de la sauvegarde');
     } finally {
       setSaving(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Eye, Bold, Italic, List, Heading2, Image as ImageIcon, Trash2, Link as LinkIcon } from 'lucide-react';
@@ -49,11 +49,7 @@ export default function EditArticlePage() {
     locale: 'fr'
   });
 
-  useEffect(() => {
-    loadArticle();
-  }, [slug]);
-
-  const loadArticle = async () => {
+  const loadArticle = useCallback(async () => {
     try {
       const response = await fetch(`/api/admin/articles/${slug}`);
       if (response.ok) {
@@ -63,12 +59,16 @@ export default function EditArticlePage() {
         alert('Article non trouvé');
         router.push('/fr/admin/dashboard');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('Erreur lors du chargement');
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug, router]);
+
+  useEffect(() => {
+    loadArticle();
+  }, [loadArticle]);
 
   const insertAtCursor = (before: string, after: string = '') => {
     if (!contentRef.current) return;
@@ -92,9 +92,9 @@ export default function EditArticlePage() {
   };
 
   const handleInsertImageUrl = () => {
-    const url = prompt('URL de l\'image :');
+    const url = prompt('URL de l&rsquo;image :');
     if (url && url.trim()) {
-      insertAtCursor(`![Description de l'image](${url.trim()})\n\n`);
+      insertAtCursor(`![Description de l&rsquo;image](${url.trim()})\n\n`);
     }
   };
 
@@ -114,12 +114,12 @@ export default function EditArticlePage() {
 
       if (response.ok) {
         const data = await response.json();
-        insertAtCursor(`![Description de l'image](${data.url})\n\n`);
+        insertAtCursor(`![Description de l&rsquo;image](${data.url})\n\n`);
       } else {
-        alert('Erreur lors de l\'upload de l\'image');
+        alert('Erreur lors de l&rsquo;upload de l&rsquo;image');
       }
-    } catch (error) {
-      alert('Erreur lors de l\'upload de l\'image');
+    } catch (_error) {
+      alert('Erreur lors de l&rsquo;upload de l&rsquo;image');
     } finally {
       setUploading(false);
     }
@@ -159,7 +159,7 @@ export default function EditArticlePage() {
       } else {
         alert('Erreur lors de la sauvegarde');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('Erreur lors de la sauvegarde');
     } finally {
       setSaving(false);
@@ -179,7 +179,7 @@ export default function EditArticlePage() {
       } else {
         alert('Erreur lors de la suppression');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('Erreur lors de la suppression');
     } finally {
       setSaving(false);
@@ -441,7 +441,7 @@ export default function EditArticlePage() {
                 <Trash2 className="w-6 h-6" style={{ color: '#dc2626' }} />
               </div>
               <h3 className="text-xl font-bold" style={{ color: 'var(--on-surface)' }}>
-                Supprimer l'article
+                Supprimer l&rsquo;article
               </h3>
             </div>
             
@@ -452,7 +452,7 @@ export default function EditArticlePage() {
               "{formData.title}"
             </p>
             <p className="text-sm mb-6" style={{ color: 'var(--on-surface-variant)' }}>
-              Cette action est irréversible. L'article sera supprimé définitivement.
+              Cette action est irréversible. L&rsquo;article sera supprimé définitivement.
             </p>
             
             <div className="flex gap-3">
