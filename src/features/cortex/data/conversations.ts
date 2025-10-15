@@ -1,9 +1,20 @@
 // Types pour les documents générés
 export type GeneratedDocument = {
   id: string; // Ex: "BC-2024-1234"
-  type: 'purchase_order' | 'production_order' | 'report'; // Type de document
+  type: 'purchase_order' | 'production_order' | 'report' | 'chart'; // Type de document
   name: string; // Nom affiché
-  icon?: string; // Format du fichier: 'pdf', 'excel', 'csv', 'image', etc.
+  icon?: string; // Format du fichier: 'pdf', 'excel', 'csv', 'image', 'chart', etc.
+};
+
+// Types pour les graphiques inline
+export type InlineChart = {
+  type: 'line' | 'bar' | 'pie' | 'area';
+  title: string;
+  data: Array<{
+    name: string;
+    value: number;
+    color?: string;
+  }>;
 };
 
 // Types pour les messages
@@ -13,6 +24,7 @@ export type Message = {
   delay: number; // délai avant d'apparaître (en ms)
   document?: GeneratedDocument; // Document généré (optionnel)
   removeDocument?: string; // ID du document à retirer (optionnel)
+  chart?: InlineChart; // Graphique inline (optionnel)
 };
 
 export type Conversation = {
@@ -23,6 +35,60 @@ export type Conversation = {
 // Configuration des conversations par langue
 export const conversations: Record<string, Conversation[]> = {
   fr: [
+    {
+      id: 0,
+      messages: [
+        { type: 'user', text: 'Cortex, montre-moi l\'évolution de mes ventes ce mois', delay: 0 },
+        {
+          type: 'cortex',
+          text: 'Voici l\'évolution de vos ventes pour novembre :\n\n📈 Tendance générale : +12% vs octobre\n💰 CA actuel : 28 450 $ (15 premiers jours)\n🎯 Objectif mensuel : 35 000 $ (81% atteint)\n\n📊 Ventes quotidiennes :\n• Pics week-end : 2 650 $ (sam 9) et 2 450 $ (dim 3)\n• Moyenne semaine : ~1 900 $ par jour\n• Plus faible : 1 450 $ (dim 7)',
+          delay: 1500,
+          chart: {
+            type: 'line',
+            title: 'Ventes quotidiennes - 1-15 novembre 2024 ($)',
+            data: [
+              { name: '1', value: 1850 },
+              { name: '2', value: 2100 },
+              { name: '3', value: 2450 },
+              { name: '4', value: 1680 },
+              { name: '5', value: 1900 },
+              { name: '6', value: 1590 },
+              { name: '7', value: 1450 },
+              { name: '8', value: 2200 },
+              { name: '9', value: 2650 },
+              { name: '10', value: 2380 },
+              { name: '11', value: 1800 },
+              { name: '12', value: 2050 },
+              { name: '13', value: 1700 },
+              { name: '14', value: 1600 },
+              { name: '15', value: 2040 }
+            ]
+          }
+        },
+        { type: 'user', text: 'Excellent ! Et mes plats les plus rentables ?', delay: 8500 },
+        {
+          type: 'cortex',
+          text: '💰 Voici vos plats les plus rentables :\n\n🥇 Le Carpaccio de bœuf domine avec 78% de marge\n📊 Excellent équilibre entre vos entrées et plats principaux',
+          delay: 10000,
+          chart: {
+            type: 'bar',
+            title: 'Top 8 - Rentabilité par plat (%)',
+            data: [
+              { name: 'Carpaccio de bœuf', value: 78, color: '#10B981' },
+              { name: 'Salade César', value: 72, color: '#3B82F6' },
+              { name: 'Risotto champignons', value: 68, color: '#8B5CF6' },
+              { name: 'Soupe à l\'oignon', value: 65, color: '#F59E0B' },
+              { name: 'Tartare de saumon', value: 62, color: '#EF4444' },
+              { name: 'Pâtes carbonara', value: 58, color: '#06B6D4' },
+              { name: 'Burger signature', value: 55, color: '#84CC16' },
+              { name: 'Côte de bœuf', value: 45, color: '#F97316' }
+            ]
+          }
+        },
+        { type: 'user', text: 'Parfait ! Ces données m\'aident beaucoup', delay: 14500 },
+        { type: 'cortex', text: 'Avec plaisir Vincent ! 😊 Les graphiques sont mis à jour en temps réel. Je peux créer d\'autres analyses quand vous voulez.', delay: 15500 }
+      ]
+    },
     {
       id: 1,
       messages: [
@@ -48,9 +114,42 @@ export const conversations: Record<string, Conversation[]> = {
       id: 2,
       messages: [
         { type: 'user', text: 'Cortex, comment vont mes ventes cette semaine ?', delay: 0 },
-        { type: 'cortex', text: 'Très bonne tendance, Vincent 👏\n\nChiffre d’affaires ~7 000 $ • ~230 commandes\nMoyenne/jour ~1 000 $\nAvancement ~25 % de l’objectif mensuel\n\n📈 Pic vendredi marqué', delay: 1500 },
+        { 
+          type: 'cortex', 
+          text: 'Très bonne tendance, Vincent 👏\n\nChiffre d\'affaires : 7 000 $ • 230 commandes\nMoyenne/jour : 1 000 $\nAvancement : 25% de l\'objectif mensuel\n\n📊 Détail par jour :\n• Pic vendredi : 1 400 $\n• Plus faible mardi : 800 $', 
+          delay: 1500,
+          chart: {
+            type: 'bar',
+            title: 'Ventes de la semaine ($)',
+            data: [
+              { name: 'Lun', value: 950, color: '#3B82F6' },
+              { name: 'Mar', value: 800, color: '#EF4444' },
+              { name: 'Mer', value: 1100, color: '#10B981' },
+              { name: 'Jeu', value: 1200, color: '#F59E0B' },
+              { name: 'Ven', value: 1400, color: '#8B5CF6' },
+              { name: 'Sam', value: 1300, color: '#06B6D4' },
+              { name: 'Dim', value: 1250, color: '#84CC16' }
+            ]
+          }
+        },
         { type: 'user', text: 'Quels sont mes meilleurs vendeurs ?', delay: 5000 },
-        { type: 'cortex', text: 'Top semaine :\n\n🥇 Carpaccio de bœuf — en hausse vs semaine dernière\n🥈 Escargots à l’ail\n🥉 Salade César\n\nLe Carpaccio confirme sa traction.', delay: 6200 },
+        { 
+          type: 'cortex', 
+          text: 'Top 5 de la semaine :\n\n🥇 Carpaccio de bœuf : 32% des ventes\n🥈 Escargots à l\'ail : 18% des ventes\n🥉 Salade César : 15% des ventes\n\n📊 Le Carpaccio domine clairement vos ventes !', 
+          delay: 6200,
+          chart: {
+            type: 'pie',
+            title: 'Répartition des ventes par plat (%)',
+            data: [
+              { name: 'Carpaccio de bœuf', value: 32, color: '#10B981' },
+              { name: 'Escargots à l\'ail', value: 18, color: '#3B82F6' },
+              { name: 'Salade César', value: 15, color: '#F59E0B' },
+              { name: 'Burger signature', value: 12, color: '#8B5CF6' },
+              { name: 'Risotto champignons', value: 10, color: '#EF4444' },
+              { name: 'Autres plats', value: 13, color: '#6B7280' }
+            ]
+          }
+        },
         { type: 'user', text: 'Parfait, merci Cortex !', delay: 10500 },
         { type: 'cortex', text: 'Avec plaisir 😄 On continue sur cette lancée.', delay: 11200 }
       ]
@@ -150,6 +249,60 @@ export const conversations: Record<string, Conversation[]> = {
   ],
   en: [
     {
+      id: 0,
+      messages: [
+        { type: 'user', text: 'Cortex, show me my sales evolution this month', delay: 0 },
+        {
+          type: 'cortex',
+          text: 'Here\'s your sales evolution for November:\n\n📈 Overall trend: +12% vs October\n💰 Current revenue: $28,450 (first 15 days)\n🎯 Monthly target: $35,000 (81% achieved)\n\n📊 Daily sales breakdown:\n• Weekend peaks: $2,650 (Sat 9) and $2,450 (Sun 3)\n• Weekday average: ~$1,900 per day\n• Lowest day: $1,450 (Sun 7)',
+          delay: 4000,
+          chart: {
+            type: 'line',
+            title: 'Daily Sales - November 1-15, 2024 ($)',
+            data: [
+              { name: '1', value: 1850 },
+              { name: '2', value: 2100 },
+              { name: '3', value: 2450 },
+              { name: '4', value: 1680 },
+              { name: '5', value: 1900 },
+              { name: '6', value: 1590 },
+              { name: '7', value: 1450 },
+              { name: '8', value: 2200 },
+              { name: '9', value: 2650 },
+              { name: '10', value: 2380 },
+              { name: '11', value: 1800 },
+              { name: '12', value: 2050 },
+              { name: '13', value: 1700 },
+              { name: '14', value: 1600 },
+              { name: '15', value: 2040 }
+            ]
+          }
+        },
+        { type: 'user', text: 'Excellent! What about my most profitable dishes?', delay: 8500 },
+        {
+          type: 'cortex',
+          text: '💰 Here are your most profitable dishes:\n\n🥇 Beef Carpaccio dominates with 78% margin\n📊 Great balance between appetizers and main courses',
+          delay: 10000,
+          chart: {
+            type: 'bar',
+            title: 'Top 8 - Dish Profitability (%)',
+            data: [
+              { name: 'Beef Carpaccio', value: 78, color: '#10B981' },
+              { name: 'Caesar Salad', value: 72, color: '#3B82F6' },
+              { name: 'Mushroom Risotto', value: 68, color: '#8B5CF6' },
+              { name: 'French Onion Soup', value: 65, color: '#F59E0B' },
+              { name: 'Salmon Tartare', value: 62, color: '#EF4444' },
+              { name: 'Carbonara Pasta', value: 58, color: '#06B6D4' },
+              { name: 'Signature Burger', value: 55, color: '#84CC16' },
+              { name: 'Beef Ribeye', value: 45, color: '#F97316' }
+            ]
+          }
+        },
+        { type: 'user', text: 'Perfect! This data really helps me', delay: 14500 },
+        { type: 'cortex', text: 'My pleasure Vincent! 😊 Charts update in real-time. I can create more analyses whenever you need.', delay: 15500 }
+      ]
+    },
+    {
       id: 1,
       messages: [
         { type: 'user', text: 'I’m looking to add bergamot to my products', delay: 0 },
@@ -174,9 +327,42 @@ export const conversations: Record<string, Conversation[]> = {
       id: 2,
       messages: [
         { type: 'user', text: 'Cortex, how are my sales this week?', delay: 0 },
-        { type: 'cortex', text: 'Looking strong, Vincent 💪\n\nRevenue ~$7,000 • ~230 orders\nDaily avg ~$1,000\n~25% toward monthly goal\n\n📈 Friday showed a clear peak', delay: 1500 },
+        { 
+          type: 'cortex', 
+          text: 'Looking strong, Vincent 💪\n\nRevenue: $7,000 • 230 orders\nDaily avg: $1,000\n25% toward monthly goal\n\n📊 Daily breakdown:\n• Friday peak: $1,400\n• Lowest Tuesday: $800', 
+          delay: 1500,
+          chart: {
+            type: 'bar',
+            title: 'Weekly Sales ($)',
+            data: [
+              { name: 'Mon', value: 950, color: '#3B82F6' },
+              { name: 'Tue', value: 800, color: '#EF4444' },
+              { name: 'Wed', value: 1100, color: '#10B981' },
+              { name: 'Thu', value: 1200, color: '#F59E0B' },
+              { name: 'Fri', value: 1400, color: '#8B5CF6' },
+              { name: 'Sat', value: 1300, color: '#06B6D4' },
+              { name: 'Sun', value: 1250, color: '#84CC16' }
+            ]
+          }
+        },
         { type: 'user', text: 'What are my best sellers?', delay: 5000 },
-        { type: 'cortex', text: 'This week’s top:\n\n🥇 Beef Carpaccio — up vs last week\n🥈 Garlic Escargots\n🥉 Caesar Salad\n\nCarpaccio keeps momentum.', delay: 6200 },
+        { 
+          type: 'cortex', 
+          text: 'This week’s top 5:\n\n🥇 Beef Carpaccio: 32% of sales\n🥈 Garlic Escargots: 18% of sales\n🥉 Caesar Salad: 15% of sales\n\n📊 Carpaccio clearly dominates your sales!', 
+          delay: 6200,
+          chart: {
+            type: 'pie',
+            title: 'Sales Distribution by Dish (%)',
+            data: [
+              { name: 'Beef Carpaccio', value: 32, color: '#10B981' },
+              { name: 'Garlic Escargots', value: 18, color: '#3B82F6' },
+              { name: 'Caesar Salad', value: 15, color: '#F59E0B' },
+              { name: 'Signature Burger', value: 12, color: '#8B5CF6' },
+              { name: 'Mushroom Risotto', value: 10, color: '#EF4444' },
+              { name: 'Other dishes', value: 13, color: '#6B7280' }
+            ]
+          }
+        },
         { type: 'user', text: 'Perfect, thanks Cortex!', delay: 10500 },
         { type: 'cortex', text: 'Anytime 😄 Let’s keep it rolling.', delay: 11200 }
       ]

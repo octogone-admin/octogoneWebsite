@@ -1,10 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { conversations, TIMING, type Message, type GeneratedDocument } from "../data/conversations";
 import DocumentBadge from "./document-badge";
+import InlineChart from "./inline-chart";
+
+// Fallbacks pour la compatibilité
+const FALLBACK_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23e5e7eb'/%3E%3Cpath d='M20 20a6 6 0 1 0 0-12 6 6 0 0 0 0 12zm0 2c-4 0-12 2-12 6v4h24v-4c0-4-8-6-12-6z' fill='%23374151'/%3E%3C/svg%3E";
+const FALLBACK_CORTEX = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z' fill='%23374151'/%3E%3C/svg%3E";
+
+// Composant wrapper pour les graphiques avec gestion d'erreur
+function ChartWrapper({ chart, isEnglish }: { chart: any; isEnglish: boolean }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <div className="p-4 text-center" style={{ color: 'var(--on-surface-variant)' }}>
+        {isEnglish ? 'Chart temporarily unavailable' : 'Graphique temporairement indisponible'}
+      </div>
+    );
+  }
+
+  try {
+    return <InlineChart chart={chart} />;
+  } catch (error) {
+    console.warn('Chart rendering error:', error);
+    setHasError(true);
+    return null;
+  }
+}
 
 interface AnimatedChatProps {
   locale: string;
@@ -14,48 +40,81 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
   const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
   const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  // Vérifier si on est côté client pour éviter l'hydratation mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const isEnglish = locale === 'en';
-  const currentConversations = conversations[isEnglish ? 'en' : 'fr'];
+  
+  // Gestion d'erreur robuste
+  const currentConversations = conversations?.[isEnglish ? 'en' : 'fr'] || [];
   const currentConversation = currentConversations[currentConversationIndex];
+  
+  // Vérification de sécurité
+  if (!currentConversation || !currentConversations.length) {
+    return (
+      <div className="max-w-4xl mx-auto p-8 text-center" style={{ color: 'var(--on-surface-variant)' }}>
+        <p>{isEnglish ? 'Chat temporarily unavailable' : 'Chat temporairement indisponible'}</p>
+      </div>
+    );
+  }
+
+  // Fonction de nettoyage des timeouts
+  const cleanupTimeouts = useCallback((timeouts: NodeJS.Timeout[]) => {
+    timeouts.forEach(timeout => clearTimeout(timeout));
+  }, []);
 
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || !isClient || !currentConversation?.messages) return;
 
-    // Reset les messages visibles
-    setVisibleMessages([]);
+    try {
+      // Reset les messages visibles
+      setVisibleMessages([]);
+      setHasError(false);
 
-    // Afficher les messages avec leurs délais
-    const timeouts: NodeJS.Timeout[] = [];
-    
-    currentConversation.messages.forEach((message, index) => {
-      const timeout = setTimeout(() => {
-        setVisibleMessages(prev => [...prev, message]);
-      }, message.delay);
-      timeouts.push(timeout);
-    });
+      // Afficher les messages avec leurs délais
+      const timeouts: NodeJS.Timeout[] = [];
+      
+      currentConversation.messages.forEach((message, index) => {
+        if (!message || typeof message.delay !== 'number') return;
+        
+        const timeout = setTimeout(() => {
+          setVisibleMessages(prev => [...prev, message]);
+        }, Math.max(0, message.delay)); // Assurer que le délai est positif
+        timeouts.push(timeout);
+      });
 
-    // Calculer le temps total de la conversation
-    const lastMessage = currentConversation.messages[currentConversation.messages.length - 1];
-    const totalTime = lastMessage.delay + TIMING.messageDisplay + TIMING.conversationPause;
+      // Calculer le temps total de la conversation
+      const lastMessage = currentConversation.messages[currentConversation.messages.length - 1];
+      if (lastMessage && typeof lastMessage.delay === 'number') {
+        const totalTime = lastMessage.delay + (TIMING?.messageDisplay || 4000) + (TIMING?.conversationPause || 3000);
 
-    // Passer à la conversation suivante
-    const nextTimeout = setTimeout(() => {
-      setCurrentConversationIndex((prev) => 
-        (prev + 1) % currentConversations.length
-      );
-    }, totalTime);
-    timeouts.push(nextTimeout);
+        // Passer à la conversation suivante
+        const nextTimeout = setTimeout(() => {
+          setCurrentConversationIndex((prev) => 
+            (prev + 1) % Math.max(1, currentConversations.length)
+          );
+        }, totalTime);
+        timeouts.push(nextTimeout);
+      }
 
-    return () => {
-      timeouts.forEach(timeout => clearTimeout(timeout));
-    };
-  }, [currentConversationIndex, isPlaying, currentConversations, currentConversation]);
+      return () => cleanupTimeouts(timeouts);
+    } catch (error) {
+      console.warn('AnimatedChat error:', error);
+      setHasError(true);
+    }
+  }, [currentConversationIndex, isPlaying, currentConversations, currentConversation, isClient, cleanupTimeouts]);
 
   // Calculer la hauteur nécessaire pour la conversation la plus longue
   // Chaque message fait environ 120px (bulle + avatar + espacement)
-  const maxMessages = Math.max(...currentConversations.map(conv => conv.messages.length));
-  const estimatedHeight = maxMessages * 120 + 100; // +100px de marge
+  const maxMessages = currentConversations.length > 0 
+    ? Math.max(...currentConversations.map(conv => conv?.messages?.length || 0))
+    : 0;
+  const estimatedHeight = Math.max(400, maxMessages * 120 + 100); // Minimum 400px
 
   // Récupérer tous les documents générés dans les messages visibles
   // en tenant compte des suppressions
@@ -101,51 +160,69 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4 }}
-            className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} items-start gap-3`}
+            className="w-full"
           >
-            {message.type === 'cortex' && (
-              <div 
-                className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)' }}
-              >
-                <div style={{ filter: 'brightness(0) saturate(100%)' }}>
-                  <Image
-                    src="/cortex.svg"
-                    alt="Cortex"
-                    width={24}
-                    height={24}
-                    className="w-6 h-6"
-                    style={{ color: 'var(--on-secondary-container)' }}
-                  />
+            {/* Message avec avatar */}
+            <div className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} items-start gap-3 mb-2`}>
+              {message.type === 'cortex' && (
+                <div 
+                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'linear-gradient(135deg, #BADFF6 0%, #E2CDED 100%)' }}
+                >
+                  <div style={{ filter: 'brightness(0) saturate(100%)' }}>
+                    <Image
+                      src="/cortex.svg"
+                      alt="Cortex"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                      style={{ color: 'var(--on-secondary-container)' }}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = FALLBACK_CORTEX;
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            <div className={`flex flex-col ${message.type === 'user' ? 'items-end' : 'items-start'} gap-1 max-w-[80%]`}>
-              <div 
-                className="rounded-2xl px-4 py-3"
-                style={{ 
-                  backgroundColor: message.type === 'user' ? 'var(--purple_cortex)' : 'var(--secondary-container)',
-                  color: message.type === 'user' ? 'var(--on-purple_cortex)' : 'var(--on-secondary-container)'
-                }}
-              >
-                <p className="text-sm whitespace-pre-line">
-                  {message.text}
-                </p>
+              <div className={`flex flex-col ${message.type === 'user' ? 'items-end' : 'items-start'} gap-1 max-w-[80%]`}>
+                <div 
+                  className="rounded-2xl px-4 py-3"
+                  style={{ 
+                    backgroundColor: message.type === 'user' ? 'var(--purple_cortex)' : 'var(--secondary-container)',
+                    color: message.type === 'user' ? 'var(--on-purple_cortex)' : 'var(--on-secondary-container)'
+                  }}
+                >
+                  <p className="text-sm whitespace-pre-line">
+                    {message.text}
+                  </p>
+                </div>
+                <span className="text-xs px-2" style={{ color: 'var(--on-surface-variant)' }}>
+                  11:05
+                </span>
               </div>
-              <span className="text-xs px-2" style={{ color: 'var(--on-surface-variant)' }}>
-                11:05
-              </span>
+
+              {message.type === 'user' && (
+                <Image
+                  src="/avatar.jpg"
+                  alt="User"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = FALLBACK_AVATAR;
+                  }}
+                />
+              )}
             </div>
 
-            {message.type === 'user' && (
-              <Image
-                src="/avatar.jpg"
-                alt="User"
-                width={40}
-                height={40}
-                className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-              />
+            {/* Graphique en pleine largeur */}
+            {message.chart && (
+              <div className="w-full">
+                <ChartWrapper chart={message.chart} isEnglish={isEnglish} />
+              </div>
             )}
           </motion.div>
           ))}

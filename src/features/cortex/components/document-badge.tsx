@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { FileText, Download, FileSpreadsheet, Image as ImageIcon, File } from 'lucide-react';
+import { FileText, Download, FileSpreadsheet, Image as ImageIcon, File, BarChart3 } from 'lucide-react';
 import type { GeneratedDocument } from '../data/conversations';
 
 interface DocumentBadgeProps {
@@ -28,6 +28,8 @@ export default function DocumentBadge({ document, locale }: DocumentBadgeProps) 
       case 'jpg':
       case 'jpeg':
         return <ImageIcon className="w-5 h-5" style={{ color: '#2563EB' }} />; // Bleu Image
+      case 'chart':
+        return <BarChart3 className="w-5 h-5" style={{ color: '#7C3AED' }} />; // Violet Chart
       default:
         return <File className="w-5 h-5" style={{ color: '#6B7280' }} />; // Gris générique
     }
@@ -82,7 +84,10 @@ export default function DocumentBadge({ document, locale }: DocumentBadgeProps) 
       {/* Informations */}
       <div className="flex flex-col">
         <span className="text-xs font-medium" style={{ color: borderColor }}>
-          {isEnglish ? 'Generated document' : 'Document généré'}
+          {document.type === 'chart' 
+            ? (isEnglish ? 'Generated chart' : 'Graphique généré')
+            : (isEnglish ? 'Generated document' : 'Document généré')
+          }
         </span>
         <span className="text-sm font-semibold" style={{ color: 'var(--on-surface)' }}>
           {document.name}
