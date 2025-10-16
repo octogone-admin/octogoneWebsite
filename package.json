@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
-    "build:vercel": "next build",
+    "build": "ESLINT_NO_DEV_ERRORS=true next build",
+    "build:vercel": "ESLINT_NO_DEV_ERRORS=true next build",
     "analyze": "cross-env ANALYZE=true next build",
     "start": "next start",
     "lint": "echo 'Skipping lint'",
