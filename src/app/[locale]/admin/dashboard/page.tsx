@@ -181,7 +181,7 @@ export default function AdminDashboard() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y" style={{ divideColor: 'var(--outline)' }}>
+                <tbody className="divide-y" style={{ borderColor: 'var(--outline)' }}>
                   {posts.map((post) => (
                     <tr key={`${post.slug}-${post.locale}`} className="hover:bg-opacity-50" style={{ backgroundColor: 'var(--surface)' }}>
                       <td className="px-6 py-4">

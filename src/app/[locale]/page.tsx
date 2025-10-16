@@ -1,13 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Hero from "@/features/home/components/hero";
-import PartnersSection from "@/features/home/components/partners-section";
-import CortexIntro from "@/features/cortex/components/cortex-intro";
-import TargetSectors from "@/features/secteurs/components/target-sectors";
-import HowItWorks from "@/features/secteurs/components/how-it-works";
-import SuppliersSection from "@/features/home/components/suppliers-section";
-import RecentBlogPosts from "@/features/home/components/recent-blog-posts";
+import Hero from "@/features/home/components/00-hero-section";
+import PartnersSection from "@/features/home/components/02-clients-section";
+import CortexIntro from "@/features/home/components/03-cortex-section";
+import TargetSectors from "@/features/home/components/04-target-sectors-section";
+import HowItWorks from "@/features/home/components/05-how-it-works-section";
+import RecentBlogPosts from "@/features/home/components/06-blog-posts-section";
 import { useRef, useState, useEffect } from "react";
 import * as React from "react";
 import { useCalculator } from "@/contexts/calculator-context";
@@ -68,9 +67,6 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
         
         {/* Section Comment ça marche */}
         <HowItWorks onOpenCalculator={expandCalculator} />
-        
-        {/* Section 1 - Connexion avec les fournisseurs */}
-        <SuppliersSection />
 
       </div>
 
