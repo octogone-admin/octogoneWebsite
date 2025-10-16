@@ -72,9 +72,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 }
 
 // Génération statique des pages
-export async function generateStaticParams({ params }: { params: { locale: string } }) {
-  const locale = params.locale as 'fr' | 'en';
-  
+export async function generateStaticParams() {
   // Cette fonction sera appelée au build pour générer toutes les pages
   // Pour l&rsquo;instant, on retourne un tableau vide - les pages seront générées à la demande
   return [];

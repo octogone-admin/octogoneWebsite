@@ -1,21 +1,18 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import NextImage from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { 
-  Play, 
   CheckCircle2, 
   Calendar,
   Mail,
   Building2,
   User,
   Phone,
-  ArrowRight,
-  Gift
+  ArrowRight
 } from "lucide-react";
 
 export default function DemoPage({ params }: { params: Promise<{ locale: string }> }) {

@@ -10,57 +10,6 @@ import { targetSectors, restaurantStyles } from "@/data/sectors-data";
 import { testimonials } from "@/data/testimonials-data";
 import TestimonialWidget from "@/components/widgets/testimonial-widget";
 import { motion } from "framer-motion";
-/**
- * Fonction pour obtenir l'icône SVG de chaque secteur
- */
-const _getSectorIcon = (sectorId: string) => {
-  const iconProps = "w-24 h-24 lg:w-32 lg:h-32";
-  
-  switch (sectorId) {
-    case "restaurants":
-      return (
-        <svg className={iconProps} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 0 0 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.20-1.10-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41-5.51-5.51z"/>
-        </svg>
-      );
-    case "chains":
-      return (
-        <svg className={iconProps} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
-        </svg>
-      );
-    case "hotels":
-      return (
-        <svg className={iconProps} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V6H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
-        </svg>
-      );
-    case "catering":
-      return (
-        <svg className={iconProps} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M2 17h20v2H2zm1.15-4.05L4 11l.85 1.95L6.8 13l-1.95.85L4 15.8l-.85-1.95L1.2 13l1.95-.85zm2.2-6.9L6.5 4l1.15 2.05L9.7 6.5l-2.05 1.15L6.5 9.7l-1.15-2.05L3.3 6.5l2.05-1.15zm7.65 6.9L14 11l1 2.05L17.05 13L15 13.95L14 16l-1-2.05L10.95 13L13 12.05z"/>
-        </svg>
-      );
-    case "rpa":
-      return (
-        <svg className={iconProps} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-        </svg>
-      );
-    case "retail":
-      return (
-        <svg className={iconProps} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
-      );
-    default:
-      return (
-        <svg className={iconProps} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
-      );
-  }
-};
 
 /**
  * Section des secteurs cibles d'Octogone

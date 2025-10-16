@@ -7,8 +7,8 @@
 // Déclaration des types pour gtag
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 
@@ -24,8 +24,8 @@ export const initGA4 = (measurementId: string) => {
 
   // Initialiser dataLayer et gtag
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments);
+  window.gtag = function gtag(...args: unknown[]) {
+    window.dataLayer.push(args);
   };
 
   // Configuration GA4
@@ -61,7 +61,7 @@ export const trackGA4Event = (
     event_category?: string;
     event_label?: string;
     value?: number;
-    [key: string]: any;
+    [key: string]: unknown;
   } = {}
 ) => {
   if (typeof window !== 'undefined' && window.gtag) {

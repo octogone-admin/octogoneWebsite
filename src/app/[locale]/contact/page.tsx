@@ -4,13 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { 
-  MapPin, 
   Phone, 
-  Mail, 
-  Clock, 
   Send, 
   CheckCircle,
-  Building2,
   Users,
   MessageSquare,
   Calendar
@@ -567,7 +563,7 @@ Date : ${new Date().toLocaleString('fr-CA', { timeZone: 'America/Toronto' })}
                   <label className="text-sm text-marine-700">
                     {locale === "fr" ? (
                       <>
-                        J'accepte que mes données soient utilisées pour me recontacter concernant ma demande. 
+                        J&rsquo;accepte que mes données soient utilisées pour me recontacter concernant ma demande. 
                         <span className="text-marine-900 font-semibold">*</span>
                       </>
                     ) : (

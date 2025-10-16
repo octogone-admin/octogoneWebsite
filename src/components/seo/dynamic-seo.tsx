@@ -76,9 +76,9 @@ export function DynamicSEO({ testimonials, features, sectors, locale }: DynamicS
 /**
  * Met à jour les balises meta dynamiquement
  */
-function updateMetaTags(metadata: any) {
+function _updateMetaTags(metadata: Record<string, unknown>) {
   // Mettre à jour la description
-  if (metadata.description) {
+  if (metadata.description && typeof metadata.description === 'string') {
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
@@ -89,7 +89,7 @@ function updateMetaTags(metadata: any) {
   }
 
   // Mettre à jour les keywords
-  if (metadata.keywords) {
+  if (metadata.keywords && Array.isArray(metadata.keywords)) {
     let metaKeywords = document.querySelector('meta[name="keywords"]');
     if (!metaKeywords) {
       metaKeywords = document.createElement('meta');
@@ -100,7 +100,7 @@ function updateMetaTags(metadata: any) {
   }
 
   // Mettre à jour Open Graph
-  if (metadata.description) {
+  if (metadata.description && typeof metadata.description === 'string') {
     let ogDesc = document.querySelector('meta[property="og:description"]');
     if (!ogDesc) {
       ogDesc = document.createElement('meta');

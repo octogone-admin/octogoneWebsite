@@ -10,14 +10,14 @@
 
 declare global {
   interface Window {
-    _hsq?: any[];
-    HubSpotConversations?: any;
+    _hsq?: unknown[];
+    HubSpotConversations?: unknown;
   }
 }
 
 export interface HubSpotEvent {
   eventName: string;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
 }
 
 export interface HubSpotIdentity {
@@ -26,7 +26,7 @@ export interface HubSpotIdentity {
   lastname?: string;
   company?: string;
   phone?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**

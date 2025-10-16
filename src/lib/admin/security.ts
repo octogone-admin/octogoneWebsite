@@ -34,7 +34,7 @@ export function validateAdminAuth(request: NextRequest): { valid: boolean; error
     }
 
     return { valid: true };
-  } catch (error) {
+  } catch {
     return { valid: false, error: 'Erreur de validation' };
   }
 }
@@ -61,7 +61,7 @@ export function validateSlug(slug: string): boolean {
 /**
  * Valide les données d'un article
  */
-export function validateArticleData(data: any): { valid: boolean; errors: string[] } {
+export function validateArticleData(data: Record<string, unknown>): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
   // Titre requis
@@ -70,13 +70,13 @@ export function validateArticleData(data: any): { valid: boolean; errors: string
   }
 
   // Slug requis et valide
-  if (!data.slug || !validateSlug(data.slug)) {
+  if (!data.slug || typeof data.slug !== 'string' || !validateSlug(data.slug)) {
     errors.push('Le slug doit être valide (lettres minuscules, chiffres et tirets uniquement)');
   }
 
   // Catégorie valide
   const validCategories = ['nouveautes', 'conseils', 'etudes-cas', 'tendances'];
-  if (!data.category || !validCategories.includes(data.category)) {
+  if (!data.category || typeof data.category !== 'string' || !validCategories.includes(data.category)) {
     errors.push('La catégorie doit être valide');
   }
 
@@ -86,7 +86,7 @@ export function validateArticleData(data: any): { valid: boolean; errors: string
   }
 
   // Contenu requis pour publication
-  if (data.published && (!data.content || data.content.trim().length < 50)) {
+  if (data.published && (!data.content || typeof data.content !== 'string' || data.content.trim().length < 50)) {
     errors.push('Le contenu doit contenir au moins 50 caractères pour être publié');
   }
 

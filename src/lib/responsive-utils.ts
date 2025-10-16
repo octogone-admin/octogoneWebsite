@@ -95,7 +95,7 @@ export const responsiveStyles = (
   property: string,
   values: Partial<Record<ScreenSize | "_", string | number>>,
 ) => {
-  const styles: Record<string, any> = {};
+  const styles: Record<string, string | number | Record<string, string | number>> = {};
 
   // Valeur par défaut
   if (values._ !== undefined) {

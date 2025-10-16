@@ -18,7 +18,6 @@ import {
   SheetTitle,
   SheetFooter,
 } from "@/components/ui/modern-sheet";
-import { useTranslation } from "../../../../lib/i18n/client";
 
 export const ModernMobileNav: React.FC<MobileDrawerProps> = ({
   isOpen,

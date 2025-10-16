@@ -13,7 +13,7 @@ export function NavigationProvider({
   initialTheme?: NavTheme;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [theme, _setTheme] = useState<NavTheme>(initialTheme); // Renommé avec underscore car non utilisé actuellement
+  const [theme] = useState<NavTheme>(initialTheme);
 
   const value = {
     isOpen,

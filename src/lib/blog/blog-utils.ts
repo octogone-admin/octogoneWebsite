@@ -250,7 +250,7 @@ export function generateSlugFromTitle(title: string): string {
 /**
  * Calcule les statistiques du blog
  */
-export function getBlogStats(locale?: 'fr' | 'en') {
+export function getBlogStats(_locale?: 'fr' | 'en') {
   // Cette fonction sera utilisée pour des statistiques dynamiques
   // Pour l'instant, retourner des valeurs par défaut
   return {

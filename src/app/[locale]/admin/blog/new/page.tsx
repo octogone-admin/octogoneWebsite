@@ -480,7 +480,7 @@ Votre contenu en Markdown...
                   placeholder="/images/blog/mon-image.jpg"
                 />
                 <p className="text-xs mt-1" style={{ color: 'var(--on-surface-variant)' }}>
-                  Laissez vide pour utiliser l'image par défaut
+                  Laissez vide pour utiliser l&rsquo;image par défaut
                 </p>
               </div>
             </div>

@@ -88,7 +88,7 @@ export default function TestimonialDetailPage() {
   const testimonial = testimonials.find((t: Testimonial) => t.id === testimonialId);
   
   // Trouver les détails supplémentaires pour les démos s'ils existent
-  const demoDetails = demoTestimonialDetails.find((t: any) => t.id === testimonialId);
+  const demoDetails = demoTestimonialDetails.find((t: { id: string }) => t.id === testimonialId);
   
   // Combiner avec les détails démo si nécessaire
   const fullTestimonial = testimonial && !testimonial.fullStoryFr && demoDetails 
@@ -156,7 +156,7 @@ export default function TestimonialDetailPage() {
       script.text = JSON.stringify(combinedSchemas);
       document.head.appendChild(script);
     }
-  }, [fullTestimonial, locale]);
+  }, [fullTestimonial, locale, testimonialId]);
 
   // Si le témoignage n'existe pas, afficher une page 404
   if (!fullTestimonial) {
@@ -185,7 +185,7 @@ export default function TestimonialDetailPage() {
           </div>
 
           {/* Citation principale */}
-          <div className="text-6xl mb-4" style={{ color: 'var(--primary)' }} aria-hidden="true">"</div>
+          <div className="text-6xl mb-4" style={{ color: 'var(--primary)' }} aria-hidden="true">&ldquo;</div>
           <blockquote className="text-2xl lg:text-3xl font-medium leading-relaxed mb-8" style={{ color: 'var(--on-secondary-container)' }} itemProp="reviewBody">
             {locale === "fr" ? fullTestimonial.quoteFr : fullTestimonial.quoteEn}
           </blockquote>

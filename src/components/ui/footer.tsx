@@ -4,9 +4,8 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useTranslation } from "../../../lib/i18n/client";
 import { Button } from "./button";
-import { ArrowRight, ExternalLink, Globe, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Globe, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FooterProps {
@@ -18,25 +17,10 @@ export function Footer({ className }: FooterProps) {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   
-  // État pour stocker la fonction de traduction
-  const [t, setT] = React.useState<any>(() => (key: string, options?: any) => {
-    // Fonction par défaut qui retourne la valeur par défaut ou la clé
-    return (options?.defaultValue || key);
-  });
-  
-  // Initialiser les traductions
-  React.useEffect(() => {
-    const loadTranslations = async () => {
-      try {
-        const { t: translationFunc } = await useTranslation(locale, "footer");
-        setT(() => translationFunc);
-      } catch (error) {
-        console.error("Error loading translations:", error);
-      }
-    };
-    
-    loadTranslations();
-  }, [locale]);
+  // Fonction de traduction simple
+  const t = (key: string, options?: { defaultValue?: string }) => {
+    return options?.defaultValue || key;
+  };
 
   const currentYear = new Date().getFullYear();
 

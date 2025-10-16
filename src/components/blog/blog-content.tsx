@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '@/lib/blog/types';
 import { formatBlogDate, formatReadingTime, getCategoryInfo, getAuthorInfo } from '@/lib/blog/client-utils';
-import { ResponsiveSection } from '@/components/ui/responsive-section';
 import { Calendar, Clock, User, Tag, ArrowLeft } from 'lucide-react';
 
 interface BlogContentProps {

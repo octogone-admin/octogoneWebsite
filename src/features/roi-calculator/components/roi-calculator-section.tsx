@@ -17,7 +17,7 @@ import { AVAILABLE_MODULES, LOCATION_RANGES } from '../config';
 import { calculateROI, formatCurrency, formatHours } from '../utils/roi-calculations';
 
 // Map des icônes (seulement les 4 forfaits réels)
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, React.ComponentType> = {
   Warehouse,    // Inventaire
   ChefHat,      // Foodcost
   Thermometer,  // Thermomètre

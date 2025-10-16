@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import ToolDetailWidget from "@/components/widgets/tool-detail-widget";
-import { getToolById, getAllTools, getNextTool, getPreviousTool } from "@/data/tools/tools-content";
+import { getToolById, getNextTool, getPreviousTool } from "@/data/tools/tools-content";
 import { ToolSEO } from "@/components/seo/tool-seo";
 import { LogoCard } from "@/components/widgets/logo-card";
 

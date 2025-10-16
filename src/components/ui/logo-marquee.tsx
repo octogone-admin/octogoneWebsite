@@ -30,9 +30,8 @@ export function LogoMarquee({
           }
         }
         // Si l'API n'existe pas, on utilise les logos statiques (pas d'erreur)
-      } catch (error) {
+      } catch {
         // Erreur silencieuse - on garde les logos statiques par défaut
-        // console.error("Erreur lors du chargement des logos:", error);
       }
     };
 

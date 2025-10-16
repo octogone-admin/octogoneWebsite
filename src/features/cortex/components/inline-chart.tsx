@@ -16,7 +16,17 @@ import {
   Cell,
   Legend
 } from 'recharts';
-import { InlineChart as InlineChartType } from '../data/conversations';
+
+// Type pour les graphiques inline
+type InlineChartType = {
+  type: 'line' | 'bar' | 'pie' | 'area';
+  title: string;
+  data: Array<{
+    name: string;
+    value: number;
+    color?: string;
+  }>;
+};
 
 interface InlineChartProps {
   chart: InlineChartType;
@@ -159,7 +169,10 @@ export default function InlineChart({ chart }: InlineChartProps) {
                 outerRadius={90}
                 innerRadius={30}
                 dataKey="value"
-                label={({ name, percent }: any) => `${((percent as number) * 100).toFixed(0)}%`}
+                label={(props: unknown) => {
+                  const p = props as { percent?: number };
+                  return p.percent ? `${(p.percent * 100).toFixed(0)}%` : '';
+                }}
                 labelLine={false}
                 animationBegin={400}
                 animationDuration={2500}

@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 
 interface FlipCardProps {
   front: React.ReactNode;

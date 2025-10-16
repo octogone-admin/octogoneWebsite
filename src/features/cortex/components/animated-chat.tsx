@@ -51,7 +51,7 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
   const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
   const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
   const [isPlaying] = useState(true);
-  const [hasError, setHasError] = useState(false);
+  const [_hasError, setHasError] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   // Vérifier si on est côté client pour éviter l'hydratation mismatch
@@ -90,7 +90,7 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
       // Afficher les messages avec leurs délais
       const timeouts: NodeJS.Timeout[] = [];
       
-      currentConversation.messages.forEach((message, _index) => {
+      currentConversation.messages.forEach((message) => {
         if (!message || typeof message.delay !== 'number') return;
         
         const timeout = setTimeout(() => {
@@ -237,10 +237,10 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
             </div>
 
             {/* Graphique en pleine largeur */}
-            {/* @ts-ignore - chart property exists in runtime data */}
+            {/* @ts-expect-error - chart property exists in runtime data */}
             {message.chart && (
               <div className="w-full">
-                {/* @ts-ignore - chart property exists in runtime data */}
+                {/* @ts-expect-error - chart property exists in runtime data */}
                 <ChartWrapper chart={message.chart} isEnglish={isEnglish} />
               </div>
             )}

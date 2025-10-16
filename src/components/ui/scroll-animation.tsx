@@ -21,7 +21,7 @@ export type ScrollAnimationType =
 interface ScrollAnimationProps {
   children: React.ReactNode;
   type?: ScrollAnimationType;
-  startOffset?: any; // Modifié pour éviter les erreurs TypeScript
+  startOffset?: string | number | [string, string];
   amount?: number;
   threshold?: number;
   duration?: number;
@@ -58,9 +58,9 @@ interface ScrollAnimationProps {
 export const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
   children,
   type = "scale-up",
-  startOffset = ["start", "end"],
+  startOffset: _startOffset = ["start", "end"],
   amount = 0.2,
-  threshold = 0.15,
+  threshold: _threshold = 0.15,
   duration = 0.3,
   minWidth = 0,
   className = "",

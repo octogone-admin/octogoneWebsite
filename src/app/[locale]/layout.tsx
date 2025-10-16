@@ -59,7 +59,7 @@ function LayoutContent({
   children 
 }: { 
   locale: string; 
-  localizedRoutes: any[]; 
+  localizedRoutes: Array<Record<string, unknown>>; 
   activeRoute: string; 
   children: React.ReactNode;
 }) {

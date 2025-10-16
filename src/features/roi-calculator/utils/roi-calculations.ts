@@ -73,8 +73,6 @@ export function calculateROI(
   numberOfLocations: number,
   selectedModuleIds: string[],
   hourlyCost: number = CALCULATION_CONFIG.defaultHourlyCost,
-  _inventoriesPerMonth: number = INVENTORY_SAVINGS.defaultInventoriesPerMonth,
-  _employeesPerInventory: number = INVENTORY_SAVINGS.defaultEmployeesPerInventory,
   manualTasksHoursPerWeek: number = CALCULATION_CONFIG.defaultManualTasksHoursPerWeek
 ): ROIResult {
   // Validation
@@ -214,7 +212,7 @@ export function calculateROI(
 /**
  * Formate un nombre en devise
  */
-export function formatCurrency(amount: number, locale: string = 'fr'): string {
+export function formatCurrency(amount: number, _locale: string = 'fr'): string {
   // Utiliser le format anglais (virgule pour milliers, point pour décimales)
   const formatted = new Intl.NumberFormat('en-CA', {
     style: 'currency',

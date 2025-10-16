@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Route } from "@/types/routes";
 import { DesktopNavProps } from "./types";
 // import { Button } from "@/components/ui/button"; // Non utilisé
 import {
@@ -58,11 +57,11 @@ ListItem.displayName = "ListItem";
 export const DesktopNav: React.FC<DesktopNavProps> = ({
   routes,
   activeRoute,
-  locale = "fr", // Paramètre conservé pour compatibilité avec l'interface
+  locale: _locale = "fr", // Paramètre conservé pour compatibilité avec l'interface
 }) => {
   const pathname = usePathname();
 
-  const isItemActive = (path: string) => {
+  const _isItemActive = (path: string) => {
     // Vérifie si le chemin correspond exactement
     if (pathname === path) return true;
     
@@ -126,7 +125,7 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                               gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
                             }}
                           >
-                            {route.children?.map((item: any) => {
+                            {route.children?.map((item: { path: string; label: string }) => {
                               const isActive = pathname.includes(item.path);
                               return (
                                 <Link
@@ -172,7 +171,7 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
                 ) : (
                   <NavigationMenuLink asChild>
                     <Link
-                      href={(route as any).href || route.path}
+                      href={(route as { href?: string; path: string }).href || route.path}
                       className={`
                       ${navigationLinkVariants({ active: isActive })} 
                       nav-item ${isActive ? "active-nav-item" : ""} 

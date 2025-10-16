@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 interface TestimonialCardProps {
@@ -68,13 +69,13 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {avatarImage ? (
-            <div className="w-14 h-14 rounded-full overflow-hidden shadow-sm">
-              <img 
+            <div className="w-14 h-14 rounded-full overflow-hidden shadow-sm relative">
+              <Image 
                 src={`/${avatarImage}`} 
-                alt={`Avatar de ${name}`} 
-                className="w-full h-full object-cover"
+                alt={`Avatar de ${name}`}
                 width={56}
                 height={56}
+                className="w-full h-full object-cover rounded-full"
               />
             </div>
           ) : (

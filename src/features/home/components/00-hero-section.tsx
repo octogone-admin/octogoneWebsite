@@ -4,8 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Play, Zap, LineChart, Brain } from "lucide-react";
-import { LogoMarquee } from "@/components/ui/logo-marquee";
-import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { OctogoneButton } from "@/components/ui/octogone-button";
 import { useScaleIn } from "@/hooks/use-scroll-scale";
 import { useParams } from "next/navigation";
@@ -23,7 +21,7 @@ interface ClientLogo {
 }
 
 // Exemples de logos clients
-const clientLogos: ClientLogo[] = [
+const _clientLogos: ClientLogo[] = [
   {
     id: 1,
     name: "Restaurant A",
@@ -88,11 +86,10 @@ const Hero = () => {
   };
   
   // Références pour les effets de défilement
-  const heroRef = useRef<HTMLDivElement>(null);
   const octogoneRef = useRef<HTMLDivElement>(null);
 
   // Calculer la hauteur du header dynamiquement
-  const [headerHeight, setHeaderHeight] = useState(0);
+  const [_headerHeight, setHeaderHeight] = useState(0);
 
   useEffect(() => {
     const calculateHeaderHeight = () => {
@@ -357,7 +354,7 @@ const Hero = () => {
                 </div>
                 
                 {/* 4 petits octogones superposés */}
-                {octogones.map((oct, index) => {
+                {octogones.map((oct) => {
                   const isActive = activeOctogone === oct.id || hoveredOctogone === oct.id;
                   const positions = {
                     'top-left': { top: '5px', left: '5px' },
@@ -552,7 +549,7 @@ const Hero = () => {
                 </div>
 
                 {/* Octogones satellites avec interaction */}
-                {octogones.map((oct, index) => {
+                {octogones.map((oct) => {
                   const isActive = activeOctogone === oct.id || hoveredOctogone === oct.id;
                   const positionClasses = {
                     'top-left': '-top-4 -left-4 xs:-top-6 xs:-left-6 sm:-top-8 sm:-left-8',

@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useScrollPosition } from "@/lib/hooks/use-scroll-position";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,6 @@ import AnnouncementBanner from "./components/announcement-banner";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NavigationProvider, useNavigation } from "./hooks/use-navigation";
 import type { DesktopNavProps } from "./types";
-import { useTranslation } from "../../../lib/i18n/client";
 
 // Constante pour activer/désactiver la bannière d'annonce
 const SHOW_ANNOUNCEMENT_BANNER = true;
@@ -25,7 +24,7 @@ const NavigationContent: React.FC<DesktopNavProps> = ({
   activeRoute,
   locale = "fr",
 }) => {
-  const { isOpen, setIsOpen, theme } = useNavigation();
+  const { isOpen, setIsOpen } = useNavigation();
   const { isScrolled } = useScrollPosition();
 
   // État pour la bannière d'annonce

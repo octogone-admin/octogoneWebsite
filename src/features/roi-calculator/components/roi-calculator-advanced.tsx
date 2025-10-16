@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { ResponsiveSection } from '@/components/ui/responsive-section';
 import { OctogoneButton } from '@/components/ui/octogone-button';
 import { 
   Warehouse, 
@@ -10,17 +9,15 @@ import {
   Thermometer,
   DollarSign,
   TrendingUp,
-  Clock,
   Check,
   Info,
-  MessageCircle,
   Package
 } from 'lucide-react';
-import { AVAILABLE_MODULES, LOCATION_RANGES, CALCULATION_CONFIG, INVENTORY_SAVINGS } from '../config';
+import { AVAILABLE_MODULES, CALCULATION_CONFIG, INVENTORY_SAVINGS } from '../config';
 import { calculateROI, formatCurrency, formatHours } from '../utils/roi-calculations';
 
 // Map des icônes (5 forfaits)
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, React.ComponentType> = {
   Warehouse,    // Inventaire
   ChefHat,      // Foodcost
   Thermometer,  // Thermomètre

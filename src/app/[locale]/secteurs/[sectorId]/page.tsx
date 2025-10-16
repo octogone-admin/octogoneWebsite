@@ -4,7 +4,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
-import { getAllSectors, targetSectors, restaurantStyles, getNextSector, getPreviousSector } from "@/data/sectors-data";
+import { getAllSectors, restaurantStyles, getNextSector, getPreviousSector } from "@/data/sectors-data";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SectorDetailWidget from "@/components/widgets/sector-detail-widget";
