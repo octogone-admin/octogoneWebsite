@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { conversations, TIMING, type Message, type GeneratedDocument } from "../data/conversations";
@@ -51,7 +51,7 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
   const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
   const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
   const [isPlaying] = useState(true);
-  const [_hasError, setHasError] = useState(false);
+  const [, setHasError] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   // Vérifier si on est côté client pour éviter l'hydratation mismatch
@@ -61,8 +61,11 @@ export default function AnimatedChat({ locale }: AnimatedChatProps) {
 
   const isEnglish = locale === 'en';
   
-  // Gestion d'erreur robuste
-  const currentConversations = conversations?.[isEnglish ? 'en' : 'fr'] || [];
+  // Gestion d'erreur robuste (mémorisé pour éviter les recalculs)
+  const currentConversations = useMemo(() => {
+    return conversations?.[isEnglish ? 'en' : 'fr'] || [];
+  }, [conversations, isEnglish]);
+  
   const currentConversation = currentConversations[currentConversationIndex];
   
   // Vérification de sécurité

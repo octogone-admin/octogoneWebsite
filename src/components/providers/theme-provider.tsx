@@ -25,8 +25,6 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme: _defaultTheme = 'light',
-  storageKey: _storageKey = 'octogone-ui-theme',
   ...props
 }: ThemeProviderProps) {
   const { theme, setTheme: setStoreTheme } = useTheme();

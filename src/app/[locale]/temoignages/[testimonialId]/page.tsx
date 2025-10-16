@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { testimonials, type Testimonial } from "@/data/testimonials-data";
@@ -90,10 +90,12 @@ export default function TestimonialDetailPage() {
   // Trouver les détails supplémentaires pour les démos s'ils existent
   const demoDetails = demoTestimonialDetails.find((t: { id: string }) => t.id === testimonialId);
   
-  // Combiner avec les détails démo si nécessaire
-  const fullTestimonial = testimonial && !testimonial.fullStoryFr && demoDetails 
-    ? { ...testimonial, ...demoDetails } 
-    : testimonial;
+  // Combiner avec les détails démo si nécessaire (mémorisé pour éviter les recalculs)
+  const fullTestimonial = useMemo(() => {
+    return testimonial && !testimonial.fullStoryFr && demoDetails 
+      ? { ...testimonial, ...demoDetails } 
+      : testimonial;
+  }, [testimonial, demoDetails]);
 
   // Mettre à jour les métadonnées dynamiquement
   useEffect(() => {

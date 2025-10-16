@@ -17,11 +17,6 @@ export function Footer({ className }: FooterProps) {
   const params = useParams();
   const locale = params ? (typeof params === 'object' && 'locale' in params ? params.locale as string : "fr") : "fr";
   
-  // Fonction de traduction simple
-  const t = (key: string, options?: { defaultValue?: string }) => {
-    return options?.defaultValue || key;
-  };
-
   const currentYear = new Date().getFullYear();
 
   return (

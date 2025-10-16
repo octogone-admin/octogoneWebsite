@@ -57,18 +57,8 @@ ListItem.displayName = "ListItem";
 export const DesktopNav: React.FC<DesktopNavProps> = ({
   routes,
   activeRoute,
-  locale: _locale = "fr", // Paramètre conservé pour compatibilité avec l'interface
 }) => {
   const pathname = usePathname();
-
-  const _isItemActive = (path: string) => {
-    // Vérifie si le chemin correspond exactement
-    if (pathname === path) return true;
-    
-    // Vérifie si le chemin actuel est un sous-chemin
-    // Par exemple, /fr/modules/octogone-360 est un sous-chemin de /fr/modules
-    return pathname.startsWith(path + "/");
-  };
 
   return (
     <div className="flex justify-center w-full">

@@ -21,7 +21,7 @@ interface ClientLogo {
 }
 
 // Exemples de logos clients
-const _clientLogos: ClientLogo[] = [
+const clientLogos: ClientLogo[] = [
   {
     id: 1,
     name: "Restaurant A",
@@ -89,7 +89,7 @@ const Hero = () => {
   const octogoneRef = useRef<HTMLDivElement>(null);
 
   // Calculer la hauteur du header dynamiquement
-  const [_headerHeight, setHeaderHeight] = useState(0);
+  const [, setHeaderHeight] = useState(0);
 
   useEffect(() => {
     const calculateHeaderHeight = () => {

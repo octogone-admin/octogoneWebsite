@@ -58,9 +58,7 @@ interface ScrollAnimationProps {
 export const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
   children,
   type = "scale-up",
-  startOffset: _startOffset = ["start", "end"],
   amount = 0.2,
-  threshold: _threshold = 0.15,
   duration = 0.3,
   minWidth = 0,
   className = "",

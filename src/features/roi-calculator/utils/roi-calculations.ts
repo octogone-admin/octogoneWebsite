@@ -8,8 +8,7 @@ import {
   AVAILABLE_MODULES, 
   PRICING_TIERS, 
   LOCATION_RANGES,
-  CALCULATION_CONFIG,
-  INVENTORY_SAVINGS
+  CALCULATION_CONFIG
 } from '../config';
 
 export interface ROIResult {
@@ -212,7 +211,7 @@ export function calculateROI(
 /**
  * Formate un nombre en devise
  */
-export function formatCurrency(amount: number, _locale: string = 'fr'): string {
+export function formatCurrency(amount: number): string {
   // Utiliser le format anglais (virgule pour milliers, point pour décimales)
   const formatted = new Intl.NumberFormat('en-CA', {
     style: 'currency',

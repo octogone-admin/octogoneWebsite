@@ -14,7 +14,7 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
   // Utiliser React.use pour accéder aux paramètres de route
   const { locale } = React.use(params);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [_hasBanner, setHasBanner] = useState(true);
+  const [, setHasBanner] = useState(true);
   const { expandCalculator } = useCalculator();
 
   // Détecter la présence de la bannière
