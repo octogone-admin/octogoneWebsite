@@ -1,19 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { OctogoneButton } from "@/components/ui/octogone-button";
 import Image from "next/image";
-import { targetSectors, restaurantStyles, type TargetSector } from "@/data/sectors-data";
-import { testimonials, type Testimonial } from "@/data/testimonials-data";
+import { targetSectors, restaurantStyles } from "@/data/sectors-data";
+import { testimonials } from "@/data/testimonials-data";
 import TestimonialWidget from "@/components/widgets/testimonial-widget";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 /**
  * Fonction pour obtenir l'icône SVG de chaque secteur
  */
-const getSectorIcon = (sectorId: string) => {
+const _getSectorIcon = (sectorId: string) => {
   const iconProps = "w-24 h-24 lg:w-32 lg:h-32";
   
   switch (sectorId) {
@@ -249,7 +249,7 @@ const TargetSectors = () => {
                 className="flex transition-transform duration-800 ease-out"
                 style={{ transform: `translateX(-${currentTestimonial * 100}%)`, minHeight: `${carouselHeight}px` }}
               >
-                {testimonials.map((testimonial, index) => (
+                {testimonials.map((testimonial) => (
                   <div key={testimonial.id} className="w-full flex-shrink-0 px-4" style={{ minHeight: `${carouselHeight}px` }}>
                     <div className="w-full h-full flex items-stretch" data-testimonial-card>
                       <TestimonialWidget

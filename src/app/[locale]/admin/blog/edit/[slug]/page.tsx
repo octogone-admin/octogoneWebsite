@@ -447,7 +447,7 @@ export default function EditArticlePage() {
               Êtes-vous sûr de vouloir supprimer :
             </p>
             <p className="font-semibold mb-4" style={{ color: 'var(--on-surface)' }}>
-              "{formData.title}"
+              &ldquo;{formData.title}&rdquo;
             </p>
             <p className="text-sm mb-6" style={{ color: 'var(--on-surface-variant)' }}>
               Cette action est irréversible. L&rsquo;article sera supprimé définitivement.

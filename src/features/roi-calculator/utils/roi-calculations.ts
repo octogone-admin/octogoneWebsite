@@ -73,8 +73,8 @@ export function calculateROI(
   numberOfLocations: number,
   selectedModuleIds: string[],
   hourlyCost: number = CALCULATION_CONFIG.defaultHourlyCost,
-  inventoriesPerMonth: number = INVENTORY_SAVINGS.defaultInventoriesPerMonth,
-  employeesPerInventory: number = INVENTORY_SAVINGS.defaultEmployeesPerInventory,
+  _inventoriesPerMonth: number = INVENTORY_SAVINGS.defaultInventoriesPerMonth,
+  _employeesPerInventory: number = INVENTORY_SAVINGS.defaultEmployeesPerInventory,
   manualTasksHoursPerWeek: number = CALCULATION_CONFIG.defaultManualTasksHoursPerWeek
 ): ROIResult {
   // Validation

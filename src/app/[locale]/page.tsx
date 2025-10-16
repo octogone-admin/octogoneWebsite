@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Hero from "@/features/home/components/00-hero-section";
 import PartnersSection from "@/features/home/components/02-clients-section";
 import CortexIntro from "@/features/home/components/03-cortex-section";
@@ -43,9 +42,6 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
   // const scrollToSection = () => {
   //   sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   // };
-
-  // Calculer l'offset en fonction de la présence de la bannière
-  const offsetMargin = hasBanner ? -120 : -160; // -120px si bannière, -160px sinon (remonte quand pas de bannière)
 
   return (
     <>

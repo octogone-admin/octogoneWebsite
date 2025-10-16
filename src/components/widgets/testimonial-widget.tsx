@@ -61,7 +61,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           {/* Contenu */}
           <div className="relative p-8 lg:p-12 flex-1 flex flex-col justify-between">
             <div className="text-center mb-8">
-              <div className="text-8xl mb-4" style={{ color: '#BADFF6' }}>"</div>
+              <div className="text-8xl mb-4" style={{ color: '#BADFF6' }}>&ldquo;</div>
               <p className="text-xl lg:text-2xl text-gray-700 leading-relaxed mb-8 line-clamp-3">
                 {locale === "fr" ? testimonial.quoteFr : testimonial.quoteEn}
               </p>

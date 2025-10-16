@@ -40,7 +40,6 @@ export default function ToolPage({
     : (isEnglish ? tool.descriptionEn : tool.descriptionFr);
 
   // Navigation
-  const allTools = getAllTools();
   const previousTool = getPreviousTool(toolId);
   const nextTool = getNextTool(toolId);
 

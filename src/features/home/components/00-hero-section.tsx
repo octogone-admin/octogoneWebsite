@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Play, Zap, LineChart, Brain } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { ResponsiveSection } from "@/components/ui/responsive-section";
 import { OctogoneButton } from "@/components/ui/octogone-button";
